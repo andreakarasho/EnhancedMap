@@ -78,27 +78,26 @@ namespace EnhancedMap.Core.MapObjects
                     }
 
 
-
                     if (MouseManager.Location.X >= Position.X - wx && MouseManager.Location.X <= Position.X + wx &&
                         MouseManager.Location.Y >= Position.Y - wy && MouseManager.Location.Y <= Position.Y + wy && MouseManager.IsEnter)
                     {
                         if (!IsMouseOver)
                             IsMouseOver = true;
-                        Global.CurrentBuildObject = this;
-                        Global.CurrentLabelObject.UpdatePosition(Entry.Location);
-                        Global.CurrentLabelObject.Text = Entry.Description;
-                        if (!Global.CurrentLabelObject.IsVisible)
-                            Global.CurrentLabelObject.IsVisible = true;
+                        if (Global.CurrentBuildObject != this)
+                        {
+                            Global.CurrentBuildObject = this;
+                            Global.CurrentLabelObject.UpdatePosition(Entry.Location);
+                            Global.CurrentLabelObject.Text = Entry.Description;
+                            if (!Global.CurrentLabelObject.IsVisible)
+                                Global.CurrentLabelObject.IsVisible = true;
+                        }
 
-                        if (!MouseManager.IsOverAnObject)
-                            MouseManager.IsOverAnObject = true;
                         return true;
                     }
-                    else //if (MouseManager.IsOverAnObject)
+                    else
                     {
                         if (IsMouseOver)
                             IsMouseOver = false;
-                       // MouseManager.IsOverAnObject = false;
                     }
 
                 }

@@ -15,6 +15,7 @@ namespace EnhancedMap.Core
         public static bool RightIsPressed { get; set; }
         public static bool IsMove { get; set; }
         public static bool IsDragging => LeftIsPressed && IsMove;
+
         public static bool IsOverAnObject { get; set; }
     }
 }

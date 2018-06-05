@@ -237,6 +237,8 @@ namespace EnhancedMap.Core
             bool showlabel = false;
             bool lastIsHouseObj = false;
 
+           // BuildingObject build = null;
+
             for (int i = 1; i < _objects.Length; i++)
             {
                 if (i == (int)LAYER_ORDER.LABELS && !showlabel)
@@ -256,13 +258,17 @@ namespace EnhancedMap.Core
                             if (i == (int)LAYER_ORDER.BUILDING || i == (int)LAYER_ORDER.HOUSES)
                             {
                                 // horrible patch
-                                if (!lastIsHouseObj && obj is BuildingObject)
+                                if (!lastIsHouseObj && obj is BuildingObject buildObj)
                                 {
                                     lastIsHouseObj = true;
                                     g.ResetTransform();
                                 }
 
-                                showlabel |= obj.Render(g, x, y, w, h);
+                                bool isover = obj.Render(g, x, y, w, h);
+                                showlabel |= isover;
+
+                               /* if (isover)
+                                    build = (BuildingObject)obj;*/
                             }                          
                             else
                             {
@@ -272,6 +278,13 @@ namespace EnhancedMap.Core
                     }
                 }          
             }
+
+          /*  if (showlabel && build != null)
+            {
+                Global.CurrentBuildObject = build;
+            }
+            else if (Global.CurrentBuildObject != null)
+                Global.CurrentBuildObject = null;*/
 
             return update;
         }

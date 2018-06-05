@@ -190,14 +190,22 @@ namespace EnhancedMap.GUI
             {
                 if (PlacesEditorWindow == null || PlacesEditorWindow.IsDisposed)
                 {
-                    BuildingObject building = RenderObjectsManager.Get<BuildingObject>().LastOrDefault(s => (Global.Facet == s.Entry.Map || (Global.Facet == 0 || Global.Facet == 1 && s.Entry.Map == 7)) && s.IsMouseOver);
+                    BuildingObject building =  
+                    RenderObjectsManager.Get<BuildingObject>()
+                    .LastOrDefault(s => 
+                    (Global.Facet == s.Entry.Map || ((Global.Facet == 0 || Global.Facet == 1) 
+                    && s.Entry.Map == 7)) 
+                    && s.IsMouseOver
+
+                    );
+
                     if (building != null)
                     {
                         PlacesEditorWindow = new PlacesEditorF(building.Entry);
                     }
                     else
                     {
-                        HouseObject house = RenderObjectsManager.Get<HouseObject>().LastOrDefault(s => (Global.Facet == s.Entry.Map || (Global.Facet == 0 || Global.Facet == 1 && s.Entry.Map == 7)) && s.IsMouseOver);
+                        HouseObject house = RenderObjectsManager.Get<HouseObject>().LastOrDefault(s => (Global.Facet == s.Entry.Map || ((Global.Facet == 0 || Global.Facet == 1) && s.Entry.Map == 7)) && s.IsMouseOver);
                         if (house != null)
                         {
                             PlacesEditorWindow = new PlacesEditorF(house.Entry);
@@ -780,8 +788,11 @@ namespace EnhancedMap.GUI
 
         private void ECanvas_MouseLeave(object sender, EventArgs e)
         {
-            _requestRefresh = true;
-            MouseManager.IsEnter = false;
+            if (!_enhancedCanvas.ECanvas.ContextMenuStrip.Visible)
+            {
+                _requestRefresh = true;
+                MouseManager.IsEnter = false;
+            }
         }
 
         private void ECanvas_MouseEnter(object sender, EventArgs e)
@@ -901,29 +912,34 @@ namespace EnhancedMap.GUI
 
         private void ECanvas_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && TopMost && !Global.FreeView && e.Button != MouseButtons.Middle)
+            if (e.Button == MouseButtons.Left)
             {
                 MouseManager.LeftIsPressed = true;
 
-                _dragging = true;
-                _pointClicked = new Point(e.X, e.Y);
-                if (Cursor != Cursors.SizeAll)
-                    Cursor = Cursors.SizeAll;
-            }
-            else
-            {
-                MouseManager.LeftIsPressed = true;
-
-                if (_dragging)
-                    _dragging = false;
-
-                if ((Global.FreeView || e.Button == MouseButtons.Middle) && e.Button != MouseButtons.Right)
+                if (TopMost && !Global.FreeView)
                 {
+
+                    _dragging = true;
+                    _pointClicked = new Point(e.X, e.Y);
                     if (Cursor != Cursors.SizeAll)
                         Cursor = Cursors.SizeAll;
-                    _lastScroll = e.Location;
+                }
+                else
+                {
+
+                    if (_dragging)
+                        _dragging = false;
+
+                    if ((Global.FreeView || e.Button == MouseButtons.Middle))
+                    {
+                        if (Cursor != Cursors.SizeAll)
+                            Cursor = Cursors.SizeAll;
+                        _lastScroll = e.Location;
+                    }
                 }
             }
+            else if (e.Button == MouseButtons.Right)
+                MouseManager.RightIsPressed = true;
         }
 
         private void ECanvas_Paint(object sender, PaintEventArgs e)
