@@ -1,0 +1,20 @@
++	Shining Blades	981	510	3	false
++	The Forgery	2471	564	7	false
++	a forge	1261	582	2	false
++	ZhelInLem	792	665	2	false
++	Nujel'm Blacksmith	3546	1185	7	false
++	Public Smithing	3554	1202	7	false
++	Armoury of Souls	1984	1367	3	false
++	The Hammer and Anvil	1418	1547	7	false
++	Cutlass Smithing	2637	2075	7	false
++	On Guard Armoury	630	2194	7	false
++	Honorable Arms	1937	2771	7	false
++	Blacksmith	3007	3408	7	false
++	First Defense	1395	3705	7	false
++	Warrior's Bounty	1419	3859	7	false
++	Zoot's Hammer	5225	4000	7	false
++	Forge and Anvil	3470	2540	1	false
++	Blacksmith	3594	2595	1	false
++	The Haven Blacksmith	3645	2617	1	false
++	Mibu Blacksmith	768	1256	4	false
++	Blacksmith	817	3420	5	false

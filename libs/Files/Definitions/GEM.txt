@@ -1,0 +1,5 @@
++	Lands of The Lich	575	642	5	false
++	Secret Garden	443	713	5	false
++	Fire Temple Ruins	523	758	5	false
++	Secret Garden	443	713	5	false
++	Fire Temple Ruins	523	758	5	false

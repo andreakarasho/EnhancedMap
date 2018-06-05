@@ -1,0 +1,208 @@
++	HiddenCave?(Clickground)	303	947	0	false
++	Chessboard	3728	1360	0	false
++	Dark Guardian Room	365	15	3	false
++	Exit portal	496	47	3	false
++	park	5251	58	7	false
++	Lever Puzzle	323	66	3	false
++	Lamp Room	468	96	3	false
++	Victoria the Sorceress	425	192	3	false
++	tunnel	1095	197	3	false
++	Bell of the Dead	417	247	3	false
++	tunnel	1071	247	3	false
++	tunnel	1658	304	3	false
++	Exit portal	433	326	3	false
++	tunnel	1811	359	3	false
++	tunnel	1628	432	3	false
++	tunnel	2157	456	3	false
++	tunnel	1790	475	3	false
++	Volcano	948	492	2	false
++	tunnel	1195	511	3	false
++	statues	2465	522	7	false
++	Minoc Town Hall	2429	528	7	false
++	tunnel	2082	574	3	false
++	Fountain	792	641	2	false
++	Dragon's Egg	39	688	2	false
++	Ridgeback Pen	1280	779	2	false
++	Yew Mill	553	826	7	false
++	Ye Olde Winery	618	886	7	false
++	Vesper Guard Tower	2743	980	7	false
++	Vesper Museum	2923	981	7	false
++	watchtower	2212	1115	7	false
++	Yew Crossroads	869	1196	1	false
++	Nujel'm Palace	3690	1284	7	false
++	training dummy	1979	1307	3	false
++	training dumm	1962	1339	3	false
++	The Chessboard	3727	1361	7	false
++	Debtor's Prison	3715	1383	7	false
++	Nujel'm Court	3723	1396	7	false
++	Gazebo	1635	1561	7	false
++	Britannia Animal Care	1507	1567	7	false
++	The Chamber of Virtue	1538	1597	7	false
++	East Side Park	1608	1622	7	false
++	Senator Robin's House and Office	1541	1685	7	false
++	Buccaneer's Bath	2667	2087	7	false
++	Skara Brae Town Hall	565	2213	7	false
++	Magincia Parliment	3796	2259	7	false
++	Archer Targets	3746	2576	1	false
++	Training Dummies	3732	2583	1	false
++	Garden with Waterfall	3633	2597	1	false
++	Barracks	1938	2688	7	false
++	Barracks	1962	2691	7	false
++	Training Ground	1972	2698	7	false
++	Barracks	1937	2711	7	false
++	Trinsic Meeting Hall	1895	2719	7	false
++	park	1893	2763	7	false
++	Jail	1855	2769	7	false
++	The Dueling Pit	1397	3744	7	false
++	Watch Tower and Keep	5265	3939	7	false
++	classroom	430	17	2	false
++	classroom	461	17	2	false
++	laboratory	279	20	2	false
++	throne room	2126	22	2	false
++	workshop	305	24	2	false
++	lecture room	336	43	2	false
++	laboratory	109	46	2	false
++	gargoyle cage	6054	47	7	false
++	alchemy workshop rifts	237	48	2	false
++	Lich Lich Lord	2169	48	2	false
++	barracks	397	69	2	false
++	kitchen	455	71	2	false
++	library	265	85	2	false
++	ritual room	2120	85	2	false
++	gathering hall	309	90	2	false
++	Conference Room	2173	116	2	false
++	laboratory	2228	141	2	false
++	ritual room	2187	148	2	false
++	small shrine room	2110	153	2	false
++	store room	2184	168	2	false
++	holding room	2219	176	2	false
++	balron room	6085	178	7	false
++	mage tower	5580	195	7	false
++	ice demon lair	5673	323	7	false
++	orc fort	5830	357	7	false
++	torture chamber	5826	531	7	false
++	ogre lord	5690	533	7	false
++	shrine	5424	570	7	false
++	skeleton prison	5146	616	7	false
++	skeletal magi	5294	624	7	false
++	shrine	5507	626	7	false
++	lava room	5275	676	7	false
++	pit	5308	676	7	false
++	vault	5386	681	7	false
++	treasure chamber	5267	691	7	false
++	unholy temple	5219	731	7	false
++	catacomb	5151	742	7	false
++	crypt	5313	746	7	false
++	shrine	5472	754	7	false
++	shrine	5205	776	7	false
++	prison cells	2050	837	2	false
++	prison cells	2178	837	2	false
++	statue	5452	843	7	false
++	shrine	5385	851	7	false
++	a very bloody kitchen	2178	859	2	false
++	torture room	2050	860	2	false
++	shrine	5474	867	7	false
++	death vortex	2115	916	2	false
++	here be dragons	5247	939	7	false
++	blood waterfall	2083	952	2	false
++	blood waterfall	2146	955	2	false
++	ancient wyrm lair	5142	967	7	false
++	shrine	5450	1004	7	false
++	throne room	1982	1021	2	false
++	blood pentagram	2114	1028	2	false
++	Orc Forge	5313	1291	7	false
++	jails	54	1301	2	false
++	Lava Forges	5340	1306	7	false
++	Orc "Shrine"	5324	1308	7	false
++	wall	5555	1313	0	false
++	Corpser Pen	5289	1315	7	false
++	Cider Store	5332	1323	7	false
++	crypt	5443	1323	0	false
++	altar	1012	1330	0	false
++	Bed Chambers	5356	1331	7	false
++	council chamber	5552	1332	0	false
++	Blood Well	5291	1339	7	false
++	wall	5513	1339	0	false
++	forge	5387	1341	0	false
++	laboratory	5436	1341	0	false
++	The Harrower's pool	5605	1343	0	false
++	wall	5473	1348	0	false
++	pit	5479	1348	0	false
++	Pen	5331	1349	7	false
++	altar	5564	1354	0	false
++	hidden switch	5402	1360	0	false
++	statue	5453	1361	0	false
++	Armoury	5364	1363	7	false
++	wall	5457	1364	0	false
++	moving wall	5524	1367	0	false
++	dining hall	51	1370	2	false
++	Jail Cell	5306	1371	7	false
++	bottom of pit	5452	1374	0	false
++	music room	80	1376	2	false
++	anhk room	107	1390	2	false
++	pile of skulls	5523	1394	0	false
++	traps	5444	1395	0	false
++	sarcophagi	5491	1395	0	false
++	brazier	5460	1409	0	false
++	mage tower	5647	1411	7	false
++	armoury	31	1412	2	false
++	secret passage	5460	1418	0	false
++	altar	5395	1419	0	false
++	switch	5459	1426	0	false
++	mausoleum	123	1435	2	false
++	sarcophagi	5452	1443	0	false
++	alchemy room	63	1447	2	false
++	sarcophagi	5396	1467	0	false
++	library	61	1470	2	false
++	tarot room	88	1471	2	false
++	armoury	890	1471	2	false
++	Temple of the Zealots	5453	1484	0	false
++	barracks	831	1485	2	false
++	pool of blood	5422	1490	0	false
++	armoury	39	1492	2	false
++	throneroom	1416	1498	2	false
++	statue room	899	1506	2	false
++	skeletal dragon lair	1179	1512	2	false
++	jails, stable torture rooms	119	1529	2	false
++	dining room	870	1529	2	false
++	diamond room	1290	1538	2	false
++	nest	5344	1550	7	false
++	a wisp adorned ankh	719	1553	2	false
++	bust miron vehl	873	1553	2	false
++	statue Martoo Saul	878	1554	2	false
++	statue Zendella Kxriss	876	1556	2	false
++	statue Junin Pince	874	1558	2	false
++	well	139	1566	2	false
++	rememberance room	891	1571	2	false
++	Terathan Temple	5170	1586	7	false
++	lever	5251	1602	7	false
++	lever	5143	1703	7	false
++	Ophidian territory	5342	1743	7	false
++	dragon's lair	5453	1802	7	false
++	undead prison	5505	1808	7	false
++	treasure room	5616	1839	7	false
++	lich room	5579	1854	7	false
++	harpy room	5471	1878	7	false
++	chapel	5538	1881	7	false
++	corpser room	5410	1933	7	false
++	Fortress Gate	5148	1969	7	false
++	gazer room	5457	1973	7	false
++	Orc Workshop	5319	1977	7	false
++	harpy room	5505	1998	7	false
++	corpser room	5410	1999	7	false
++	Water Vat	5296	2002	7	false
++	Smithing Platform	5309	2008	7	false
++	Earth Elemental Chamber	5348	2008	7	false
++	water elemental room	5443	2029	7	false
++	Elven forge	7063	408	7	false
++	Exit to Isle of the Divide	329	1973	3	false
++	Statue of Helios	3782	2522	1	false
++	Miners' Camp	3503	2741	1	false
++	Companions' Hall	3603	2494	1	false
++	Uzeraan, Keeper of Quests	3595	2588	1	false
++	Fan Dancers Dojo entrance	984	196	4	false
++	Bushido Dojo	321	409	4	false
++	Ferret Racetrack	1231	488	4	false
++	Zen maze	409	593	4	false
++	Lightest Dark	821	733	4	false
++	Ministry of Trade (10 LToT = 1 GToT)	677	1271	4	false

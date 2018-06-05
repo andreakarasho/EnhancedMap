@@ -1,0 +1,25 @@
++	Wind Alchemy	5148	60	7	false
++	The Alchemist of Wind	5301	88	7	false
++	a mage	1394	441	2	false
++	Sage's Refuge	1001	523	3	false
++	TerOrtLem	840	571	2	false
++	a mage	1505	611	2	false
++	The Bubbling Brew	2892	654	7	false
++	The Magical Light	2918	672	7	false
++	Moonglow's Finest Alchemy	4448	1090	7	false
++	Necromancer Ampitheater	2024	1383	3	false
++	The Sorcerer's Delight	1485	1550	7	false
++	Incantations & Enchantments	1590	1654	7	false
++	Mystic Treasures	659	2141	7	false
++	Mages' Menagerie	602	2180	7	false
++	Magincia's Magicka	3704	2222	7	false
++	The Sorceror's Guild	3628	2541	0	false
++	Encyclopedia Magicka	1843	2711	7	false
++	Tricks of the Trade	5731	3183	7	false
++	Serpent's Spells	3002	3350	7	false
++	Jhelom Mage	1424	3975	7	false
++	Hut of Magics	5296	3978	7	false
++	New Haven Magery School	3477	2496	1	false
++	The Little Shop of Magic	3632	2573	1	false
++	Sasara Magical Supplies and Remidies	700	1297	4	false
++	Mage	775	3485	5	false

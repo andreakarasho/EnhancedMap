@@ -1,0 +1,97 @@
++	Trappers'Huts	3342	576	0	false
++	YewCrypts	1015	704	0	false
++	YewCrypts	957	708	0	false
++	GuardOutpost	1820	722	0	false
++	YewCrypts	965	762	0	false
++	GuardOutpost	2059	804	0	false
++	YewCrypts	1015	823	0	false
++	GuardOutpost	2273	927	0	false
++	GuardOutpost	1039	1080	0	false
++	GuardOutpost	1938	1147	0	false
++	GuardOutpost	750	1308	0	false
++	GuardOutpost	720	1480	0	false
++	Waterfall	572	1636	0	false
++	BrigandCamp	853	1687	0	false
++	GuardOutpost	960	1762	0	false
++	Britain/Yew/SkaraBraeCrossroads	1012	1937	0	false
++	GuardOutpost	1415	2105	0	false
++	WyvernIsle	5855	2469	0	false
++	GuardOutpost	1680	2471	0	false
++	GuardOutpost	1682	2675	0	false
++	LizardmanFort	1152	2958	0	false
++	FireTemple	4593	3565	0	false
++	Dungeon Doom	392	114	3	false
++	cyclopse camp	758	208	2	false
++	passage to Lost Lands	2404	218	7	false
++	entrance	5165	246	7	false
++	Montor	1668	292	2	false
++	Green Acres	5228	368	7	false
++	Terort Skitas "Temple of Knowledge"	580	420	2	false
++	Gargoyle Mining Camp	946	427	2	false
++	Gauntlet Central Area	423	433	3	false
++	Savage Camp	1044	519	2	false
++	Mining Camp	2590	532	7	false
++	Grand Arena	939	637	3	false
++	Ver Lor Reg	836	641	2	false
++	Controller Tower	1091	703	2	false
++	Savage Clan Settlement	1238	733	2	false
++	Britannia Prison	295	764	7	false
++	Power Core	826	777	2	false
++	to lighthouse	318	789	7	false
++	ratman lair	645	817	2	false
++	Empath Abbey	635	851	7	false
++	Training Tower	1256	865	7	false
++	passage to Lost Cemetery	2775	893	7	false
++	Court of Truth	370	899	7	false
++	The Oracle	18	950	2	false
++	watchpost	917	993	2	false
++	dam	894	1000	2	false
++	The Lyceaeum	4312	1000	7	false
++	Mistas	821	1060	2	false
++	Reg Volom	1362	1073	2	false
++	tower	1675	1074	2	false
++	Green Acres	5816	1112	7	false
++	small lumber camp	1442	1122	2	false
++	abandoned tower	575	1140	2	false
++	jail	5291	1169	7	false
++	Orc Fort	1340	1226	3	false
++	brigand tower	1123	1236	2	false
++	cyclopse's pyramid	907	1283	2	false
++	passage	881	1303	2	false
++	passage	857	1312	2	false
++	ancient wyrm's lair	221	1363	2	false
++	Britannia Royal Zoo	4511	1376	7	false
++	Lord Blackthorn's Castle	1530	1428	7	false
++	fountain	447	1526	2	false
++	abandoned mage tower	478	1531	2	false
++	bandstand	437	1558	2	false
++	statue	466	1584	2	false
++	Lord British's Castle	1323	1624	7	false
++	to Lost Lands	1958	2068	7	false
++	Green Acres	5792	2148	7	false
++	lighthouse passage	5671	2391	7	false
++	Serpent Pillar (sueacron)	5974	2694	7	false
++	Serpent Pillar (sueacron)	5266	2757	7	false
++	Serpent Pillar (doracron)	2986	2887	7	false
++	to Marble Building	5126	3144	7	false
++	Serpent Pillar (doracron)	425	3279	7	false
++	passage to North Mines	6084	3674	7	false
++	Sanctuary Caves	6343	80	7	false
++	Sanctuary	6219	89	7	false
++	Prism of Light	6538	138	7	false
++	Heartwood	7030	382	7	false
++	Palace of Paroxymus	6382	426	7	false
++	Blighted Grove	6498	906	7	false
++	Twisted Weald	2187	1219	2	false
++	Bedlam	105	1657	3	false
++	Labyrinth	380	1923	3	false
++	Uzeraan's Mansion	3610	2585	1	false
++	Mining Cave	3610	2740	1	false
++	Old Mine Entrance  Closed	3519	2787	1	false
++	Mongbat Tower	3589	2808	1	false
++	Hunters Cabin	3715	2838	1	false
++	Mining Cave	3498	2844	1	false
++	Loggers Camp	3595	2865	1	false
++	Lighthouse	3457	3056	1	false
++	"Ord"	26	211	5	false
++	"An Ord"	43	211	5	false

@@ -1,0 +1,25 @@
++	Valor	529	212	2	false
++	Chaos	1749	234	2	false
++	Sacrifice	3355	289	7	false
++	Shrine of the Virtues	1106	404	2	false
++	Compassion	1210	477	2	false
++	Shrine of Wisdom	976	510	3	false
++	Honesty	4212	563	7	false
++	Justice	1300	633	7	false
++	Honor	748	731	2	false
++	Chaos	1458	844	7	false
++	Compassion	1858	874	7	false
++	Justice	985	1005	2	false
++	Humility	287	1013	2	false
++	Sacrifice	1171	1288	2	false
++	Spirituality	1526	1340	2	false
++	Honesty	719	1351	2	false
++	Spirituality	1595	2490	7	false
++	Honor	1723	3527	7	false
++	Humility	4274	3697	7	false
++	Valor	2491	3933	7	false
++	Ank of Sacrifice	3359	2679	1	false
++	Shrine of Isamu	1047	508	4	false
++	Shrine of Homare	296	711	4	false
++	Shrine of Makoto	718	1160	4	false
++	Shrine	344	614	5	false

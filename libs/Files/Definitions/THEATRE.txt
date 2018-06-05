@@ -1,0 +1,4 @@
++	Nujel'm Theater	3739	1231	7	false
++	The King's Men Theater	1449	1590	7	false
++	First Academy of Music	3685	2477	0	false
++	Performing Arts Centre	1424	4016	7	false

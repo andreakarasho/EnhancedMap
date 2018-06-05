@@ -1,0 +1,16 @@
++	Counselor's Guild	2434	438	7	false
++	LapInLem	792	617	2	false
++	TerAnEksPor	894	673	2	false
++	LapInLem	872	686	2	false
++	Counselor's Guild	2843	944	7	false
++	Counselor's Guild	616	980	7	false
++	Counselor's Guild	4478	1126	7	false
++	Counselor's Guild	3769	1190	7	false
++	Counselor's Guild	1498	1518	7	false
++	Counselor's Guild	1628	1664	7	false
++	Counselor's Guild	610	2128	7	false
++	Counselor's Guild	3721	2177	7	false
++	Counselor's Guild Hall	3667	2502	0	false
++	Counselor's Guild	1893	2838	7	false
++	Counselor's Guild	2948	3349	7	false
++	Counselor's Guild	1418	3703	7	false

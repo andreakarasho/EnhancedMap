@@ -1,0 +1,13 @@
++	The Oak Throne	2513	477	7	false
++	Hardwoods and More	1002	518	3	false
++	The Hammer and Nail	2917	798	7	false
++	Bloody Thumb Woodworks	570	1015	7	false
++	The Mage's Seat	4416	1085	7	false
++	Warped Woodworks	2066	1288	3	false
++	The Saw Horse	1430	1597	7	false
++	Violente Woodworks	2627	2100	7	false
++	Builder's Delight	628	2160	7	false
++	The Carpentry House	5691	3209	7	false
++	From Tree to Yew	1435	3820	7	false
++	The West Mill	3443	2638	1	false
++	Carpenters of Haven	3642	2504	1	false

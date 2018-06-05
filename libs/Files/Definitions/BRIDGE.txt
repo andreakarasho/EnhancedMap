@@ -1,0 +1,11 @@
++	BridgeoftheTwoKings	1009	2666	0	false
++	The Northern Bridge	1550	1529	7	false
++	Mage's Bridge	1520	1578	7	false
++	Virtue's Pass	1520	1628	7	false
++	Cypress Bridge	1521	1673	7	false
++	River's Gate Bridge	1512	1705	7	false
++	Gung Farmer's Bridge	1383	1746	7	false
++	East Trinsic Bridge	2083	2796	7	false
++	bridge	1778	2848	7	false
++	bridge	1789	2923	7	false
++	bridge	5483	1440	0	false

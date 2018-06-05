@@ -1,0 +1,20 @@
++	Cyhloth the Ferryman (to Gauntet)	410	254	3	false
++	Entrance to Gauntlet	425	324	3	false
++	Vesper Docks	3034	827	7	false
++	Moonglow Docks	4406	1038	7	false
++	Cove Dock	2256	1181	7	false
++	Britain Docks	1470	1765	7	false
++	Buccaneer's Den Docks	2752	2155	7	false
++	Skara Brae Docks	656	2235	7	false
++	Magincia Docks	3674	2293	7	false
++	Ocllo Docks	3647	2681	0	false
++	Trinsic Docks	2072	2856	7	false
++	Papua dock	5839	3256	7	false
++	North Docks	2940	3410	7	false
++	South Dock	3001	3466	7	false
++	Jhelom Docks	1125	3687	7	false
++	Jhelom Docks	1504	3693	7	false
++	Jhelom Docks	1372	3908	7	false
++	Jhelom Docks	1512	3989	7	false
++	New Haven Docks	3511	2601	1	false
++	Old Haven Docks	3655	2665	1	false

@@ -1,0 +1,3 @@
++	The Fisherman's Guild	2963	813	7	false
++	Fisherman's Guild and Supplies	3685	2256	7	false
++	Ocean's Treasure	1437	3750	7	false

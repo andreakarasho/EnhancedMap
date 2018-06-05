@@ -1,0 +1,125 @@
++	Thanks to Magellan (http://uo.stratics.com/thb/)	0	0	0	false
++	Champ "Valor"	383	329	2	false
++	Champ Deceit Neira (Unholy Terror)	5178	708	0	false
++	Champ of Despice Barracoon (Vermin Horde)	5557	826	0	false
++	Champ Destard Rikktor (Cold Blood)	5259	837	0	false
++	Champ "Humility"	462	926	2	false
++	Champ "Lord Oaks and the Forest Queen"	1645	1108	2	false
++	Champ of Fire Semidar (Abyss)	5814	1351	0	false
++	Champ of the TeraKeep Mephistis (Arachnid)	5189	1605	0	false
++	Champ 1 "Ice West"	5511	2360	0	false
++	Champ 2 "Ice East"	6038	2400	0	false
++	Champ 3 "Oasis"	5549	2640	0	false
++	Champ 4 "Desert"	5636	2916	0	false
++	Champ 5 "Terra Sanctum"	6035	2944	0	false
++	Champ 6 "Marble"	5267	3171	0	false
++	Champ 7 "Damwin"	5281	3368	0	false
++	Champ 8 "Hopper's Boog"	5954	3475	0	false
++	Champ 9 "City of Death"	5207	3637	0	false
++	Champ 10 "Wild" (Lord Oaks)	5559	3757	0	false
++	Champ 11 "Khaldun"	5982	3882	0	false
++	Champ 12 "Tortoise"	5724	3991	0	false
++	Twisted Glade spawn (Twaulo)	2209	1259	2	false
++	Pestilence spawn (Ilhenir)	175	1629	3	false
++	Minotaur spawn (Meraktus)	383	1931	3	false
++	Closed Barrel	5191	587	7	false
++	Closed Barrel	5301	692	7	false
++	Fruit Basket	288	984	7	false
++	Basket	3787	1122	7	false
++	Basket	3778	1249	7	false
++	Basket	3778	1251	7	false
++	Tall Candle	5577	1825	7	false
++	Tall Candle	5583	1825	7	false
++	Rocks (LS location, can vary by shard)	2685	2063	7	false
++	Basket (Eat fruit and take Basket)	2636	2081	7	false
++	Basket	3684	2205	7	false
++	Basket (Eat fruit and take Basket, Upstairs)	1132	2220	7	false
++	Basket (Eat fruit and take Basket)	1137	2220	7	false
++	Bucket	1129	2238	7	false
++	Bucket	1130	2239	7	false
++	Bucket	1140	2239	7	false
++	Full Jars	3656	2507	0	false
++	Rock	5513	3117	7	false
++	Macer Statuette South (AR 9)	94	7	3	false
++	Urn 1 (AR 3)	115	7	3	false
++	Studded Leggings (AR 5)	447	9	3	false
++	Brazier (AR 2)	489	9	3	false
++	Saddle (AR 9)	433	11	3	false
++	Basket 4 (AR 2)	63	12	3	false
++	Urn 2 (AR 3)	85	13	3	false
++	Teapot North (AR 3)	121	14	3	false
++	Stretched Hide (AR 2)	432	16	3	false
++	Studded Tunic (AR 7)	475	23	3	false
++	Cocoon (AR 7)	423	28	3	false
++	Basket 5 North (AR 2)	4	29	3	false
++	Skull with candle (AR 1)	360	31	3	false
++	Leather Tunic (AR 9)	403	31	3	false
++	Skinned Deer (AR 8)	354	36	3	false
++	Sculpture 2 (AR 3)	108	37	3	false
++	Egg Case (AR 5)	423	38	3	false
++	Tower Lantern (AR 3)	84	40	3	false
++	Skinned Goat (AR 5)	347	44	3	false
++	Sculpture 1 (AR 3)	110	53	3	false
++	Rock (AR 1)	317	56	3	false
++	Gruesome Standard (AR 5)	497	57	3	false
++	Zyronic Claw (AR 10)	257	70	3	false
++	Basket 5 West (AR 2)	30	81	3	false
++	Lamp Post (AR 3)	471	96	3	false
++	The Inquisitor's Resolution (AR 10)	467	92	3	false
++	Basket 1 (AR 1)	18	110	3	false
++	Basket 2 (AR 1)	66	114	3	false
++	Teapot West (AR 3)	121	115	3	false
++	Titan's Hammer (AR 10)	354	176	3	false
++	Books West (AR 3)	431	189	3	false
++	Books faced down (AR 3)	435	196	3	false
++	Books North (AR 3)	421	198	3	false
++	Ruined Painting (AR 12)	487	364	3	false
++	Tarot Cards (AR 5)	489	369	3	false
++	Reversed Backpack (AR 5)	497	369	3	false
++	Bottle (AR 1)	369	372	3	false
++	Damaged Books (AR 1)	378	372	3	false
++	Bloody Water (AR 5)	381	375	3	false
++	Blade of the Righteous (AR 10)	369	389	3	false
++	Basket 3 North (AR 1)	113	640	3	false
++	Basket 3 West (AR 1)	102	335	3	false
++	Basket 6 (AR 2)	99	370	3	false
++	Zen Rock Garden (AR 2)	100	357	3	false
++	Fan North (AR 3)	73	473	3	false
++	Fan West (AR 3)	99	372	3	false
++	Bowls Vertical (AR 3)	92	326	3	false
++	Zen Rock Garden 2 (AR 3)	97	470	3	false
++	Zen Rock Garden 3 (AR 3)	103	691	3	false
++	Painting 1 North (AR 4)	103	336	3	false
++	Painting 1 West (AR 4)	59	381	3	false
++	Painting 2 North (AR 4)	84	401	3	false
++	Painting 2 West (AR 4)	59	392	3	false
++	Triple Fan North (AR 4)	107	483	3	false
++	Triple Fan West (AR 4)	50	475	3	false
++	Bowl (AR 4)	107	460	3	false
++	Cups (AR 4)	90	502	3	false
++	Bowls Horizontal (AR 4)	107	688	3	false
++	Sake (AR 4)	112	676	3	false
++	Sword Display 1 North (AR 5)	135	614	3	false
++	Sword Display 1 West (AR 5)	50	482	3	false
++	Painting 3 (AR 5)	119	672	3	false
++	Painting 4 North (AR 6)	90	326	3	false
++	Painting 4 West (AR 6)	99	354	3	false
++	Sword Display 2 North (AR 6)	179	652	3	false
++	Sword Display 2 West (AR 6)	118	627	3	false
++	Flowers (AR 7)	90	483	3	false
++	Dolphin Statuette Left (AR 8)	71	562	3	false
++	Dolphin Statuette Right (AR 8)	102	677	3	false
++	Sword Display 3 South (AR 8)	61	499	3	false
++	Sword Display 3 East (AR 8)	182	669	3	false
++	Sword Display 4 West (AR 8)	162	647	3	false
++	Painting 5 North (AR 8)	124	624	3	false
++	Painting 5 West (AR 8)	146	649	3	false
++	Sword Display 4 North (AR 9)	100	488	3	false
++	Sword Display 5 North (AR 9)	175	606	3	false
++	Sword Display 5 West (AR 9)	157	608	3	false
++	Painting 6 North (AR 9)	187	643	3	false
++	Painting 6 West (AR 9)	146	623	3	false
++	Macer Statuette East (AR 9)	178	629	3	false
++	Valley of the Sleeping Dragons (champ spawn Serado the Awakened)	949	438	4	false
++	hidden door	1136	1166	5	false
++	Public Soulforge	796	3431	5	false

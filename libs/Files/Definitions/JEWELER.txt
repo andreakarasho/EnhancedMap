@@ -1,0 +1,13 @@
++	a jeweler	1605	541	2	false
++	KlarLapInLem	859	698	2	false
++	The Shimmering Jewel	2882	723	7	false
++	Jewel of the Isle	3778	1172	7	false
++	Lich's Hoard	2051	1398	3	false
++	A Girl's Best Friend	1655	1642	7	false
++	Premier Gems	1451	1679	7	false
++	The Family Jewels	3661	2183	7	false
++	The Pearl of Trinsic	1895	2809	7	false
++	Strange Rocks	5662	3150	7	false
++	The Pearl of Jhelom	1447	3981	7	false
++	Good Fortunes Jewelry	721	1297	4	false
++	Good Fortunes Jewelry	781	3431	5	false

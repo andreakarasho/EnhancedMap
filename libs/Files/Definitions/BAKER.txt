@@ -1,0 +1,19 @@
++	Mage's Appetite	5351	56	7	false
++		1514	611	2	false
++	The Twisted Oven	2998	760	7	false
++	The Jolly Baker	559	995	7	false
++	Mage's Bread	4392	1068	7	false
++	Ghast Refectory	2017	1354	3	false
++	Good Eats	1450	1617	7	false
++	The Bread Basket	3683	2171	7	false
++	Baker's Dozen	3755	2227	7	false
++	Now You're Cookin'	3610	2577	0	false
++	Baked Delights	1880	2802	7	false
++	Nature's Best Baked Goods	5746	3200	7	false
++	Plenty O' Dough	2975	3358	7	false
++	Baker's Dozen	1364	3732	7	false
++	Bakery	3463	2577	1	false
++	The Shakin' Bakery	3628	2540	1	false
++	Koku Kitchens	709	1253	4	false
++	Baker	808	3493	5	false
++	Cook	977	3883	5	false

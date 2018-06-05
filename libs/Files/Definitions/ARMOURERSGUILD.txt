@@ -1,0 +1,4 @@
++	Hand of Death	1437	3884	7	false
++	Armorer	3534	2543	1	false
++	Armoury	3587	2601	1	false
++	Iroha Armorer and MushaShugyo Dojo	761	1303	4	false

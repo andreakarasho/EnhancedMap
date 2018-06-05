@@ -1,0 +1,33 @@
++	FlowerGrove	1184	206	0	false
++	Waterfall	1317	535	0	false
++	RangerHuts	784	2242	0	false
++	PalmGrove	1736	3378	0	false
++	The North Mines	2452	79	7	false
++	the Abyss	1738	174	2	false
++	cyclopse garden	747	247	2	false
++	statue room	1701	291	2	false
++	Wyrm Mountain	1414	317	2	false
++	stepping stones	728	475	2	false
++	bandstand	748	489	2	false
++	The East Mines	2587	492	7	false
++	memorial to Gwenno	753	493	2	false
++	Gypsy Camp	2533	654	7	false
++	Tribal Berry Orchard	1038	701	2	false
++	Hay Fields	1269	727	2	false
++	Reagent Garden	1280	734	2	false
++	Hay Fields	1201	762	2	false
++	Vegetable Patch	1211	763	2	false
++	a flowstone surrounded by runes	596	946	2	false
++	harpy nest	1675	965	2	false
++	giant yew tree	1197	1034	2	false
++	Telescope	4708	1116	7	false
++	orchard	1183	1188	2	false
++	flowstone	1589	1190	2	false
++	pool	1548	1192	2	false
++	forge	1606	1265	2	false
++	campfire	768	1284	2	false
++	Hedge Maze	1146	2215	7	false
++	Volcano Tunnel	1651	2890	7	false
++	waterfall	1712	3005	7	false
++	Waterfall	704	3364	5	false
++	Falls Park	768	3318	5	false

@@ -1,0 +1,15 @@
++	The Slaughtered Cow	2438	410	7	false
++	a butcher	1400	434	2	false
++	The Butcher's Knife	2992	776	7	false
++	Yew's Finest Cuts	529	1008	7	false
++	The Fatted Calf	4395	1137	7	false
++	Nujel'm Butcher	3555	1171	7	false
++	The Cleaver	1449	1723	7	false
++	Bountiful Meats	582	2186	7	false
++	Sweet Meat	3708	2649	0	false
++	The Trinsic Cut	1991	2887	7	false
++	The Southside Butchery	5700	3279	7	false
++	Serpent Hold Meats	2912	3485	7	false
++	Finest Cuts	1457	4028	7	false
++	The Prime Cut Butcher Shop	3714	2651	1	false
++	Butcher	819	3460	5	false

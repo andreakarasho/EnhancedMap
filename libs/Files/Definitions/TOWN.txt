@@ -1,0 +1,26 @@
++	Wind	5252	104	7	false
++	gypsy caravan	1380	425	2	false
++	Luna	985	481	3	false
++	Minoc	2502	522	7	false
++	Desert Outpost	1608	550	2	false
++	gypsy caravan	1240	565	2	false
++	Desert Outpost	1506	622	2	false
++	Vesper	2884	839	7	false
++	Yew	504	942	7	false
++	Moonglow	4457	1117	7	false
++	Nujel'm	3600	1231	7	false
++	Cove	2263	1237	7	false
++	Umbra	2020	1292	3	false
++	Britain	1546	1634	7	false
++	Buccaneer's Den	2720	2110	7	false
++	Magincia	3735	2200	7	false
++	Skara Brae	595	2263	7	false
++	Ocllo	3664	2558	0	false
++	Trinsic	1879	2766	7	false
++	Papua	5751	3231	7	false
++	Serpent's Hold	3025	3498	7	false
++	Jhelom	1359	3671	7	false
++	Delucia	5227	3978	7	false
++	New Haven	3480	2552	1	false
++	Haven	3649	2569	1	false
++	Zento	741	1261	4	false

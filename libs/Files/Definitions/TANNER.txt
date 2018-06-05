@@ -1,0 +1,9 @@
++	The Stretched Hide	2524	524	7	false
++	The Tanned Hide	517	986	7	false
++	Tanner's Shop	2860	999	7	false
++	Nujel'm Tannery	3545	1178	7	false
++	The Best Hides of Britain	1431	1612	7	false
++	Buccaneer's Den Leatherworks	2707	2178	7	false
++	Better Leather Tannery	3602	2615	0	false
++	Trinsic Fine Skins	1991	2867	7	false
++	Thick Hide	3446	2606	1	false

@@ -1,0 +1,24 @@
++	Warrior's Battle Gear	2533	576	7	false
++	AngraCharInLem	808	586	2	false
++	an armourer	1497	614	2	false
++	AngloInLem	808	697	2	false
++	Warrior's Companion	2835	805	7	false
++	The Ironworks	2865	852	7	false
++	The Mighty Axe	4392	1117	7	false
++	Second Defense Armory	4440	1162	7	false
++	The Warrior's Supplies	2217	1170	7	false
++	The Lord's Arms	1365	1575	7	false
++	Strength and Steel	1481	1584	7	false
++	Heavy Metal Armorer	1437	1647	7	false
++	Artistic Armour	1637	1693	7	false
++	Gore Galore	652	2160	7	false
++	More Than Just Mail	586	2170	7	false
++	Hammer and Steel Smithy	3632	2595	0	false
++	Shining Path Armory	1895	2653	7	false
++	The Revenge Shoppe	5805	3300	7	false
++	Serpent's Arms	3018	3433	7	false
++	Second Skin	1441	3719	7	false
++	Deadly Intentions	1359	3763	7	false
++	Jhelom Armory	1456	3850	7	false
++	Call to Arms	1475	3865	7	false
++	Weaponsmith	1017	3883	5	false

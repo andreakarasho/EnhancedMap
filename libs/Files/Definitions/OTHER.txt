@@ -1,0 +1,40 @@
++	Secret Entrance to Nix	433	371	3	false
++	from Ancient Wyrm's Lair Teleporter	5331	707	0	false
++	The Musician's Hall	2891	744	7	false
++	Burning Corpse	1288	769	2	false
++	from Fireand DeceitTeleporter	5606	802	0	false
++	from DespiceTeleporter	5164	1009	0	false
++	from TeraKeepTeleporter	5876	1378	0	false
++	from Despice and AncientWyrmTeleporter	5201	1564	0	false
++	from StarroomTeleporter	5171	1586	0	false
++	The Watch Tower	1619	1760	7	false
++	from Tera KeepTeleporter	5143	1774	0	false
++	from Teleporter T2 "Ice East"	5958	2345	0	false
++	from Teleporter T5 South of Papua	5490	2348	0	false
++	from Teleporter T4 Northeast of "Ice East"	6089	2400	0	false
++	from Teleporter T6 East of Delucia	5972	2418	0	false
++	Farm	3739	2563	1	false
++	Farm	3708	2588	1	false
++	Farm	3731	2635	1	false
++	Mess Hall	1947	2677	7	false
++	Invalid Tram Tlocation	3544	2789	1	false
++	Invalid Tram Tlocation	3557	2821	1	false
++	Invalid Tram Tlocation	3590	2825	1	false
++	Invalid Tram TLocation	3700	2828	1	false
++	from Teleporter T1 "Ice West"	5814	3548	0	false
++	from Teleporter T3 "Ice East"	5522	3921	0	false
++	We who remain true shall rise again.	883	1555	2	false
++	Only then can balance be found	881	1557	2	false
++	The true path to Order is through Chaos and the cleansing of all life	879	1559	2	false
++	Cast out from our world by those who would not believe	877	1561	2	false
++	In rememberance of our noble leaders	875	1563	2	false
++	Drelgor the Impaler spawn	3652	2517	1	false
++	Dark Knight The Challenger of Ol'Haven	3631	2568	1	false
++	Brigands	3752	2661	1	false
++	Brigands	3716	2684	1	false
++	Brigands	3752	2703	1	false
++	Vesper Sigils	2982	820	1	false
++	Moonglow Sigils	4435	1086	1	false
++	Skara Brae Sigils	577	2200	1	false
++	Magincia Sigils	3714	2234	1	false
++	Trinsic Sigil	1912	2721	1	false

@@ -1,0 +1,20 @@
++	Room 1 Darknight Creepers	488	430	3	false
++	Room 5 Abyssmal Horrors	330	431	3	false
++	Room 4 Shadow Knights	335	505	3	false
++	Room 2 Flash Renderers	477	516	3	false
++	Room 3 Impalers	408	531	3	false
++	Entrance	1200	704	2	false
++	City Gates	3657	1202	7	false
++	town gate	2281	1210	7	false
++	lizzardman gate	401	1251	2	false
++	lizzardman gate	367	1261	2	false
++	Poor Gate	1421	1633	7	false
++	The Main Gate	1477	1638	7	false
++	West Trinsic Gate	1831	2779	7	false
++	South Gate	2003	2921	7	false
++	City Gate	1475	3690	7	false
++	City Gate	1370	3868	7	false
++	Watch Gates	5313	3970	7	false
++	gates	2174	140	2	false
++	gate	2147	141	2	false
++	Serpent's Breath Gate	36	205	5	false

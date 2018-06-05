@@ -1,0 +1,12 @@
++	The Majestic Boat	2997	819	7	false
++	Great Oak Vessels	634	1038	7	false
++	Seaborne Ships	3700	1214	7	false
++	The Oaken Oar	1416	1754	7	false
++	The Furled Sail	3667	2252	7	false
++	Superior Ships	592	2277	7	false
++	Anchors Aweigh	3632	2640	0	false
++	Sons Of The Sea	2026	2845	7	false
++	Pier 39	5805	3270	7	false
++	Sailor's Keeper	1452	3747	7	false
++	New Haven Bay Port Authority	3494	2591	1	false
++	Mapmaker's of Haven	3636	2642	1	false

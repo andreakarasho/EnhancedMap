@@ -1,0 +1,69 @@
++	to town	5217	18	7	false
++	to park	5199	71	7	false
++	to Champ "Fire"	5265	669	0	false
++	to Champ "Despice"	5265	683	0	false
++	to Ancient Wyrm's Lair (Destard lvl 3)	5506	814	0	false
++	to Champ "Terathan Keep"	5506	817	0	false
++	portal to Papua (recdu)	4540	845	7	false
++	to Reg Volom (the island)	1516	879	2	false
++	to Deceit (lvl 4)	5140	973	0	false
++	to Champ "Terathan Keep"	5145	973	0	false
++	gate to Buccaneer's Den	2618	980	7	false
++	to spider dungeon	1363	1105	2	false
++	teleporter park	4442	1122	7	false
++	to Ancient Wyrm's Lair (Destard lvl 3)	5682	1437	0	false
++	to Champ "Despice"	5682	1440	0	false
++	to Deceit (lvl 4)	5356	1540	0	false
++	to Champ "Fire"	5360	1540	0	false
++	Starroom	5173	1589	0	false
++	to Champ "Terathan Keep"	5140	1773	0	false
++	gate to mainland	2728	2133	7	false
++	T1 to the Southeast of Papua	5443	2325	0	false
++	T4 to the South of this Point	6080	2340	0	false
++	T3 to the East of Delucia	5996	2367	0	false
++	T2 to the Northwest of Champ 2 "Ice East"	6053	2407	0	false
++	portal to Moonglow (recsu)	5733	3190	7	false
++	T5 to "Ice West"	5731	3420	0	false
++	island temple portal	2494	3576	7	false
++	teleporters	1414	3829	7	false
++	T6 to "Ice East"	5503	3971	0	false
++	portal to island temple	5905	4069	7	false
++	teleporter 4b	5395	1297	0	false
++	teleporter 2b	5572	1307	0	false
++	teleporter 4a	5555	1317	0	false
++	big teleporter	5388	1325	0	false
++	teleporter 1a	5565	1338	0	false
++	teleporter 1b	5620	1341	0	false
++	teleporter 3a	5527	1342	0	false
++	teleporter 2a	5542	1356	0	false
++	teleporter 3b	5412	1396	0	false
++		787	1537	2	false
++	to north room	747	1539	2	false
++		783	1539	2	false
++		780	1541	2	false
++		782	1542	2	false
++		787	1543	2	false
++	to west wing	781	1545	2	false
++		789	1545	2	false
++	to north hall	780	1546	2	false
++		784	1546	2	false
++	teleporter maze	798	1547	2	false
++		791	1548	2	false
++		782	1550	2	false
++		784	1550	2	false
++		789	1553	2	false
++		778	1554	2	false
++	to south room	747	1555	2	false
++		781	1555	2	false
++		785	1555	2	false
++	to south hall	789	1555	2	false
++	to west wing	789	1557	2	false
++	Quit to Yew	6986	340	7	false
++	Teleporter	1775	971	3	false
++	Entrance to Heartwood	536	991	7	false
++	to Isle of the Divide	1717	1157	3	false
++	to Twisted Weald	1450	1472	2	false
++	to Trinsic	3676	2257	7	false
++	to Magincia	2048	2865	7	false
++	Entrance to The Great Stygian Abyss	36	27	5	false
++	Teleporter	1163	1121	5	false

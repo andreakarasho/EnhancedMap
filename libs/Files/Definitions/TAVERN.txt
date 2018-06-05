@@ -1,0 +1,17 @@
++	The Barnacle	2475	397	7	false
++	The Marsh Hall	2901	908	7	false
++	Mystical Spirits	3769	1218	7	false
++	The Silver Bow	3736	1255	7	false
++	Skeleton Swill	2030	1350	3	false
++	The Salty Dog	1620	1586	7	false
++	The Blue Boar	1498	1691	7	false
++	The Cat's Lair	1427	1716	7	false
++	The Unicorn's Horn	1547	1768	7	false
++	Great Horns Tavern	3730	2218	7	false
++	The Pirate's Plunder	2680	2238	7	false
++	The Keg and Anchor	1935	2796	7	false
++	The Dog and Lion Pub	2972	3425	7	false
++	Fisherman's Brew	3012	3457	7	false
++	The Horse's Head	1452	3770	7	false
++	The Albatross Bar and Grill	3668	2652	1	false
++	Sake Saka Tavern	695	1227	4	false

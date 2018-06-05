@@ -1,0 +1,640 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{803B7E52-1642-473E-96B3-87A037DF1E0A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EnhancedMap</RootNamespace>
+    <AssemblyName>EnhancedMap</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NEWTIMERS, EnhancedMap</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Release\</OutputPath>
+    <DefineConstants>TRACE;NEWTIMERS, EnhancedMap, BETA</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>EnhancedMap.MainCore</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>enhancedmapicon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aga.Controls, Version=1.7.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Output\Aga.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ColorsTable.cs" />
+    <Compile Include="Core\ChatManager.cs" />
+    <Compile Include="Core\CommandManager.cs" />
+    <Compile Include="Core\FilesManager.cs" />
+    <Compile Include="Core\HouseReader.cs" />
+    <Compile Include="Core\MapObjects\MaskObject.cs" />
+    <Compile Include="Core\MapObjects\MobileObject.cs" />
+    <Compile Include="Core\MapObjects\SharedLabelObject.cs" />
+    <Compile Include="Core\MapsManager.cs" />
+    <Compile Include="Core\Network\Packets\PacketBase.cs" />
+    <Compile Include="Core\Network\Protocol.cs" />
+    <Compile Include="Core\Network\SocketClient.cs" />
+    <Compile Include="Core\SoundsManager.cs" />
+    <Compile Include="Core\UOClientManager.cs" />
+    <Compile Include="Core\Configuration.cs" />
+    <Compile Include="Timer.cs" />
+    <Compile Include="Core\EventSink.cs" />
+    <Compile Include="Core\Global.cs" />
+    <Compile Include="Core\MapObjects\DeathObject.cs" />
+    <Compile Include="Core\MapObjects\BuildingObject.cs" />
+    <Compile Include="Core\MapObjects\LabelObject.cs" />
+    <Compile Include="Core\MapObjects\MarkerObject.cs" />
+    <Compile Include="Core\MapObjects\PlayerObject.cs" />
+    <Compile Include="Core\MapObjects\Position.cs" />
+    <Compile Include="Core\MapObjects\RenderMap.cs" />
+    <Compile Include="Core\MapObjects\RenderObject.cs" />
+    <Compile Include="Core\RenderObjectsManager.cs" />
+    <Compile Include="Core\MapObjects\SignalObject.cs" />
+    <Compile Include="Core\OEUO_Manager.cs" />
+    <Compile Include="Core\MapObjects\UserObject.cs" />
+    <Compile Include="Core\Geometry.cs" />
+    <Compile Include="Core\Quantizer.cs" />
+    <Compile Include="Core\MouseManager.cs" />
+    <Compile Include="Core\Network\BufferPool.cs" />
+    <Compile Include="Core\Network\CircularBuffer.cs" />
+    <Compile Include="Core\Network\NetworkManager.cs" />
+    <Compile Include="Core\Network\Packets\PacketHandler.cs" />
+    <Compile Include="Core\Network\Packets\PacketHandlers.cs" />
+    <Compile Include="Core\Network\Packets\Packets.cs" />
+    <Compile Include="Core\Network\SendQueue.cs" />
+    <Compile Include="Diagnostic\Logger.cs" />
+    <Compile Include="Exstentions.cs" />
+    <Compile Include="GUI\Animations\AnimationDirection.cs" />
+    <Compile Include="GUI\Animations\AnimationManager.cs" />
+    <Compile Include="GUI\Animations\Animations.cs" />
+    <Compile Include="GUI\ChatF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ChatF.Designer.cs">
+      <DependentUpon>ChatF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\CoordsConverterF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\CoordsConverterF.Designer.cs">
+      <DependentUpon>CoordsConverterF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\CustomButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUI\CustomForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\CustomProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUI\EnhancedControls\EnhancedCanvas.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\EnhancedControls\EnhancedCanvas.Designer.cs">
+      <DependentUpon>EnhancedCanvas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FlatButtons.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUI\ICustomControl.cs" />
+    <Compile Include="GUI\MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MapMakerF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MapMakerF.Designer.cs">
+      <DependentUpon>MapMakerF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MapMakerSteps\CreationMapsStep.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\MapMakerSteps\CreationMapsStep.Designer.cs">
+      <DependentUpon>CreationMapsStep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MapMakerSteps\CustomMapStep.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\MapMakerSteps\CustomMapStep.Designer.cs">
+      <DependentUpon>CustomMapStep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MapMakerSteps\KindClientStep.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\MapMakerSteps\KindClientStep.Designer.cs">
+      <DependentUpon>KindClientStep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MapMakerSteps\OriginalMapStep.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\MapMakerSteps\OriginalMapStep.Designer.cs">
+      <DependentUpon>OriginalMapStep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MessageDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\Utility.cs" />
+    <Compile Include="Core\Network\Packets\Packet.cs" />
+    <Compile Include="Core\Network\Packets\PacketWriter.cs" />
+    <Compile Include="Core\Network\Update.cs" />
+    <Compile Include="GUI\PlacesEditorF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PlacesEditorF.Designer.cs">
+      <DependentUpon>PlacesEditorF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SearcherF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\SearcherF.Designer.cs">
+      <DependentUpon>SearcherF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SettingsLayouts\AboutLayout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\SettingsLayouts\AboutLayout.Designer.cs">
+      <DependentUpon>AboutLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SettingsLayouts\ApplicationLayout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\SettingsLayouts\ApplicationLayout.Designer.cs">
+      <DependentUpon>ApplicationLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SettingsLayouts\DiagnosticLayout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\SettingsLayouts\DiagnosticLayout.Designer.cs">
+      <DependentUpon>DiagnosticLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SettingsLayouts\LabelsLayout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\SettingsLayouts\LabelsLayout.Designer.cs">
+      <DependentUpon>LabelsLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SettingsLayouts\NetworkLayout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\SettingsLayouts\NetworkLayout.Designer.cs">
+      <DependentUpon>NetworkLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SettingsLayouts\ServerCommLayout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\SettingsLayouts\ServerCommLayout.Designer.cs">
+      <DependentUpon>ServerCommLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SettingsLayouts\GeneralLayout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\SettingsLayouts\GeneralLayout.Designer.cs">
+      <DependentUpon>GeneralLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SharedLabelF.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\SharedLabelF.Designer.cs">
+      <DependentUpon>SharedLabelF.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main.cs" />
+    <Compile Include="Native.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GUI\ChatF.resx">
+      <DependentUpon>ChatF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\CoordsConverterF.resx">
+      <DependentUpon>CoordsConverterF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\EnhancedControls\EnhancedCanvas.resx">
+      <DependentUpon>EnhancedCanvas.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MapMakerF.resx">
+      <DependentUpon>MapMakerF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MapMakerSteps\CreationMapsStep.resx">
+      <DependentUpon>CreationMapsStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MapMakerSteps\CustomMapStep.resx">
+      <DependentUpon>CustomMapStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MapMakerSteps\KindClientStep.resx">
+      <DependentUpon>KindClientStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MapMakerSteps\OriginalMapStep.resx">
+      <DependentUpon>OriginalMapStep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MessageDialog.resx">
+      <DependentUpon>MessageDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PlacesEditorF.resx">
+      <DependentUpon>PlacesEditorF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SearcherF.resx">
+      <DependentUpon>SearcherF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SettingsLayouts\AboutLayout.resx">
+      <DependentUpon>AboutLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SettingsLayouts\ApplicationLayout.resx">
+      <DependentUpon>ApplicationLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SettingsLayouts\DiagnosticLayout.resx">
+      <DependentUpon>DiagnosticLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SettingsLayouts\LabelsLayout.resx">
+      <DependentUpon>LabelsLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SettingsLayouts\NetworkLayout.resx">
+      <DependentUpon>NetworkLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SettingsLayouts\ServerCommLayout.resx">
+      <DependentUpon>ServerCommLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SettingsLayouts\GeneralLayout.resx">
+      <DependentUpon>GeneralLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SharedLabelF.resx">
+      <DependentUpon>SharedLabelF.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.manifest" />
+    <None Include="libs\MapWindow.lua" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 e x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="enhancedmapicon.ico" />
+    <Content Include="libs\Aga.Controls.dll" />
+    <Content Include="libs\Files\Definitions\ARCHERSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\ARMAMENTSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\ARMOURERSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\ARMS.txt" />
+    <Content Include="libs\Files\Definitions\ASSASINSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\BAKER.txt" />
+    <Content Include="libs\Files\Definitions\BANK.txt" />
+    <Content Include="libs\Files\Definitions\BARBERSHOP.txt" />
+    <Content Include="libs\Files\Definitions\BARD.txt" />
+    <Content Include="libs\Files\Definitions\BARDICGUILD.txt" />
+    <Content Include="libs\Files\Definitions\BEEKEEPER.txt" />
+    <Content Include="libs\Files\Definitions\BLACKSMITH.txt" />
+    <Content Include="libs\Files\Definitions\BLACKSMITHSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\BODYOFWATER.txt" />
+    <Content Include="libs\Files\Definitions\BOWYER.txt" />
+    <Content Include="libs\Files\Definitions\BRASS.txt" />
+    <Content Include="libs\Files\Definitions\BRIDGE.txt" />
+    <Content Include="libs\Files\Definitions\BUTCHER.txt" />
+    <Content Include="libs\Files\Definitions\CARPENTER.txt" />
+    <Content Include="libs\Files\Definitions\CASTLE.txt" />
+    <Content Include="libs\Files\Definitions\CAVALRYGUILD.txt" />
+    <Content Include="libs\Files\Definitions\COOKSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\CUSTOMS.txt" />
+    <Content Include="libs\Files\Definitions\DOCKS.txt" />
+    <Content Include="libs\Files\Definitions\DUNGEON.txt" />
+    <Content Include="libs\Files\Definitions\EXIT.txt" />
+    <Content Include="libs\Files\Definitions\FIGHTERSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\FISHERMANSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\FLETCHER.txt" />
+    <Content Include="libs\Files\Definitions\GATE.txt" />
+    <Content Include="libs\Files\Definitions\GEM.txt" />
+    <Content Include="libs\Files\Definitions\GRAVEYARD.txt" />
+    <Content Include="libs\Files\Definitions\GUARDLINES.txt" />
+    <Content Include="libs\Files\Definitions\GUILD.txt" />
+    <Content Include="libs\Files\Definitions\HEALER.txt" />
+    <Content Include="libs\Files\Definitions\HEALERSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\HOUSES.txt" />
+    <Content Include="libs\Files\Definitions\ILLUSIONISTSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\INN.txt" />
+    <Content Include="libs\Files\Definitions\INTEREST.txt" />
+    <Content Include="libs\Files\Definitions\ISLAND.txt" />
+    <Content Include="libs\Files\Definitions\JEWELER.txt" />
+    <Content Include="libs\Files\Definitions\KEEP.txt" />
+    <Content Include="libs\Files\Definitions\LANDMARK.txt" />
+    <Content Include="libs\Files\Definitions\LARGEHOUSE.txt" />
+    <Content Include="libs\Files\Definitions\LGBOATE.txt" />
+    <Content Include="libs\Files\Definitions\LGBOATN.txt" />
+    <Content Include="libs\Files\Definitions\LGBOATS.txt" />
+    <Content Include="libs\Files\Definitions\LGBOATW.txt" />
+    <Content Include="libs\Files\Definitions\LIBRARY.txt" />
+    <Content Include="libs\Files\Definitions\LOGCABIN.txt" />
+    <Content Include="libs\Files\Definitions\MAGESGUILD.txt" />
+    <Content Include="libs\Files\Definitions\MAGIC.txt" />
+    <Content Include="libs\Files\Definitions\MARKET.txt" />
+    <Content Include="libs\Files\Definitions\MARPATIO.txt" />
+    <Content Include="libs\Files\Definitions\MDBOATE.txt" />
+    <Content Include="libs\Files\Definitions\MDBOATN.txt" />
+    <Content Include="libs\Files\Definitions\MDBOATS.txt" />
+    <Content Include="libs\Files\Definitions\MDBOATW.txt" />
+    <Content Include="libs\Files\Definitions\MERCHANTSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\MINERSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\MOONGATE.txt" />
+    <Content Include="libs\Files\Definitions\OTHER.txt" />
+    <Content Include="libs\Files\Definitions\PAINTER.txt" />
+    <Content Include="libs\Files\Definitions\PATIO.txt" />
+    <Content Include="libs\Files\Definitions\POINT.txt" />
+    <Content Include="libs\Files\Definitions\PROVISIONERSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\PROVISIONS.txt" />
+    <Content Include="libs\Files\Definitions\REAGENTS.txt" />
+    <Content Include="libs\Files\Definitions\ROGUESGUILD.txt" />
+    <Content Include="libs\Files\Definitions\RUINS.txt" />
+    <Content Include="libs\Files\Definitions\SAILORSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\SCENIC.txt" />
+    <Content Include="libs\Files\Definitions\SHIP.txt" />
+    <Content Include="libs\Files\Definitions\SHIPS.txt" />
+    <Content Include="libs\Files\Definitions\SHIPWRIGHTSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\SHRINE.txt" />
+    <Content Include="libs\Files\Definitions\SMALLHOUSE.txt" />
+    <Content Include="libs\Files\Definitions\SMBOATE.txt" />
+    <Content Include="libs\Files\Definitions\SMBOATN.txt" />
+    <Content Include="libs\Files\Definitions\SMBOATS.txt" />
+    <Content Include="libs\Files\Definitions\SMBOATW.txt" />
+    <Content Include="libs\Files\Definitions\SMLMSHOP.txt" />
+    <Content Include="libs\Files\Definitions\SMLSSHOP.txt" />
+    <Content Include="libs\Files\Definitions\SMLTOWER.txt" />
+    <Content Include="libs\Files\Definitions\SNDPATIO.txt" />
+    <Content Include="libs\Files\Definitions\SORCERERSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\STABLES.txt" />
+    <Content Include="libs\Files\Definitions\STAIRS.txt" />
+    <Content Include="libs\Files\Definitions\TAILOR.txt" />
+    <Content Include="libs\Files\Definitions\TANNER.txt" />
+    <Content Include="libs\Files\Definitions\TAVERN.txt" />
+    <Content Include="libs\Files\Definitions\TELEPORT.txt" />
+    <Content Include="libs\Files\Definitions\TENT.txt" />
+    <Content Include="libs\Files\Definitions\TERRAIN.txt" />
+    <Content Include="libs\Files\Definitions\THEATRE.txt" />
+    <Content Include="libs\Files\Definitions\THIEVESGUILD.txt" />
+    <Content Include="libs\Files\Definitions\TINKER.txt" />
+    <Content Include="libs\Files\Definitions\TINKERSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\TOWER.txt" />
+    <Content Include="libs\Files\Definitions\TOWN.txt" />
+    <Content Include="libs\Files\Definitions\TRADERSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\TREASURE.txt" />
+    <Content Include="libs\Files\Definitions\TWOSTORY.txt" />
+    <Content Include="libs\Files\Definitions\VILLA.txt" />
+    <Content Include="libs\Files\Definitions\WARRIORSGUILD.txt" />
+    <Content Include="libs\Files\Definitions\WEAPONSGUILD.txt" />
+    <Content Include="libs\Files\Icon\ARCHERSGUILD.png" />
+    <Content Include="libs\Files\Icon\ARMAMENTSGUILD.png" />
+    <Content Include="libs\Files\Icon\ARMOURERSGUILD.png" />
+    <Content Include="libs\Files\Icon\ARMS.png" />
+    <Content Include="libs\Files\Icon\ASSASINSGUILD.png" />
+    <Content Include="libs\Files\Icon\BAKER.png" />
+    <Content Include="libs\Files\Icon\BANK.png" />
+    <Content Include="libs\Files\Icon\BARBERSHOP.png" />
+    <Content Include="libs\Files\Icon\BARD.png" />
+    <Content Include="libs\Files\Icon\BARDICGUILD.png" />
+    <Content Include="libs\Files\Icon\BEEKEEPER.png" />
+    <Content Include="libs\Files\Icon\BLACKSMITH.png" />
+    <Content Include="libs\Files\Icon\BLACKSMITHSGUILD.png" />
+    <Content Include="libs\Files\Icon\BODYOFWATER.png" />
+    <Content Include="libs\Files\Icon\BOWYER.png" />
+    <Content Include="libs\Files\Icon\BRASS.png" />
+    <Content Include="libs\Files\Icon\BRIDGE.png" />
+    <Content Include="libs\Files\Icon\BUTCHER.png" />
+    <Content Include="libs\Files\Icon\CARPENTER.png" />
+    <Content Include="libs\Files\Icon\CASTLE.png" />
+    <Content Include="libs\Files\Icon\CAVALRYGUILD.png" />
+    <Content Include="libs\Files\Icon\COOKSGUILD.png" />
+    <Content Include="libs\Files\Icon\CUSTOMS.png" />
+    <Content Include="libs\Files\Icon\DOCKS.png" />
+    <Content Include="libs\Files\Icon\DUNGEON.png" />
+    <Content Include="libs\Files\Icon\EXIT.png" />
+    <Content Include="libs\Files\Icon\FIGHTERSGUILD.png" />
+    <Content Include="libs\Files\Icon\FISHERMANSGUILD.png" />
+    <Content Include="libs\Files\Icon\FLETCHER.png" />
+    <Content Include="libs\Files\Icon\GATE.png" />
+    <Content Include="libs\Files\Icon\GEM.png" />
+    <Content Include="libs\Files\Icon\GRAVEYARD.png" />
+    <Content Include="libs\Files\Icon\GUILD.png" />
+    <Content Include="libs\Files\Icon\HEALER.png" />
+    <Content Include="libs\Files\Icon\HEALERSGUILD.png" />
+    <Content Include="libs\Files\Icon\ILLUSIONISTSGUILD.png" />
+    <Content Include="libs\Files\Icon\INN.png" />
+    <Content Include="libs\Files\Icon\INTEREST.png" />
+    <Content Include="libs\Files\Icon\ISLAND.png" />
+    <Content Include="libs\Files\Icon\JEWELER.png" />
+    <Content Include="libs\Files\Icon\KEEP.png" />
+    <Content Include="libs\Files\Icon\LANDMARK.png" />
+    <Content Include="libs\Files\Icon\LARGEHOUSE.png" />
+    <Content Include="libs\Files\Icon\LGBOATE.png" />
+    <Content Include="libs\Files\Icon\LGBOATN.png" />
+    <Content Include="libs\Files\Icon\LGBOATS.png" />
+    <Content Include="libs\Files\Icon\LGBOATW.png" />
+    <Content Include="libs\Files\Icon\LIBRARY.png" />
+    <Content Include="libs\Files\Icon\LOGCABIN.png" />
+    <Content Include="libs\Files\Icon\MAGESGUILD.png" />
+    <Content Include="libs\Files\Icon\MAGIC.png" />
+    <Content Include="libs\Files\Icon\MARKET.png" />
+    <Content Include="libs\Files\Icon\MARPATIO.png" />
+    <Content Include="libs\Files\Icon\MDBOATE.png" />
+    <Content Include="libs\Files\Icon\MDBOATN.png" />
+    <Content Include="libs\Files\Icon\MDBOATS.png" />
+    <Content Include="libs\Files\Icon\MDBOATW.png" />
+    <Content Include="libs\Files\Icon\MERCHANTSGUILD.png" />
+    <Content Include="libs\Files\Icon\MINERSGUILD.png" />
+    <Content Include="libs\Files\Icon\MOONGATE.png" />
+    <Content Include="libs\Files\Icon\OTHER.png" />
+    <Content Include="libs\Files\Icon\PAINTER.png" />
+    <Content Include="libs\Files\Icon\PATIO.png" />
+    <Content Include="libs\Files\Icon\POINT.png" />
+    <Content Include="libs\Files\Icon\PROVISIONERSGUILD.png" />
+    <Content Include="libs\Files\Icon\PROVISIONS.png" />
+    <Content Include="libs\Files\Icon\REAGENTS.png" />
+    <Content Include="libs\Files\Icon\ROGUESGUILD.png" />
+    <Content Include="libs\Files\Icon\RUINS.png" />
+    <Content Include="libs\Files\Icon\SAILORSGUILD.png" />
+    <Content Include="libs\Files\Icon\SCENIC.png" />
+    <Content Include="libs\Files\Icon\SHIP.png" />
+    <Content Include="libs\Files\Icon\SHIPS.png" />
+    <Content Include="libs\Files\Icon\SHIPWRIGHTSGUILD.png" />
+    <Content Include="libs\Files\Icon\SHRINE.png" />
+    <Content Include="libs\Files\Icon\SMALLHOUSE.png" />
+    <Content Include="libs\Files\Icon\SMBOATE.png" />
+    <Content Include="libs\Files\Icon\SMBOATN.png" />
+    <Content Include="libs\Files\Icon\SMBOATS.png" />
+    <Content Include="libs\Files\Icon\SMBOATW.png" />
+    <Content Include="libs\Files\Icon\SMLMSHOP.png" />
+    <Content Include="libs\Files\Icon\SMLSSHOP.png" />
+    <Content Include="libs\Files\Icon\SMLTOWER.png" />
+    <Content Include="libs\Files\Icon\SNDPATIO.png" />
+    <Content Include="libs\Files\Icon\SORCERERSGUILD.png" />
+    <Content Include="libs\Files\Icon\STABLES.png" />
+    <Content Include="libs\Files\Icon\STAIRS.png" />
+    <Content Include="libs\Files\Icon\TAILOR.png" />
+    <Content Include="libs\Files\Icon\TANNER.png" />
+    <Content Include="libs\Files\Icon\TAVERN.png" />
+    <Content Include="libs\Files\Icon\TELEPORT.png" />
+    <Content Include="libs\Files\Icon\TENT.png" />
+    <Content Include="libs\Files\Icon\TERRAIN.png" />
+    <Content Include="libs\Files\Icon\THEATRE.png" />
+    <Content Include="libs\Files\Icon\THIEVESGUILD.png" />
+    <Content Include="libs\Files\Icon\TINKER.png" />
+    <Content Include="libs\Files\Icon\TINKERSGUILD.png" />
+    <Content Include="libs\Files\Icon\TOWER.png" />
+    <Content Include="libs\Files\Icon\TOWN.png" />
+    <Content Include="libs\Files\Icon\TRADERSGUILD.png" />
+    <Content Include="libs\Files\Icon\TREASURE.png" />
+    <Content Include="libs\Files\Icon\TWOSTORY.png" />
+    <Content Include="libs\Files\Icon\VILLA.png" />
+    <Content Include="libs\Files\Icon\WARRIORSGUILD.png" />
+    <Content Include="libs\Files\Icon\WEAPONSGUILD.png" />
+    <Content Include="libs\System.ValueTuple.dll" />
+    <Content Include="libs\uo.dll" />
+    <None Include="Resources\SHAREDLABEL.png" />
+    <None Include="Resources\unsure.wav" />
+    <None Include="Resources\light.wav" />
+    <None Include="Resources\stairs.wav" />
+    <None Include="Resources\uoenhanced.png" />
+    <None Include="Resources\uoclassic.png" />
+    <None Include="Resources\PayPal.png" />
+    <None Include="Resources\servuo.ico" />
+    <None Include="Resources\if_external-link.png" />
+    <None Include="Resources\mapExNormal.png" />
+    <None Include="Resources\facebook-256.png" />
+    <None Include="Resources\discord.png" />
+    <None Include="Resources\backgroundEM.png" />
+    <None Include="Resources\tombstone.png" />
+    <None Include="Resources\wrong.png" />
+    <None Include="Resources\right.png" />
+    <None Include="Resources\pin.png" />
+    <None Include="Resources\hide.png" />
+    <None Include="Resources\arrow-flat.png" />
+    <None Include="Resources\skull2.png" />
+    <None Include="Resources\refresh-icon.png" />
+    <None Include="Resources\rose.gif" />
+    <None Include="Resources\FinalMarker.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

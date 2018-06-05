@@ -1,0 +1,55 @@
++	Ice	1996	80	7	false
++	Wrong	2042	226	7	false
++	Sorcerers dungeon	556	427	2	false
++	Deceit	4111	429	7	false
++	Exit to Ilshenar	911	451	2	false
++	Sorcerers dungeon	548	454	2	false
++	Ancient (Volcanic) Lair	940	502	2	false
++	Rock dungeon	1788	569	2	false
++	Entrance to Central Area	1236	583	2	false
++	Exit to Ilshenar	1140	593	2	false
++	Entrance to Central Area	710	667	2	false
++	Exodus dungeon	834	779	2	false
++	Serpentine Passage	811	874	2	false
++	spider dungeon	1490	879	2	false
++	Wind	1361	890	7	false
++	spider dungeon	1420	910	2	false
++	Covetous	2499	916	7	false
++	central (Ankh) dungeon	664	929	2	false
++	Spectre (Reg Volom) Dungeon	1363	1032	2	false
++	Despise	1296	1082	7	false
++	Ratman Cave	1030	1154	2	false
++	central (Ankh) dungeon	576	1156	2	false
++	Blood dungeon	1747	1235	2	false
++	Doom	2357	1268	3	false
++	wisp dungeon	652	1301	2	false
++	Lizard passage	314	1329	2	false
++	Lizard passage	226	1336	2	false
++	wisp dungeon (level 3)	904	1362	2	false
++	Elemental Arena	349	1428	2	false
++	Orc Cave	1014	1434	7	false
++	Shame	512	1559	7	false
++	sewer entrance	1492	1641	7	false
++	Ice	5203	2328	7	false
++	Destard	1176	2635	7	false
++	Fire	5757	2909	7	false
++	Terathan Keep	5426	3120	7	false
++	passage to Delucia	1628	3318	7	false
++	passage to Britain	6075	3330	7	false
++	Fire	2922	3402	7	false
++	passage to Trinsic	5138	3665	7	false
++	Khaldun	6009	3775	0	false
++	Hythloth	4722	3814	7	false
++	Khaldun	5882	3819	0	false
++	passage to Trinsic	5150	4063	7	false
++	The Citadel	1350	764	4	false
++	Labyrinth	1734	974	3	false
++	Prism of Light	1225	1098	7	false
++	Twisted Weald	1457	1329	2	false
++	Bedlam	2068	1371	3	false
++	Blighted Grove	590	1637	7	false
++	Sanctuary	769	1647	7	false
++	Painted Caves	1714	2997	1	false
++	Palace of Paroxymus	5576	3020	7	false
++	Yomotsu mines	259	784	4	false
++	Tomb of Kings Entrance	997	3837	5	false

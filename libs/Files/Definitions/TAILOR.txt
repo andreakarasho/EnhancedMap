@@ -1,0 +1,25 @@
++	Windy Clothes	5203	86	7	false
++	a tailor	1600	552	2	false
++	SkisInLem	896	610	2	false
++	The Spinning Wheel	2961	621	7	false
++	The Spinning Wheel	2840	885	7	false
++	Scholar's Cut	4458	1060	7	false
++	Tailor of the Isle	3774	1265	7	false
++	Darkweave	2074	1334	3	false
++	Lord British's Tailor	1385	1593	7	false
++	The Right Fit	1547	1659	7	false
++	The Lord's Clothiers	1467	1686	7	false
++	Shear Pleasure	650	2180	7	false
++	Stitchin' Time	3666	2235	7	false
++	A Stitch In Time	3667	2586	0	false
++	Adventurer's Clothing	1981	2838	7	false
++	Papua Tailor	5754	3273	7	false
++	Silver Serpent Tailors	2881	3503	7	false
++	Adventurer's Needle	1359	3781	7	false
++	Jhelom's Fine Tailoring	1455	4006	7	false
++	Delucia Tailor	5234	4025	7	false
++	Clothier's Colors	981	527	3	false
++	Finely Woven	3496	2552	1	false
++	A Stitch in Time Tailor Shop	3687	2477	1	false
++	Suteki Na Craftworks	733	1220	4	false
++	Tailor	806	3399	5	false

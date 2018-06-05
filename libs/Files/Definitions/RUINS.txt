@@ -1,0 +1,37 @@
++	Ruins	2582	1117	0	false
++	Ruins	569	1310	0	false
++	Ruins	758	1403	0	false
++	Ruins	850	1546	0	false
++	Ruins	475	1655	0	false
++	Ruins	1824	2415	0	false
++	Ruins	4459	3106	0	false
++	Ruins	1055	3137	0	false
++	Ruins	1846	3203	0	false
++	HauntedRuins	5388	3230	0	false
++	Ruins	2178	3367	0	false
++	Ruins	1608	3372	0	false
++	Ruins	2023	3382	0	false
++	Ruins	1928	3420	0	false
++	Ruins	1747	3439	0	false
++	Grimswind Ruins	2192	327	3	false
++	undead camp	856	463	2	false
++	Ruined Villa	875	524	2	false
++	Ancient Citadel	1516	542	2	false
++	bandit town	512	546	2	false
++	Ruined Castle	1084	651	2	false
++	ruins	337	864	2	false
++	ruined tower	653	933	2	false
++	BetLem Reg	1249	955	2	false
++	abandoned building	1586	1004	2	false
++	Lakeshire/Mireg	1200	1127	2	false
++	undead fort	360	1140	2	false
++	ratman village	1069	1151	2	false
++	lizard man camp	292	1356	2	false
++	abandoned tower	412	1363	2	false
++	Orc Fort	2176	1372	7	false
++	Orc Fort	632	1484	7	false
++	Forgotten Pyramid	1825	1799	3	false
++	Ophidian Lair	5765	2618	7	false
++	Orc Fort	5211	3611	7	false
++	City of the Dead	5219	3645	7	false
++	Old Haven	3650	2560	1	false

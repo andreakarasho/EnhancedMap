@@ -1,0 +1,29 @@
++	Valor	528	216	2	false
++	Chaos	1721	218	2	false
++	Compassion	1215	467	2	false
++	Luna	1015	527	3	false
++	Minoc Moongate	2702	692	7	false
++	Honor	744	724	2	false
++	Justice	987	1011	2	false
++	Humility	281	1016	2	false
++	Moonglow Moongate	4468	1284	7	false
++	Sacrifice	1174	1286	2	false
++	Spirituality	1532	1340	2	false
++	Honesty	722	1366	2	false
++	Umbra	1997	1386	3	false
++	StandardMoongate	5153	1760	0	false
++	Britain Moongate	1336	1997	7	false
++	Skara Brae Moongate	645	2068	7	false
++	Magincia Moongate	3564	2140	7	false
++	Buccaneer's Den Moongate	2711	2234	0	false
++	Haven Moongate	3661	2590	1	false
++	New Haven moongate	3449	2678	1	false
++	Haven Moongate	3763	2771	1	false
++	Trinsic Moongate	1829	2949	7	false
++	Jhelom Moongate	1500	3772	7	false
++	HomareJima moongate	270	628	4	false
++	IsamuJima Moongate	1169	998	4	false
++	MakotoJima moongate	802	1204	4	false
++	Royal City Moongate	855	3526	5	false
++	Holy City Moongate	928	3989	5	false
++	Yew Moongate	771	754	7	false

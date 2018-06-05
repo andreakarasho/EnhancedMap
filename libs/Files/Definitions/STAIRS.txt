@@ -1,0 +1,80 @@
++	Doom Entrance	380	134	3	false
++		5170	1569	0	false
++	up to Umbra	121	1682	3	false
++	up	5515	11	7	false
++	up	5875	19	7	false
++	down	5491	20	7	false
++	up	243	26	2	false
++	down	370	30	2	false
++	up	2188	33	2	false
++	down	359	41	2	false
++	down	285	66	2	false
++	up	285	74	2	false
++	up	154	89	2	false
++	up	6057	89	7	false
++	down	5905	97	7	false
++	down	5604	102	7	false
++	down	266	129	2	false
++	up	133	130	2	false
++	up	273	141	2	false
++	up	6081	145	7	false
++	down to ice demon lair	5707	146	7	false
++	up	5514	147	7	false
++	down	5507	162	7	false
++	down	5920	169	7	false
++	up	5973	169	7	false
++	down	5538	170	7	false
++	up	5513	175	7	false
++	down	6039	193	7	false
++	down	5850	237	7	false
++	down	2188	293	2	false
++	up	5701	305	7	false
++	up	5832	325	7	false
++	up	5305	530	7	false
++	up	5690	569	7	false
++	down	5503	570	7	false
++	down	5346	578	7	false
++	down	5216	586	7	false
++	down	5829	593	7	false
++	up	5137	649	7	false
++	up	5305	651	7	false
++	up	5524	673	7	false
++	down	5386	756	7	false
++	down	5219	761	7	false
++	up	5143	799	7	false
++	down	5151	809	7	false
++	up	5410	859	7	false
++	down	5130	908	7	false
++	up	5135	985	7	false
++	down	5364	1289	7	false
++	up	5701	1318	7	false
++	down	5787	1337	7	false
++	up	5331	1379	7	false
++	down	956	1427	2	false
++	up	870	1435	2	false
++	down	842	1436	2	false
++	up	953	1443	2	false
++	down	894	1451	2	false
++	down	947	1466	2	false
++	down	692	1491	2	false
++	up (wisp dungeon)	713	1491	2	false
++	up	877	1491	2	false
++	down (mage dungeon)	724	1507	2	false
++	up	1250	1510	2	false
++	down	1268	1510	2	false
++	up	810	1548	2	false
++	down	836	1551	2	false
++	down	395	1586	2	false
++	up	5552	1805	7	false
++	up	5469	1806	7	false
++	down to undead prison	5557	1827	7	false
++	down to dragon's lair	5596	1841	7	false
++	down	5133	1946	7	false
++	up	5273	2042	7	false
++	up	155	1612	3	false
++	to Crypt	84	1673	3	false
++	Stairs	558	882	5	false
++	Exit to Upper Level	523	924	5	false
++	Spiral into The Abyss	1133	1078	5	false
++	Stairs	701	3334	5	false
++	Stairs	821	3410	5	false

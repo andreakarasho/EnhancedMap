@@ -1,0 +1,28 @@
++	LostHopeBay	2340	322	0	false
++	Arrow'sPointBay	1496	472	0	false
++	LochLake	2154	1054	0	false
++	BrittanyBay	1584	1830	0	false
++	SaltLake	3564	2675	0	false
++	HartLake	1728	3200	0	false
++	Lake Mortis	430	288	3	false
++	Pormir Felwis	495	370	2	false
++	Termir Flam "The Lake of Fire"	1620	420	2	false
++	Pormir Harm	706	469	2	false
++	Oasis	993	620	2	false
++	Pormir Priin "River of Unity"	1128	816	2	false
++	Lenmir Antinmolas	1688	840	2	false
++	Termir Ilshen "Ilshen's Lake"	1316	1120	2	false
++	Gravewater Lake	1596	1656	3	false
++	Sok' Gah	5789	2430	7	false
++	Sea of Harmony	5937	2660	7	false
++	J'Fer Sok	5274	2883	7	false
++	Shallow Sea	5902	3106	7	false
++	The Ru	5360	3396	7	false
++	The Gentle River	5804	3468	7	false
++	Cibilo Creek	5260	3737	7	false
++	The Gentle River	5838	3766	7	false
++	The Ru	5457	3831	7	false
++	Tortoise Lagoon	5771	4050	7	false
++	Homare's Eye	475	384	4	false
++	Lotus Lakes	1042	827	4	false
++	Lake Kappa	1069	949	4	false

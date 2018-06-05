@@ -1,0 +1,13 @@
++	Vesper Cemetery	2753	867	7	false
++	graveyard	327	889	2	false
++	cemetery	2437	1104	7	false
++	Yew Cemetery	722	1117	7	false
++	Nujel'm Cemetery	3529	1141	7	false
++	Moonglow Cemetery	4541	1319	7	false
++	Britain Cemetery	1371	1482	7	false
++	cemetery passage	5696	3660	7	false
++	Jhelom Cemetery	1283	3731	7	false
++	graveyard	131	1331	2	false
++	graveyard	5828	1474	7	false
++	graveyard	3404	2653	1	false
++	Graveyard	3649	2859	1	false

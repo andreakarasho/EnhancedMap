@@ -1,0 +1,82 @@
++	CrescentMountain	2500	42	0	false
++	IceMountain	1970	80	0	false
++	HighSteppes	2560	142	0	false
++	PrisonPeak	1942	264	0	false
++	FrozenMountains	4024	364	0	false
++	WindemereWood	3116	440	0	false
++	MountKendall	2576	448	0	false
++	BloodyPlains	2160	834	0	false
++	DesertofCompassion	1928	864	0	false
++	MountainsofAvarice	2469	879	0	false
++	DeepForest	900	914	0	false
++	ValleyofChaos	1536	992	0	false
++	BogofDesolation	2034	1004	0	false
++	Snake'sPass	1748	1022	0	false
++	ForestofSamlethe	1556	1052	0	false
++	Serpent'sSpineMountains	1176	1228	0	false
++	RatValley	1028	1368	0	false
++	GroveofLove	805	1463	0	false
++	PeaksofDisgrace	568	1540	0	false
++	CrimsonPlains	1250	1734	0	false
++	Spiritwood	1372	2294	0	false
++	FensoftheDead	1948	2320	0	false
++	Reb'GabHaras	5706	2534	0	false
++	WyvernPoint	5164	2606	0	false
++	DragonhameMountain	1336	2636	0	false
++	HiddenValley	1673	2968	0	false
++	SouthernJungle	1528	3068	0	false
++	SolitaryMountain	4540	3192	0	false
++	Northpeak	1566	3212	0	false
++	Southpeak	1616	3296	0	false
++	SouthernJungle	1848	3332	0	false
++	CapeofHeroes	2130	3616	0	false
++	RockRidge	4652	3656	0	false
++	LavaPool	4484	3732	0	false
++	CodexMountain	4740	3736	0	false
++	Pass of Karnaugh	1028	272	2	false
++	Northern Crags	1580	384	3	false
++	Alexandrella's Bowl	1460	448	2	false
++	Crystal Fens	1388	616	3	false
++	Desert	966	637	2	false
++	glacier	1352	664	2	false
++	Swamp	1124	739	2	false
++	lava vent	480	882	2	false
++	Divide of the Abyss	1372	892	3	false
++	spider wood	1447	964	2	false
++	Corrupted Foresets	2172	1144	3	false
++	Crumbling Mountains	736	1180	3	false
++	Nox Tereg	420	1196	2	false
++	dead forest	429	1433	2	false
++	Elemental Canyon	312	1442	2	false
++	Broken Mountains	1148	1476	3	false
++	Dry Highlands	2128	1668	3	false
++	Kos Heb	5382	2343	7	false
++	Kos Heb	5954	2363	7	false
++	oasis	5543	2618	7	false
++	Y'Nah Teb	5604	2742	7	false
++	Cyclops Valley	5139	2903	7	false
++	Sak Teb	5724	2923	7	false
++	Terra Sanctum	6028	2933	7	false
++	Beggars Gorge	5542	2999	7	false
++	Damwin Thicket	5265	3270	7	false
++	Hoppers Bog	5978	3447	7	false
++	Serpents Cousins	5470	3515	7	false
++	fallen rocks, no passage	129	11	2	false
++	Mountain Pass	3690	2760	1	false
++	Winter Spur	933	107	4	false
++	Beetlescape	798	245	4	false
++	Yamandon Point	1095	397	4	false
++	Sho Toh	658	410	4	false
++	Tsuki Garden	1165	515	4	false
++	Kitsune Woods	545	519	4	false
++	Field of Echoes	165	628	4	false
++	Hiryu Forest	923	654	4	false
++	Mount Sho	1162	684	4	false
++	Lightning Watch	376	812	4	false
++	Hotaka Plains	1211	857	4	false
++	Mount Hakonu	1386	920	4	false
++	The Waste	665	926	4	false
++	Phoenix Mountains	659	1071	4	false
++	Crane Marsh	229	1080	4	false
++	Storm Point	1199	1097	4	false
++	CandelabraPoint	1188	136	0	false

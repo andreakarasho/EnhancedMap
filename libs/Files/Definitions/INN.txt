@@ -1,0 +1,35 @@
++	Seeker's Inn	5165	30	7	false
++	bunkhouse	5310	34	7	false
++	Windy Inn	5218	175	7	false
++	Paladin's Stopover	1005	522	3	false
++	an inn	1620	554	2	false
++	The Deuce's Vinculum Inn	665	665	2	false
++	TerZu	840	707	2	false
++	Abbey Innkeeper	610	810	7	false
++	Vesper Youth Hostel	2962	885	7	false
++	The Ironwood Inn	2782	969	7	false
++	Twin Oaks Tavern	1566	1049	2	false
++	Moonglow Student Hostel	4484	1064	7	false
++	Mistas Regsit	774	1144	2	false
++	The Scholar's Inn	4401	1165	7	false
++	Restful Slumber	3732	1306	7	false
++	Wailing Banshee Inn	2039	1317	3	false
++	The North Side Inn	1458	1525	7	false
++	The Wayfarer's Inn	1585	1591	7	false
++	Sweet Dreams	1493	1619	7	false
++	The Peg Leg Inn	2715	2098	7	false
++	The Stag and Lion	3695	2160	7	false
++	The Shattered Skull	554	2178	7	false
++	The Falconer's Inn	595	2248	7	false
++	The Bountiful Harvest	3673	2614	0	false
++	The Albatross	3672	2654	0	false
++	The Traveler's Inn	1844	2735	7	false
++	The Rusty Anchor	2033	2801	7	false
++	The Just Inn	5775	3161	7	false
++	The Broken Arrow Inn	2967	3408	7	false
++	The Morning Star Inn	1360	3815	7	false
++	The Barely Inn	5197	4060	7	false
++	Gentle Rest	3506	2518	1	false
++	The Bountiful Harvest	3671	2615	1	false
++	Miyabi Inn	680	1218	4	false
++	Ter Mur Inn	740	3473	5	false

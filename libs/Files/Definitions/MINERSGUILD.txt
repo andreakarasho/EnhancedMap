@@ -1,0 +1,6 @@
++	The Golden Pick Axe	2505	432	7	false
++	The Matewan	2455	487	7	false
++	The Ore of Vesper	2855	734	7	false
++	The Miner's Guild	1417	1578	7	false
++	Magincia Miner's Guild	3665	2140	7	false
++	Miners	3754	2704	1	false

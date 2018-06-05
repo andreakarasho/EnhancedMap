@@ -1,0 +1,12 @@
++	The Learned Mage	5238	144	7	false
++	Seat of Knowledge	5243	179	7	false
++	Librum	869	625	2	false
++	Librum	868	657	2	false
++	Britain Public Library	1409	1590	7	false
++	The First Library of Britain	1494	1715	7	false
++	Ocllo Public Library	3612	2466	0	false
++	Paladin's Library	2003	2726	7	false
++	Jhelom Library	1387	3771	7	false
++	Haven Public Library	3615	2476	1	false
++	Rokuon Cultural Center and Shop	677	1278	4	false
++	Scribe	775	3468	5	false

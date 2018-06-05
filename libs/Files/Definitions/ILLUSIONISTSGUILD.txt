@@ -1,0 +1,5 @@
++	Masters of Illusion	4626	1207	7	false
++	Bushido dojo	3503	2423	1	false
++	Necromancer Tower	3555	2457	1	false
++	Ninjitsu dojo	3421	2519	1	false
++	The Bottled Imp	3461	2566	1	false

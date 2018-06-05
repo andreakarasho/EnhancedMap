@@ -1,0 +1,8 @@
++	Magical Supplies	5215	117	7	false
++	The Magician's Friend	2992	844	7	false
++	Moonglow Reagent Shop	4416	1112	7	false
++	Herbal Splendor	4416	1133	7	false
++	Ethereal Goods	1498	1659	7	false
++	The Reagent Shop	5714	3202	7	false
++	Britainian Herbs	3013	3353	7	false
++	Alchemist	775	3476	5	false

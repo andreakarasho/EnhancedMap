@@ -1,0 +1,3 @@
++	The Ranger's Tool	2861	812	7	false
++	Nujel'm Bowry	3546	1194	7	false
++	Quality Fletching	1470	1578	7	false

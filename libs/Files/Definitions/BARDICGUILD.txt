@@ -1,0 +1,3 @@
++	Bardic Guild	3740	1197	7	false
++	The Bardic Guild	3665	2531	0	false
++	Bardic Guild	3666	2531	1	false

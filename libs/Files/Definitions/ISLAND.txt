@@ -1,0 +1,28 @@
++	ThreeTileIsland	1386	362	0	false
++	DotIsland	1504	365	0	false
++	DaggerIsle	4112	532	0	false
++	VerityIsle	4524	1216	0	false
++	OcarinaIsle	2049	1952	0	false
++	EiffelIsland	1704	1996	0	false
++	BlancheIsland	2188	2000	0	false
++	Iver'sRounding	452	2060	0	false
++	MarbleIsland	1916	2092	0	false
++	HorseshoeIsland	2100	2108	0	false
++	SkullIsland	2953	2168	0	false
++	PaladinIsle	2003	2746	0	false
++	DragonIsle	1081	3155	0	false
++	BaldIsland	2355	3431	0	false
++	IsleoftheAvatar	4618	3458	0	false
++	NorthJhelomIsland	1140	3524	0	false
++	IsleofDeeds	2962	3537	0	false
++	TempleIsland	2461	3583	0	false
++	ValorianIsles	1432	3670	0	false
++	AmoebaIsland	2145	3961	0	false
++	ValorIsland	2481	3967	0	false
++	SouthJhelomIsland	1440	3998	0	false
++	Isle of the Divide	1672	944	3	false
++	Barrier Isle	2122	2755	7	false
++	Revenant Jima	351	253	4	false
++	HomareJima	335	588	4	false
++	IsamuJima	1094	592	4	false
++	MakotoJima	730	1124	4	false

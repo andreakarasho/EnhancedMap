@@ -1,0 +1,51 @@
++	Hythloth	5904	16	7	false
++	Sorcerers dungeon	427	112	2	false
++	Shame	5396	129	7	false
++	Ice (LL)	5875	147	7	false
++	to surface	5191	152	7	false
++	Ice (B)	5882	243	7	false
++	Rock dungeon	2188	319	2	false
++	Despise	5588	632	7	false
++	Wrong	5825	632	7	false
++	Deceit	5188	638	7	false
++	Ilshenar Central Area	84	750	2	false
++	Blood dungeon	2114	830	2	false
++	spider dungeon	1787	993	2	false
++	Destard	5244	1007	7	false
++	Etherial Tombs	1982	1106	2	false
++	Elemental Arena	20	1197	2	false
++	central (Ankh) dungeon	3	1267	2	false
++	to City of the Dead	6026	1344	7	false
++	to Delucia	6004	1379	7	false
++	to Trinsic forest	5899	1410	7	false
++	Fire (LL)	5792	1415	7	false
++	Fire (B)	5687	1424	7	false
++	to Hoppers Bog	6141	1430	7	false
++	central (Ankh) dungeon	155	1474	2	false
++	mushroom caves	1478	1495	2	false
++	to Britain	6031	1500	7	false
++	cyclopse dungeon	1014	1507	2	false
++	Ratman Cave	1348	1510	2	false
++	central (Ankh) dungeon	533	1532	2	false
++	Terathan Keep	5340	1599	7	false
++	Covetous	5456	1863	7	false
++	the death trap	6044	226	7	false
++	in	2545	853	7	false
++	out	2456	859	7	false
++	sw dungeon	10	872	2	false
++	out	2421	884	7	false
++	spider dungeon (spider shrine)	1862	982	2	false
++	Khaldun (back door)	5402	1289	0	false
++	Khaldun (main)	5573	1300	0	false
++	central (Ankh) dungeon (serpentine passage)	80	1365	2	false
++	central (Ankh) dungeon (elemental arena)	11	1521	2	false
++	wisp dungeon (ilshenar)	628	1527	2	false
++	Lizard passage (ancient wyrm lair)	264	1583	2	false
++	Lizard passage (lizard man camp)	328	1592	2	false
++	out	5579	1927	7	false
++	in	5394	1958	7	false
++	out	5615	1997	7	false
++	Orc Cave (B)	5137	2020	7	false
++	in	5389	2025	7	false
++	Tomb of Kings Exit	946	69	5	false
++	in	2385	837	7	false

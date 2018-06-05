@@ -1,0 +1,29 @@
++	Mage's Things	5154	97	7	false
++	Nix the Variety Dealer	491	371	3	false
++	The Old Miners' Supplies	2453	425	7	false
++	Open Market	994	510	3	false
++	a provisioner	1598	539	2	false
++	The Survival Shop	2532	548	7	false
++	BenInLem	824	602	2	false
++	The Adventurer's Supplies	2992	638	7	false
++	BenInLem	826	679	2	false
++	The Adventurer's Friend	535	867	7	false
++	The Scholar's Goods	4417	1064	7	false
++	The Farmer's Market	2216	1192	7	false
++	sheep farm	1318	1328	2	false
++	Gravedigger's Aparatus	2016	1328	3	false
++	Britain's Premier Provisioners and Fish Shoppe	1469	1668	7	false
++	Profuse Provisions	1602	1712	7	false
++	Sundry Supplies	578	2227	7	false
++	Pirate's Provisioners	2735	2254	7	false
++	Last Chance Provisioners	3636	2565	0	false
++	Britannia Provisions	1850	2796	7	false
++	Red's Curious Goods	1852	2831	7	false
++	Adventure Outfitters	5737	3262	7	false
++	Supplies	3008	3389	7	false
++	Needful Things	1444	3794	7	false
++	The Supply Depot	5219	4012	7	false
++	Bag of Many Things	3508	2553	1	false
++	Last Chance Provisioners	3673	2595	1	false
++	Provisioner	734	1282	4	false
++	Provisioner	798	3493	5	false

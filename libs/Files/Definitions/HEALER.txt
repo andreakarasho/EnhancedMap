@@ -1,0 +1,35 @@
++	Wind Healer	5263	129	7	false
++		682	297	2	false
++	The Healer Shop	375	379	3	false
++	healer's hut	1407	428	2	false
++	healer's hut	284	536	2	false
++		575	537	2	false
++	healer's hut	1235	543	2	false
++	healer's hut	1628	548	2	false
++	InManiLem	872	586	2	false
++	healer's hut	1518	619	2	false
++	Healer of Vesper	2920	856	7	false
++	a healing temple	1093	955	2	false
++	Healer of Yew	532	958	7	false
++	etherial warrior castle healer	1364	1051	2	false
++	Deep Forest Healing	647	1087	7	false
++	Moonglow Healer	4392	1089	7	false
++	The Healing Hand	2245	1231	7	false
++	Bloodletter's Guild	2084	1372	3	false
++	resurrection tree	369	1432	2	false
++	Healer of Britain	1472	1607	7	false
++	Healer of Buccaneer's Den	2709	2130	7	false
++	Healer of Skara Brae	620	2218	7	false
++	Healer of Magincia	3687	2227	7	false
++	Healer of Ocllo	3629	2608	0	false
++	Trinsic Healer	1911	2805	7	false
++	The Healing Hand	5737	3222	7	false
++	Serpent's Hold Healer	2997	3428	7	false
++	Jhelom Healer	1416	3779	7	false
++	a Healer	5191	3989	7	false
++	Healers of New Haven	3463	2558	1	false
++	The Healers of Haven	3665	2581	1	false
++	Satori Healing Garden	781	1225	4	false
++	Healer	784	3493	5	false
++	Healer	1017	3910	5	false
++	The Healing Hand	2577	599	7	false

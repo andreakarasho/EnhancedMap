@@ -1,0 +1,8 @@
++	The New World Order	2482	428	7	false
++	The Champion's of Light	2841	907	7	false
++	The Warriors' Guild	1341	1733	7	false
++	Rangers Cabin	3740	2692	1	false
++	The Brotherhood of Trinsic	1939	2739	7	false
++	Trinsic Training Hall	2019	2748	7	false
++	Serpent Warriors	3031	3350	7	false
++	The Warriors' Guild	3058	3400	7	false

@@ -1,0 +1,12 @@
++	Gears and Gadgets	2461	457	7	false
++	a tinker	1253	588	2	false
++	AtriBenInAilem	766	641	2	false
++	The Gadget's Corner	2899	790	7	false
++	The TicToc Shop	3720	2126	7	false
++	Tinker's Paradise	5726	3243	7	false
++	Tinker of the Isle	2940	3500	7	false
++	Gadgets and Things	1404	3805	7	false
++	Springs N Things	3458	2526	1	false
++	Haven Clockworks and Tinker Shop	3667	2506	1	false
++	Tinker	820	3440	5	false
++	Goodscrafter	977	3910	5	false

@@ -1,0 +1,28 @@
++	Wind Bank	5346	74	7	false
++	Luna Bank	996	519	3	false
++	Bank of Minoc	2503	552	7	false
++	a bank	1226	554	2	false
++	a bank	1610	556	2	false
++	AtriAur	855	603	2	false
++	AtriAur	854	680	2	false
++	The Mint of Vesper	2881	684	7	false
++	Abbey Banker	652	820	7	false
++	First Bank of Moonglow and Tinker's Guild	4471	1156	7	false
++	Bank of Nujel'm	3764	1317	7	false
++	Umbra Bank	2048	1345	3	false
++	East Britain Bank	1655	1606	7	false
++	The First Bank of Britain	1425	1690	7	false
++	Bank of Skara Brae	587	2146	7	false
++	Bank of Magincia	3734	2149	7	false
++	A Place Fer Yer Stuff	2731	2192	7	false
++	Bank of Ocllo	3695	2511	0	false
++	Trinsic Royal Bank	1897	2684	7	false
++	Bank of Britannia Trinsic Branch	1813	2825	7	false
++	Ye Olde Loan and Savings	5669	3131	7	false
++	Serpent's Hold Bank	2880	3472	7	false
++	Jhelom Bank and Jeweler	1317	3773	7	false
++	Ye Olde Eleventh Bank	5275	3977	7	false
++	New Haven Bank	3486	2571	1	false
++	The Second Bank of Haven	3620	2617	1	false
++	Bank of Zento	737	1255	4	false
++	Royal Bank	842	3440	5	false

@@ -1,0 +1,3 @@
++	The Colored Canvass	2906	710	7	false
++	Academy of Arts	4525	1060	7	false
++	Paint and More	3638	2499	0	false

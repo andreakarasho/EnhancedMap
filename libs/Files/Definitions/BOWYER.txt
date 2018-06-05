@@ -1,0 +1,6 @@
++	The Sturdy Bow	564	968	7	false
++	Great Oak Bowyer	624	1147	7	false
++	Bloody Bowman	590	2205	7	false
++	Silver Serpent Bows	3054	3369	7	false
++	Archers	3745	2585	1	false
++	Kagome Bowyer	785	1301	4	false

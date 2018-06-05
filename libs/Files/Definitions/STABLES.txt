@@ -1,0 +1,18 @@
++	Stables	2526	375	7	false
++	animal pen	1388	428	2	false
++	animal pen	1225	563	2	false
++	the stables	1499	619	2	false
++	Critter Pens	1995	1318	3	false
++	The Bucking Horse Stables	1510	1543	7	false
++	The Stables	1385	1658	7	false
++	Sosarian Steeds	1296	1759	7	false
++	Beasts of Burden	571	2119	7	false
++	Trinsic Stablery	1822	2739	7	false
++	First Trinsic Stablery	2010	2807	7	false
++	Southside Stables	5671	3287	7	false
++	Serpent's Hold Stablery	3036	3464	7	false
++	Serpents Hold Stablery	2905	3517	7	false
++	Delucia Stable	5297	4007	7	false
++	Bit and Bridle	3531	2576	1	false
++	Yume Stables	789	1282	4	false
++	Ter Mur Stables	852	3408	5	false
