@@ -196,6 +196,8 @@ namespace EnhancedMap.Core
             { "chatH", -1 },
             { "zoomIndex", 4 },
 
+            { "chatfontsize", 10 },
+
             // diagnostic
             { "autoscroll", true },
 

@@ -57,7 +57,7 @@ namespace EnhancedMap.GUI
 
 
             this.FormClosing += (sender, e) => { e.Cancel = true; this.Hide(); };
-            richTextBoxChat.Font = textBoxWriteMsg.Font = new Font(Font.Name, 9, FontStyle.Regular);
+            richTextBoxChat.Font = textBoxWriteMsg.Font = new Font(Font.Name, Global.SettingsCollection["chatfontsize"].ToInt(), FontStyle.Regular);
             textBoxWriteMsg.KeyDown += (sender, e) =>
             {
                 Keys k = e.KeyCode;
@@ -146,6 +146,12 @@ namespace EnhancedMap.GUI
                         s.ScrollToCaret();
                 }
             });
+        }
+
+        public void ChangeFontSize()
+        {
+             richTextBoxChat.Font = textBoxWriteMsg.Font = new Font(richTextBoxChat.Font.Name, Global.SettingsCollection["chatfontsize"].ToInt(), FontStyle.Regular);
+             richTextBoxChat.Clear();
         }
 
         private bool LastLineVisible(RichTextBox textbox)

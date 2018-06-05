@@ -52,9 +52,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.numericUpDownFPS = new System.Windows.Forms.NumericUpDown();
             this.checkBoxShowFPS = new System.Windows.Forms.CheckBox();
+            this.numericUpDownChatFontSize = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFPS)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownChatFontSize)).BeginInit();
             this.SuspendLayout();
             // 
             // checkBoxOpenChatAppStart
@@ -338,10 +341,44 @@
             this.checkBoxShowFPS.Text = "Show FPS";
             this.checkBoxShowFPS.UseVisualStyleBackColor = true;
             // 
+            // numericUpDownChatFontSize
+            // 
+            this.numericUpDownChatFontSize.Location = new System.Drawing.Point(319, 209);
+            this.numericUpDownChatFontSize.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.numericUpDownChatFontSize.Minimum = new decimal(new int[] {
+            9,
+            0,
+            0,
+            0});
+            this.numericUpDownChatFontSize.Name = "numericUpDownChatFontSize";
+            this.numericUpDownChatFontSize.Size = new System.Drawing.Size(120, 21);
+            this.numericUpDownChatFontSize.TabIndex = 27;
+            this.numericUpDownChatFontSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDownChatFontSize.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(316, 191);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(83, 15);
+            this.label2.TabIndex = 26;
+            this.label2.Text = "Chat font size:";
+            // 
             // ApplicationLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.numericUpDownChatFontSize);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.checkBoxShowFPS);
             this.Controls.Add(this.numericUpDownFPS);
             this.Controls.Add(this.label1);
@@ -368,6 +405,7 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownFPS)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownChatFontSize)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -399,5 +437,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown numericUpDownFPS;
         private System.Windows.Forms.CheckBox checkBoxShowFPS;
+        private System.Windows.Forms.NumericUpDown numericUpDownChatFontSize;
+        private System.Windows.Forms.Label label2;
     }
 }

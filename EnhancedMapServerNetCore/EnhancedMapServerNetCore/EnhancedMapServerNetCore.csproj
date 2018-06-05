@@ -6,6 +6,7 @@
     <ApplicationIcon />
     <StartupObject />
     <Copyright>EnhancedMapServer @2018</Copyright>
+    <AssemblyName>EnhancedMapServer</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

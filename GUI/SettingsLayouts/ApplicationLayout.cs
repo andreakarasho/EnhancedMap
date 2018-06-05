@@ -93,6 +93,8 @@ namespace EnhancedMap.GUI.SettingsLayouts
             Global.SettingsCollection["clientpath"] = Global.UOPath = this.textBoxClientPath.Text = root["application"].ToText("clientpath",  "");
             label3.Visible = textBoxClientPath.Visible = customButtonClientPath.Visible = radioButtonEnhanced.Checked;
 
+            Global.SettingsCollection["chatfontsize"] = this.numericUpDownChatFontSize.Value = root["application"].ToText("chatfontsize", Global.SettingsCollection["chatfontsize"].ToString()).ToInt();
+
             AssignEvents();
         }
 
@@ -147,6 +149,8 @@ namespace EnhancedMap.GUI.SettingsLayouts
 
             writer.WriteAttributeString("zoomIndex", Global.SetInitialZoom(Global.Zoom).ToString());
 
+            writer.WriteAttributeString("chatfontsize", this.numericUpDownChatFontSize.Value.ToString());
+
             writer.WriteEndElement();
 
             Global.SettingsCollection["showscrollbarls"] = this.checkBoxShowScrollbars.Checked;
@@ -167,6 +171,8 @@ namespace EnhancedMap.GUI.SettingsLayouts
             Global.SettingsCollection["chatW"] = Global.MainWindow.ChatWindow?.Size.Width.ToString() ?? "250";
             Global.SettingsCollection["chatH"] = Global.MainWindow.ChatWindow?.Size.Height.ToString() ?? "250";
             Global.SettingsCollection["zoomIndex"] = Global.SetInitialZoom(Global.Zoom);
+
+            Global.SettingsCollection["chatfontsize"] = (int)this.numericUpDownChatFontSize.Value;
         }
 
         public void LoadDefault()
@@ -198,6 +204,7 @@ namespace EnhancedMap.GUI.SettingsLayouts
 
             label3.Visible = textBoxClientPath.Visible = customButtonClientPath.Visible = radioButtonEnhanced.Checked;
 
+            this.numericUpDownChatFontSize.Value = Global.SettingsCollection["chatfontsize"].ToInt();
 
             AssignEvents();
         }
@@ -251,6 +258,12 @@ namespace EnhancedMap.GUI.SettingsLayouts
                 {
                     Global.SettingsCollection["clientpath"] = Global.UOPath = textBoxClientPath.Text = dialog.SelectedPath;
                 }
+            };
+
+            this.numericUpDownChatFontSize.ValueChanged += (sender, e) =>
+            {
+                Global.SettingsCollection["chatfontsize"] = (int)this.numericUpDownChatFontSize.Value;
+                Global.MainWindow.ChatWindow?.ChangeFontSize();
             };
         }
     }

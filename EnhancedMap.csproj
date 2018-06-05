@@ -48,7 +48,7 @@
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\Release\</OutputPath>
-    <DefineConstants>TRACE;NEWTIMERS, EnhancedMap, BETA</DefineConstants>
+    <DefineConstants>TRACE;NEWTIMERS, EnhancedMap</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
