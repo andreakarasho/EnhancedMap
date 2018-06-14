@@ -913,10 +913,14 @@ namespace EnhancedMap.GUI
         private void ECanvas_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-            {
                 MouseManager.LeftIsPressed = true;
+            else if (e.Button == MouseButtons.Right)
+                MouseManager.RightIsPressed = true;
 
-                if (TopMost && !Global.FreeView)
+
+            if (MouseManager.LeftIsPressed || e.Button == MouseButtons.Middle)
+            {
+                if (TopMost && !Global.FreeView && e.Button != MouseButtons.Middle)
                 {
 
                     _dragging = true;
@@ -930,7 +934,7 @@ namespace EnhancedMap.GUI
                     if (_dragging)
                         _dragging = false;
 
-                    if ((Global.FreeView || e.Button == MouseButtons.Middle))
+                    if (Global.FreeView)
                     {
                         if (Cursor != Cursors.SizeAll)
                             Cursor = Cursors.SizeAll;
@@ -938,8 +942,6 @@ namespace EnhancedMap.GUI
                     }
                 }
             }
-            else if (e.Button == MouseButtons.Right)
-                MouseManager.RightIsPressed = true;
         }
 
         private void ECanvas_Paint(object sender, PaintEventArgs e)

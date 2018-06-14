@@ -159,6 +159,8 @@ namespace EnhancedMap.Core.MapObjects
 
             if (houseRect.Contains(mouseX, mouseY))
             {
+                g.DrawRectangle(Pens.Yellow, bx - 1, by - 1, Entry.Size.Width * Global.Zoom + 2, Entry.Size.Height * Global.Zoom + 2);
+
                 Global.CurrentHouseObject = this;
                 Global.CurrentLabelObject.UpdatePosition(Entry.Location);
                 Global.CurrentLabelObject.Text = Entry.Description;

@@ -118,7 +118,7 @@ namespace EnhancedMapServerNetCore.Logging
             };
             logThread.Start();
 
-            isLogging = logThread.ThreadState == ThreadState.Running;
+            isLogging = logThread.ThreadState == ThreadState.Running || logThread.ThreadState == ThreadState.Background;
         }
 
         public void Stop() => isLogging = false;

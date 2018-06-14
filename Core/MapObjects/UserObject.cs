@@ -79,6 +79,8 @@ namespace EnhancedMap.Core.MapObjects
         public bool IsPoisoned { get; set; }//=> (Flags & (byte)FLAGS_PROPERTY.POISONED) == (byte)FLAGS_PROPERTY.POISONED;
         public bool IsHighlighted { get; set; }
 
+        internal DateTime LastPanicUpdate { get; set; }
+
         public override bool Render(Graphics g, int x, int y, int canvasW, int canvasH)
         {
             if (IsDisposing)

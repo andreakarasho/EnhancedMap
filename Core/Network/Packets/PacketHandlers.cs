@@ -246,6 +246,26 @@ namespace EnhancedMap.Core.Network
                     break;
             }
 
+            if (user.InPanic && panic) // already panic, ignore
+            {
+                if (DateTime.Now > user.LastPanicUpdate)
+                {
+                    UOClientManager.SysMessage($"[Panic][{user.Name}] Needs help to: {user.Position} - Map: {user.Map}", 83);
+                    user.LastPanicUpdate = DateTime.Now.AddSeconds(5);
+                }
+            }
+            else if (!user.InPanic && panic) // receive panic signal
+            {
+                if (Global.SettingsCollection["panicsounds"].ToBool())
+                    SoundsManager.Play(SOUNDS_TYPE.PANIC);
+                UOClientManager.SysMessage($"[Panic][{user.Name}] Starts to panic!", 83);
+                user.LastPanicUpdate = DateTime.Now.AddSeconds(5);
+            }
+            else if (user.InPanic && !panic) // receve remove panic signal
+            {
+                UOClientManager.SysMessage($"[Panic][{user.Name}] Stopped to panic.", 83);
+            }
+
             user.InPanic = panic;
             user.Font = new Font(fontName, fontSize, fontStyle, GraphicsUnit.Pixel);
             user.Hue = new SolidBrush(msgCol);
