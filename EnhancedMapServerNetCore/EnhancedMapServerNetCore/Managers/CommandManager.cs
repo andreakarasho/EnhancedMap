@@ -113,7 +113,7 @@ namespace EnhancedMapServerNetCore.Managers
             if (user != null && args.Length == 3)
             {
                 Array.Resize(ref args, 4);
-                args[2] = user.Account.Room.ToString();
+                args[2] = user.Account.Room.Name;
                 args[3] = "0";
             }
 
