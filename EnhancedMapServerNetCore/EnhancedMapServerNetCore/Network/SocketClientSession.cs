@@ -1,12 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using EnhancedMapServerNetCore.Logging;
-using EnhancedMapServerNetCore.Managers;
-using static EnhancedMapServerNetCore.Network.SendQueue;
 
 namespace EnhancedMapServerNetCore.Network
 {
@@ -14,7 +6,7 @@ namespace EnhancedMapServerNetCore.Network
     public enum SocketStatus
     {
         Pending = 0x01,
-        Pause = 0x02,
+        Pause = 0x02
     }
 
     //public class SocketClientSession : SocketSessionBase, IDisposable
@@ -349,5 +341,4 @@ namespace EnhancedMapServerNetCore.Network
 
     //    #endregion
     //}
-
 }

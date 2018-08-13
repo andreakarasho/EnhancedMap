@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EnhancedMap.GUI
 {
-    class CustomFlatButton : Button, ICustomControl
+    internal class CustomFlatButton : Button, ICustomControl
     {
-        private SizeF _textSize;
         private bool _forceHover;
+
+        private Image _icon;
+        private SizeF _textSize;
 
 
         public CustomFlatButton()
@@ -33,10 +31,9 @@ namespace EnhancedMap.GUI
             }
         }
 
-        private Image _icon;
         public Image Icon
         {
-            get { return _icon; }
+            get => _icon;
             set
             {
                 _icon = value;
@@ -45,6 +42,7 @@ namespace EnhancedMap.GUI
                 Invalidate();
             }
         }
+
         public override string Text
         {
             get => base.Text;
@@ -58,25 +56,21 @@ namespace EnhancedMap.GUI
             }
         }
 
-        public MouseState MouseState { get; set; }
         public bool IsPressed
         {
             get => MouseState == MouseState.DOWN;
-            set
-            {
-                MouseState = value ? MouseState.DOWN : MouseState.OUT;
-            }
+            set => MouseState = value ? MouseState.DOWN : MouseState.OUT;
         }
+
         public bool IsHover
         {
             get => MouseState == MouseState.HOVER;
-            set
-            {
-                MouseState = value ? MouseState.HOVER : MouseState.OUT;
-            }
+            set => MouseState = value ? MouseState.HOVER : MouseState.OUT;
         }
 
         public bool IsSelected { get; set; }
+
+        public MouseState MouseState { get; set; }
 
         private Size GetPreferredSize()
         {
@@ -93,7 +87,7 @@ namespace EnhancedMap.GUI
                 // 4 is for the space between icon & text
                 extra += 24 + 4;
 
-            return new Size((int)Math.Ceiling(_textSize.Width) + extra, 36);
+            return new Size((int) Math.Ceiling(_textSize.Width) + extra, 36);
         }
 
         protected override void OnPaint(PaintEventArgs pevent)
@@ -121,8 +115,7 @@ namespace EnhancedMap.GUI
                 textRect.X += 8 + 24 + 4;
             }
 
-            g.DrawString(Text, Font, Enabled ? new SolidBrush(ForeColor) : new SolidBrush(Color.LightGray), textRect, new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
-
+            g.DrawString(Text, Font, Enabled ? new SolidBrush(ForeColor) : new SolidBrush(Color.LightGray), textRect, new StringFormat {Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center});
         }
 
         protected override void OnCreateControl()
@@ -160,7 +153,6 @@ namespace EnhancedMap.GUI
                     MouseState = MouseState.HOVER;
                 Invalidate();
             };
-
         }
     }
 }

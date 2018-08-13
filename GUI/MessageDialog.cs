@@ -18,13 +18,11 @@ namespace EnhancedMap.GUI
         private TextBox _message;
         private Button _okay;
 
-        public MessageDialog(string title, string message)
-            : this(title, false, message)
+        public MessageDialog(string title, string message) : this(title, false, message)
         {
         }
 
-        public MessageDialog(string title, bool ignorable, string message, params object[] msgArgs)
-            : this(title, ignorable, string.Format(message, msgArgs))
+        public MessageDialog(string title, bool ignorable, string message, params object[] msgArgs) : this(title, ignorable, string.Format(message, msgArgs))
         {
         }
 
@@ -50,11 +48,9 @@ namespace EnhancedMap.GUI
         {
             if (disposing)
             {
-                if (_components != null)
-                {
-                    _components.Dispose();
-                }
+                if (_components != null) _components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 

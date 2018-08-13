@@ -1,71 +1,44 @@
-﻿using EnhancedMap.Core;
-using EnhancedMap.Diagnostic;
-using EnhancedMap.GUI.SettingsLayouts;
-using EnhancedMap.Properties;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using EnhancedMap.Core;
+using EnhancedMap.Diagnostic;
+using EnhancedMap.GUI.SettingsLayouts;
 
 namespace EnhancedMap.GUI
 {
     public partial class Settings : CustomForm
     {
-        private NetworkLayout _networkLayout = new NetworkLayout()
-        {
-            Tag = 0
-        };
+        private const string SETTINGS = "config.xml";
 
-        private GeneralLayout _generalLayout = new GeneralLayout()
-        {
-            Tag = 1
-        };
+        private readonly AboutLayout _aboutLayout = new AboutLayout {Tag = 5};
 
-        private ApplicationLayout _applicationLayout = new ApplicationLayout()
-        {
-            Tag = 2
-        };
+        private readonly ApplicationLayout _applicationLayout = new ApplicationLayout {Tag = 2};
 
-        private ServerCommLayout _serverCommLayout = new ServerCommLayout()
-        {
-            Tag = 3
-        };
+        private readonly DiagnosticLayout _diagnosticLayout = new DiagnosticLayout {Tag = 6};
 
-        private LabelsLayout _labelsLayout = new LabelsLayout()
-        {
-            Tag = 4
-        };
+        private readonly GeneralLayout _generalLayout = new GeneralLayout {Tag = 1};
 
-        private AboutLayout _aboutLayout = new AboutLayout()
-        {
-            Tag = 5
-        };
+        private readonly LabelsLayout _labelsLayout = new LabelsLayout {Tag = 4};
 
-        private DiagnosticLayout _diagnosticLayout = new DiagnosticLayout()
-        {
-            Tag = 6
-        };
+        private readonly NetworkLayout _networkLayout = new NetworkLayout {Tag = 0};
+
+        private readonly ServerCommLayout _serverCommLayout = new ServerCommLayout {Tag = 3};
 
 
         public Settings()
         {
             InitializeComponent();
 
-            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.TopMost = true;
-            this.MaximizeBox = false;
-            MinimumSize = MaximumSize = this.Size;
-            this.ForeColor = Color.White;
+            Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+            StartPosition = FormStartPosition.CenterScreen;
+            TopMost = true;
+            MaximizeBox = false;
+            MinimumSize = MaximumSize = Size;
+            ForeColor = Color.White;
 
             customFlatButtonNetwork.Tag = 0;
             customFlatButtonGenerals.Tag = 1;
@@ -96,23 +69,29 @@ namespace EnhancedMap.GUI
             customFlatButtonNetwork.ForceHover = true;
 
 
-            this.FormClosing += (sender, e) => { e.Cancel = true; this.Hide(); };
-            customButtonOk.Click += (sender, e) => { this.SaveSettings(); this.Hide(); };
+            FormClosing += (sender, e) =>
+            {
+                e.Cancel = true;
+                Hide();
+            };
+            customButtonOk.Click += (sender, e) =>
+            {
+                SaveSettings();
+                Hide();
+            };
             pictureBox1.Click += (sender, e) => { Process.Start("https://www.paypal.me/muskara/"); };
 
             LoadSettings();
 
-            this.VisibleChanged += (sender, e) =>
+            VisibleChanged += (sender, e) =>
             {
-                if (this.Visible)
+                if (Visible)
                 {
-                    _labelsLayout.BuildList(); _applicationLayout.ReloadClients();
+                    _labelsLayout.BuildList();
+                    _applicationLayout.ReloadClients();
                 }
             };
         }
-
-
-        const string SETTINGS = "config.xml";
 
         public void LoadSettings()
         {
@@ -140,9 +119,8 @@ namespace EnhancedMap.GUI
                 }
                 catch
                 {
-
                 }
-               
+
 
                 if (root == null)
                 {
@@ -170,7 +148,7 @@ namespace EnhancedMap.GUI
                     Global.SettingsCollection["showhouses"] = Configuration.MySettings.ShowHouses;
                     Global.SettingsCollection["namecolor"] = Configuration.MySettings.ChatColor.ToArgb();
                     Global.SettingsCollection["namefont"] = Configuration.MySettings.FontName;
-                    Global.SettingsCollection["namesize"] = (int)Configuration.MySettings.FontSize;
+                    Global.SettingsCollection["namesize"] = (int) Configuration.MySettings.FontSize;
                     Global.SettingsCollection["namestyle"] = Configuration.MySettings.FontStyle;
 
 
@@ -178,7 +156,7 @@ namespace EnhancedMap.GUI
                     _applicationLayout.LoadDefault();
                     _networkLayout.LoadDefault();
                     _diagnosticLayout.LoadDefault();
-                }              
+                }
                 else
                 {
                     _generalLayout.LoadXML(root);
@@ -190,13 +168,12 @@ namespace EnhancedMap.GUI
                     LoadOtherData(root);
                 }
 
-                
 
                 Logger.Log("Loaded.");
             }
             catch (Exception e)
             {
-                Logger.Error("An error occurred while trying to load settings.\r\n" + e.ToString());
+                Logger.Error("An error occurred while trying to load settings.\r\n" + e);
             }
         }
 
@@ -206,11 +183,7 @@ namespace EnhancedMap.GUI
 
             try
             {
-                XmlWriterSettings settings = new XmlWriterSettings
-                {
-                    Indent = true,
-                    IndentChars = "\t"
-                };
+                XmlWriterSettings settings = new XmlWriterSettings {Indent = true, IndentChars = "\t"};
 
                 using (XmlWriter xml = XmlWriter.Create(SETTINGS, settings))
                 {
@@ -232,7 +205,7 @@ namespace EnhancedMap.GUI
             }
             catch (Exception e)
             {
-                Logger.Error("An error occurred while trying to save settings.\r\n" + e.InnerException.ToString());
+                Logger.Error("An error occurred while trying to save settings.\r\n" + e.InnerException);
             }
         }
 
@@ -248,7 +221,7 @@ namespace EnhancedMap.GUI
 
                 foreach (Control c in panelSet.Controls)
                 {
-                    if ((int)c.Tag == (int)flatButton.Tag)
+                    if ((int) c.Tag == (int) flatButton.Tag)
                     {
                         flatButton.ForceHover = true;
                         if (!c.Visible)
@@ -257,9 +230,7 @@ namespace EnhancedMap.GUI
                             return;
                     }
                     else
-                    {
                         c.Visible = false;
-                    }
                 }
             }
         }
@@ -276,7 +247,6 @@ namespace EnhancedMap.GUI
                     Global.HighlightesUsername.Add(name);
                 }
             }
-
         }
 
         private void SaveOtherData(XmlWriter writer)
@@ -288,6 +258,7 @@ namespace EnhancedMap.GUI
                 writer.WriteAttributeString("username", name);
                 writer.WriteEndElement();
             }
+
             writer.WriteEndElement();
         }
     }

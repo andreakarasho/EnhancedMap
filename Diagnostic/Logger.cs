@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EnhancedMap.Diagnostic
 {
@@ -17,8 +12,8 @@ namespace EnhancedMap.Diagnostic
 
     public struct MessageLogger
     {
-        private string _text;
-        
+        private readonly string _text;
+
         public MessageLogger(string text, MESSAGE_SEVERITY severity)
         {
             _text = text;
@@ -29,12 +24,14 @@ namespace EnhancedMap.Diagnostic
         public MESSAGE_SEVERITY Severity { get; }
         public DateTime Date { get; }
 
-        public string ComposeMsg() => string.Format("[{0}] [{1}]: {2}", Date, Severity, _text);
+        public string ComposeMsg()
+        {
+            return string.Format("[{0}] [{1}]: {2}", Date, Severity, _text);
+        }
     }
 
     public static class Logger
     {
-
         public static event EventHandler<MessageLogger> MessageWrited;
 
 
@@ -57,6 +54,5 @@ namespace EnhancedMap.Diagnostic
         {
             MessageWrited.Raise(new MessageLogger(text, MESSAGE_SEVERITY.ERROR));
         }
-
     }
 }

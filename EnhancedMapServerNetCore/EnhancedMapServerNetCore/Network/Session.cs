@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
-using EnhancedMapServerNetCore.Managers;
 using EnhancedMapServerNetCore.Logging;
+using EnhancedMapServerNetCore.Managers;
 
 namespace EnhancedMapServerNetCore.Network
 {
@@ -12,20 +10,15 @@ namespace EnhancedMapServerNetCore.Network
     {
         private static readonly ReusableArray<byte> _bufferPool = new ReusableArray<byte>(1000, 2048);
 
-        private SocketAsyncEventArgs _recvEventArgs => Args[0];
-        private SocketAsyncEventArgs _sendEventArgs => Args[1];
-        private Socket _socket { get; }
-
         private readonly object _asyncLock = new object();
+        private readonly ServerHandler _manager;
         private readonly object _sendLock = new object();
         private SocketStatus _asyncState;
-        private bool _sending;
-        private SendQueue _sendQueue;
-        private CircularBuffer _buffer;
-        private byte[] _recvBuffer;
-        private readonly ServerHandler _manager;
         private DateTime _lastUpdate;
-
+        private readonly byte[] _recvBuffer;
+        private bool _sending;
+        private readonly SendQueue _sendQueue;
+        public Action<Session> Disconnect;
 
 
         public Session(Socket socket, ServerHandler manager)
@@ -33,24 +26,32 @@ namespace EnhancedMapServerNetCore.Network
             _socket = socket;
             _manager = manager;
             _sendQueue = new SendQueue();
-            _buffer = new CircularBuffer();
+            Buffer = new CircularBuffer();
             _recvBuffer = _bufferPool.GetSegment();
             Guid = GuidGenerator.GenerateNew();
 
             _lastUpdate = DateTime.Now.AddMinutes(1);
         }
 
+        private SocketAsyncEventArgs _recvEventArgs => Args[0];
+        private SocketAsyncEventArgs _sendEventArgs => Args[1];
+        private Socket _socket { get; }
+
 
         public SocketAsyncEventArgs[] Args { get; internal set; }
-        public Action<Session> Disconnect;
         public bool IsDisposed { get; private set; }
         public Guid Guid { get; }
-        public CircularBuffer Buffer => _buffer;
+        public CircularBuffer Buffer { get; }
+
         public bool IsConnected => _socket != null && _socket.Connected;
         public bool IsRunning { get; private set; }
         public bool IsAccepted { get; internal set; }
         public IPEndPoint Address => _socket?.RemoteEndPoint as IPEndPoint;
 
+        public void Dispose()
+        {
+            Dispose(true);
+        }
 
 
         public void Accept()
@@ -99,11 +100,16 @@ namespace EnhancedMapServerNetCore.Network
             else
             {
                 lock (_sendLock)
+                {
                     _sending = false;
+                }
             }
         }
 
-        public void Send(PacketWriter writer) => Send(writer.ToArray());
+        public void Send(PacketWriter writer)
+        {
+            Send(writer.ToArray());
+        }
 
         public void Flush()
         {
@@ -143,13 +149,17 @@ namespace EnhancedMapServerNetCore.Network
                 if (IsAccepted)
                     _lastUpdate = DateTime.Now.AddMinutes(1);
 
-                lock (_buffer)
-                    _buffer.Enqueue(buffer, 0, e.BytesTransferred);
+                lock (Buffer)
+                {
+                    Buffer.Enqueue(buffer, 0, e.BytesTransferred);
+                }
 
                 _manager.Enqueue(this);
 
                 lock (_asyncLock)
+                {
                     _asyncState &= ~SocketStatus.Pending;
+                }
             }
             else
                 Dispose();
@@ -202,7 +212,9 @@ namespace EnhancedMapServerNetCore.Network
                     lock (_sendLock)
                     {
                         lock (_sendQueue)
+                        {
                             gram = _sendQueue.Enqueue(data, 0, data.Length);
+                        }
 
                         if (gram != null && !_sending)
                         {
@@ -221,20 +233,20 @@ namespace EnhancedMapServerNetCore.Network
                 Core.Set();
             }
             else
-            {
                 Dispose();
-            }
         }
 
         public void Pause()
         {
             lock (_asyncLock)
+            {
                 _asyncState |= SocketStatus.Pause;
+            }
         }
 
         public void Resume()
         {
-            lock(_asyncLock)
+            lock (_asyncLock)
             {
                 _asyncState &= ~SocketStatus.Pause;
                 if ((_asyncState & SocketStatus.Pending) == 0)
@@ -286,7 +298,9 @@ namespace EnhancedMapServerNetCore.Network
                     else
                     {
                         lock (_sendLock)
+                        {
                             _sending = false;
+                        }
                     }
 
                     break;
@@ -294,8 +308,6 @@ namespace EnhancedMapServerNetCore.Network
                     throw new ArgumentException("The last operation completed on the socket was not a receive or send");
             }
         }
-
-        public void Dispose() => Dispose(true);
 
         private void Dispose(bool flush)
         {
@@ -314,14 +326,18 @@ namespace EnhancedMapServerNetCore.Network
             {
                 _socket.Shutdown(SocketShutdown.Both);
             }
-            catch { }
+            catch
+            {
+            }
 
             _socket.Close();
 
             if (_recvBuffer != null)
             {
                 lock (_bufferPool)
+                {
                     _bufferPool.Free(_recvBuffer);
+                }
             }
 
             lock (_sendQueue)

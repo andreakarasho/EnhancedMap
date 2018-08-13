@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
-using EnhancedMap.Diagnostic;
-using EnhancedMap.Core.Network;
 using System.Xml;
 using EnhancedMap.Core;
-using System.IO;
+using EnhancedMap.Core.Network;
+using EnhancedMap.Diagnostic;
 
 namespace EnhancedMap.GUI.SettingsLayouts
 {
@@ -25,7 +19,7 @@ namespace EnhancedMap.GUI.SettingsLayouts
             uint outData = 0;
             uint inData = 0;
 
-            TimerManager.Create(1000, () => 
+            TimerManager.Create(1000, () =>
             {
                 var input = inData;
                 var output = outData;
@@ -36,34 +30,37 @@ namespace EnhancedMap.GUI.SettingsLayouts
                 labelData.Do(s => s.Text = string.Format("Network data:\r\n-IN: {0}\r\n-OUT: {1}", Utility.GetSizeAdaptive(inData - input), Utility.GetSizeAdaptive(outData - output)));
             }, true);
 
-            customButtonSaveLog.Click += (sender, e) => { if (!string.IsNullOrEmpty(richTextBox.Text)) File.AppendAllText("enhancedmap-log.txt", string.Format("{0}: \r\n{1}\r\n\r\n", DateTime.Now, richTextBox.Text) ); };
+            customButtonSaveLog.Click += (sender, e) =>
+            {
+                if (!string.IsNullOrEmpty(richTextBox.Text)) File.AppendAllText("enhancedmap-log.txt", string.Format("{0}: \r\n{1}\r\n\r\n", DateTime.Now, richTextBox.Text));
+            };
         }
 
 
         public void LoadXML(XmlElement root)
         {
-            Global.SettingsCollection["autoscroll"] = this.checkBoxAutoScroll.Checked = root["diagnostic"].ToText("autoscroll", Global.SettingsCollection["autoscroll"].ToString()).ToBool();
+            Global.SettingsCollection["autoscroll"] = checkBoxAutoScroll.Checked = root["diagnostic"].ToText("autoscroll", Global.SettingsCollection["autoscroll"].ToString()).ToBool();
         }
 
         public void SaveXML(XmlWriter writer)
         {
             writer.WriteStartElement("diagnostic");
 
-            writer.WriteAttributeString("autoscroll", this.checkBoxAutoScroll.Checked.ToString());
+            writer.WriteAttributeString("autoscroll", checkBoxAutoScroll.Checked.ToString());
 
             writer.WriteEndElement();
 
-            Global.SettingsCollection["autoscroll"] = this.checkBoxAutoScroll.Checked;
+            Global.SettingsCollection["autoscroll"] = checkBoxAutoScroll.Checked;
         }
 
         public void LoadDefault()
         {
-            this.checkBoxAutoScroll.Checked = Global.SettingsCollection["autoscroll"].ToBool();
+            checkBoxAutoScroll.Checked = Global.SettingsCollection["autoscroll"].ToBool();
         }
 
         private void Logger_MessageWrited(object sender, MessageLogger e)
         {
-            richTextBox.Do(s => 
+            richTextBox.Do(s =>
             {
                 switch (e.Severity)
                 {
@@ -86,7 +83,6 @@ namespace EnhancedMap.GUI.SettingsLayouts
                     s.SelectionStart = s.TextLength;
                     s.ScrollToCaret();
                 }
-
             });
         }
     }

@@ -1,16 +1,11 @@
-﻿using EnhancedMap.GUI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Forms;
 using System.Xml;
-using FontStyle = System.Drawing.FontStyle;
 
 namespace EnhancedMap.Core
 {
@@ -52,6 +47,7 @@ namespace EnhancedMap.Core
                     Task.Run(() => MessageBox.Show("Impossible to open Settings.backup"));
                     return;
                 }
+
                 Task.Run(() => MessageBox.Show("Settings.xml was corrupted. Opened Settings.backup"));
             }
 
@@ -85,11 +81,11 @@ namespace EnhancedMap.Core
 
         public class Settings
         {
-            private string _name;
             private int _fontStyle, _opacity;
+            private string _name;
             private float _zoomValue, _fontSize;
 
-           // private RefreshType _refreshType;
+            // private RefreshType _refreshType;
 
             public int MapX { get; set; }
             public int MapY { get; set; }
@@ -101,7 +97,7 @@ namespace EnhancedMap.Core
             public int ChatW { get; set; }
             public int ChatH { get; set; }
 
-           /* public RefreshType RefreshType
+            /* public RefreshType RefreshType
             {
                 get { return _refreshType; }
                 set { _refreshType = value < RefreshType.RealTime || value > RefreshType.Slow ? RefreshType.High : value; }
@@ -109,14 +105,14 @@ namespace EnhancedMap.Core
 
             public int FontStyle
             {
-                get { return _fontStyle; }
-                set { _fontStyle = Enum.IsDefined(typeof(FontStyle), value) ? value : 0; }
+                get => _fontStyle;
+                set => _fontStyle = Enum.IsDefined(typeof(FontStyle), value) ? value : 0;
             }
 
             public int Opacity
             {
-                get { return _opacity; }
-                set { _opacity = value <= 0 || value > 10 ? 10 : value; }
+                get => _opacity;
+                set => _opacity = value <= 0 || value > 10 ? 10 : value;
             }
 
             public string Ip { get; set; }
@@ -139,10 +135,7 @@ namespace EnhancedMap.Core
 
             public string Password { get; set; }
 
-            public string EmVersion
-            {
-                get { return MainCore.MapVersion.ToString(); }
-            }
+            public string EmVersion => MainCore.MapVersion.ToString();
 
             public string ClientVersion { get; set; }
             public string ClientDir { get; set; }
@@ -183,14 +176,14 @@ namespace EnhancedMap.Core
 
             public float ZoomValue
             {
-                get { return _zoomValue; }
-                set { _zoomValue = value <= 0 || value > 8 ? 1.5f : value; }
+                get => _zoomValue;
+                set => _zoomValue = value <= 0 || value > 8 ? 1.5f : value;
             }
 
             public float FontSize
             {
-                get { return _fontSize; }
-                set { _fontSize = value <= 0 ? 12 : value; }
+                get => _fontSize;
+                set => _fontSize = value <= 0 ? 12 : value;
             }
 
             public Dictionary<string, Macro> Macros { get; } = new Dictionary<string, Macro>();
@@ -198,12 +191,7 @@ namespace EnhancedMap.Core
 
             public void MakeDefault()
             {
-                TrackDeathPoint = ShowBuilds = PanicAdvice =
-                OpenChatIfMsg = ShowPgName = HpBar = Guardlines =
-                StamBar = ManaBar = Statics = ShowTownName =
-                TryToRelog = SmartIcons = AutoCenterOnPg = ShowHouses =
-                ShowServerBounds = LogHouses = PointInfo = ShowScrollBars =
-                TiltMap = PanicSquare = AlertSquare = true;
+                TrackDeathPoint = ShowBuilds = PanicAdvice = OpenChatIfMsg = ShowPgName = HpBar = Guardlines = StamBar = ManaBar = Statics = ShowTownName = TryToRelog = SmartIcons = AutoCenterOnPg = ShowHouses = ShowServerBounds = LogHouses = PointInfo = ShowScrollBars = TiltMap = PanicSquare = AlertSquare = true;
 
                 OpenChat = ClearCache = Autologin = ShowCoords = AbbreviatePgName = SmartVisual = AttachOnUo = false;
 
@@ -232,7 +220,7 @@ namespace EnhancedMap.Core
                 WriteElement(xml, "ChatY", ChatY);
                 WriteElement(xml, "ChatW", ChatW);
                 WriteElement(xml, "ChatH", ChatH);
-              //  WriteElement(xml, "RefreshType", _refreshType);
+                //  WriteElement(xml, "RefreshType", _refreshType);
                 WriteElement(xml, "FontStyle", _fontStyle);
                 WriteElement(xml, "Opacity", _opacity);
                 WriteElement(xml, "Ip", Ip);
@@ -285,35 +273,36 @@ namespace EnhancedMap.Core
                     xml.WriteAttributeString("name2", m.Value.MacroName2);
                     xml.WriteEndElement();
                 }
+
                 xml.WriteEndElement();
 
-               /* xml.WriteStartElement("labelsfile");
-                foreach (var file in LabelsManager.Labels)
-                {
-                    if (file.Labels.Count <= 0)
-                        file.Enabled = false;
+                /* xml.WriteStartElement("labelsfile");
+                 foreach (var file in LabelsManager.Labels)
+                 {
+                     if (file.Labels.Count <= 0)
+                         file.Enabled = false;
+ 
+                     xml.WriteStartElement("file");
+                     xml.WriteAttributeString("name", file.Name);
+                     xml.WriteAttributeString("enabled", file.Enabled.ToString());
+                     xml.WriteEndElement();
+                 }
+                 xml.WriteEndElement();*/
 
-                    xml.WriteStartElement("file");
-                    xml.WriteAttributeString("name", file.Name);
-                    xml.WriteAttributeString("enabled", file.Enabled.ToString());
-                    xml.WriteEndElement();
-                }
-                xml.WriteEndElement();*/
 
-
-              /*  WriteElement(xml, "MapType", MapType);
-
-                xml.WriteStartElement("maps");
-                foreach (MapBase map in MapBase.Maps)
-                {
-                    xml.WriteStartElement("map");
-                    xml.WriteAttributeString("name", map.Name);
-                    xml.WriteAttributeString("index", map.Index.ToString());
-                    xml.WriteAttributeString("width", map.Width.ToString());
-                    xml.WriteAttributeString("height", map.Height.ToString());
-                    xml.WriteEndElement();
-                }
-                xml.WriteEndElement();*/
+                /*  WriteElement(xml, "MapType", MapType);
+  
+                  xml.WriteStartElement("maps");
+                  foreach (MapBase map in MapBase.Maps)
+                  {
+                      xml.WriteStartElement("map");
+                      xml.WriteAttributeString("name", map.Name);
+                      xml.WriteAttributeString("index", map.Index.ToString());
+                      xml.WriteAttributeString("width", map.Width.ToString());
+                      xml.WriteAttributeString("height", map.Height.ToString());
+                      xml.WriteEndElement();
+                  }
+                  xml.WriteEndElement();*/
             }
 
             private void WriteElement(XmlWriter xml, string name, object value)
@@ -323,7 +312,7 @@ namespace EnhancedMap.Core
                 string towrite;
 
                 if (value is Color)
-                    towrite = ((Color)value).ToArgb().ToString();
+                    towrite = ((Color) value).ToArgb().ToString();
                 else
                     towrite = value?.ToString() ?? "";
 

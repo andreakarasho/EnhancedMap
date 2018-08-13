@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace EnhancedMap.GUI.SettingsLayouts
 {
@@ -24,6 +16,5 @@ namespace EnhancedMap.GUI.SettingsLayouts
             //linkLabel1.LinkClicked += (sender, e) => { Process.Start("http://razorenhanced.org/"); };
             linkLabel2.LinkClicked += (sender, e) => { Process.Start("https://discordapp.com/invite/P3Q7mKT"); };
         }
-
     }
 }

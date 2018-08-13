@@ -1,18 +1,17 @@
-﻿using EnhancedMapServerNetCore.Internals;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using EnhancedMapServerNetCore.Internals;
 using EnhancedMapServerNetCore.Logging;
 using EnhancedMapServerNetCore.Managers;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 
 namespace EnhancedMapServerNetCore.Network
 {
     public class PacketHandlers
     {
-        public static PacketHandlers Handlers { get; } = new PacketHandlers();
+        private readonly List<PacketHandler>[] _handlers = new List<PacketHandler>[0x100];
 
-   
+
         static PacketHandlers()
         {
             Handlers.Add(0x1F, LoginRequest);
@@ -30,12 +29,14 @@ namespace EnhancedMapServerNetCore.Network
                 _handlers[i] = new List<PacketHandler>();
         }
 
-        private readonly List<PacketHandler>[] _handlers = new List<PacketHandler>[0x100];
+        public static PacketHandlers Handlers { get; } = new PacketHandlers();
 
         public void Add(byte id, Action<Session, Packet> handler)
         {
             lock (_handlers)
+            {
                 _handlers[id].Add(new PacketHandler(handler));
+            }
         }
 
         public void OnPacket(Session client, Packet p)
@@ -51,7 +52,6 @@ namespace EnhancedMapServerNetCore.Network
         }
 
 
-
         private static void LoginRequest(Session client, Packet p)
         {
             if (client.IsAccepted)
@@ -63,10 +63,7 @@ namespace EnhancedMapServerNetCore.Network
             string username = p.ReadASCII(userlen);
             string password = p.ReadASCII(passwordlen);
 
-            if (!AccountManager.CanConnect(username, password, client))
-            {
-                client.Dispose();
-            }
+            if (!AccountManager.CanConnect(username, password, client)) client.Dispose();
         }
 
         private static void RemoteAdminCmds(Session client, Packet p)
@@ -111,7 +108,7 @@ namespace EnhancedMapServerNetCore.Network
                 return;
 
             ushort msglen = p.ReadUShort();
-            int color = (int)p.ReadUInt();
+            int color = (int) p.ReadUInt();
             string message = p.ReadASCII(msglen);
 
             User user = UserManager.Get(client.Guid);
@@ -171,11 +168,9 @@ namespace EnhancedMapServerNetCore.Network
                 return;
 
             if (p.ReadByte() == 0)
-            {
                 client.Send(new PProtocolResponse());
-            }
             else
-                client.Dispose();      
+                client.Dispose();
         }
 
         private static void SharedLabel(Session client, Packet p)
@@ -204,7 +199,7 @@ namespace EnhancedMapServerNetCore.Network
                 string description = p.ReadASCII(p.ReadByte());
                 SharedLabel label = new SharedLabel(x, y, map, description);
                 user.SharedLabels.Add(label);
-                user.SendToUsersInRoom(new PSharedLabel(x, y, map, description));
+                user.SendToUsersInRoom(new PSharedLabel(x, y, map, description, user.Name));
             }
         }
     }

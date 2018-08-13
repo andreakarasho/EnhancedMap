@@ -1,50 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EnhancedMap.GUI
 {
     public class CustomForm : Form, ICustomControl
     {
-        private enum ButtonState
-        {
-            None,
-
-            XOver,
-            MaxOver,
-            MinOver,
-
-            XDown,
-            MaxDown,
-            MinDown
-        }
-
-        private enum ResizeDirection
-        {
-            BottomLeft,
-            Left,
-            Right,
-            BottomRight,
-            Bottom,
-            Top,
-            TopLeft,
-            TopRight,
-            None
-        }
-
-        private readonly Cursor[] _resizeCursors = { Cursors.SizeNESW, Cursors.SizeWE, Cursors.SizeNWSE, Cursors.SizeWE, Cursors.SizeNS };
+        private readonly Cursor[] _resizeCursors = {Cursors.SizeNESW, Cursors.SizeWE, Cursors.SizeNWSE, Cursors.SizeWE, Cursors.SizeNS};
+        private ButtonState _currentState;
+        private bool _headerMouseDown;
+        private bool _maximized;
 
         private Rectangle _minimizeButton, _maximizeButton, _closeButton, _statusBarBounds;
-        private ButtonState _currentState;
-        private bool _maximized;
-        private Size _previousSize;
         private Point _previousLocation;
-        private bool _headerMouseDown;
+        private Size _previousSize;
         private ResizeDirection _resizeDir;
 
         private float _yTitle;
@@ -58,7 +29,7 @@ namespace EnhancedMap.GUI
             Sizable = true;
             DoubleBuffered = true;
 
-            this.MinimumSize = new Size(25 * 3 + 100, 25);
+            MinimumSize = new Size(25 * 3 + 100, 25);
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
 
             Application.AddMessageFilter(new MouseMessageFilter());
@@ -66,8 +37,8 @@ namespace EnhancedMap.GUI
         }
 
         public bool CloseBox { get; set; }
+
         public bool Sizable { get; set; }
-        public MouseState MouseState { get; set; }
         //public bool ShowStatusBar { get; set; }
 
         protected override CreateParams CreateParams
@@ -82,6 +53,8 @@ namespace EnhancedMap.GUI
             }
         }
 
+        public MouseState MouseState { get; set; }
+
         protected override void OnLoad(EventArgs e)
         {
             _yTitle = CreateGraphics().MeasureString("M", Font).Height;
@@ -92,9 +65,9 @@ namespace EnhancedMap.GUI
         {
             base.OnResize(e);
 
-            _minimizeButton = new Rectangle((Width - 14 / 2) - 3 * Native.STATUS_BAR_BUTTON_WIDTH, 0, Native.STATUS_BAR_BUTTON_WIDTH, Native.STATUS_BAR_BUTTON_WIDTH);
-            _maximizeButton = new Rectangle((Width - 14 / 2) - 2 * Native.STATUS_BAR_BUTTON_WIDTH, 0, Native.STATUS_BAR_BUTTON_WIDTH, Native.STATUS_BAR_BUTTON_WIDTH);
-            _closeButton = new Rectangle((Width - 14 / 2) - Native.STATUS_BAR_BUTTON_WIDTH, 0, Native.STATUS_BAR_BUTTON_WIDTH, Native.STATUS_BAR_BUTTON_WIDTH);
+            _minimizeButton = new Rectangle(Width - 14 / 2 - 3 * Native.STATUS_BAR_BUTTON_WIDTH, 0, Native.STATUS_BAR_BUTTON_WIDTH, Native.STATUS_BAR_BUTTON_WIDTH);
+            _maximizeButton = new Rectangle(Width - 14 / 2 - 2 * Native.STATUS_BAR_BUTTON_WIDTH, 0, Native.STATUS_BAR_BUTTON_WIDTH, Native.STATUS_BAR_BUTTON_WIDTH);
+            _closeButton = new Rectangle(Width - 14 / 2 - Native.STATUS_BAR_BUTTON_WIDTH, 0, Native.STATUS_BAR_BUTTON_WIDTH, Native.STATUS_BAR_BUTTON_WIDTH);
 
             _statusBarBounds = new Rectangle(0, 0, Width, 25);
             //_actionBarBounds = new Rectangle(0, 25, Width, 30);
@@ -179,18 +152,16 @@ namespace EnhancedMap.GUI
                     _resizeDir = ResizeDirection.Top;
                     Cursor = Cursors.SizeNS;
                 }
-              
+
                 else
                 {
                     _resizeDir = ResizeDirection.None;
 
                     //Only reset the cursor when needed, this prevents it from flickering when a child control changes the cursor to its own needs
-                    if (_resizeCursors.Contains(Cursor))
-                    {
-                        Cursor = Cursors.Default;
-                    }
+                    if (_resizeCursors.Contains(Cursor)) Cursor = Cursors.Default;
                 }
             }
+
             //Console.WriteLine(e.Location);
             UpdateButtonState(e);
         }
@@ -306,10 +277,7 @@ namespace EnhancedMap.GUI
             }
 
             Native.ReleaseCapture();
-            if (dir != -1)
-            {
-                Native.SendMessage(Handle, Native.WM_NCLBUTTONDOWN, dir, 0);
-            }
+            if (dir != -1) Native.SendMessage(Handle, Native.WM_NCLBUTTONDOWN, dir, 0);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -327,9 +295,9 @@ namespace EnhancedMap.GUI
                 offset += 15;
                 g.DrawImage(Icon.ToBitmap(), 4, 4, 18, 18);
             }
-            
-            Rectangle rect = new Rectangle(offset + 14, Native.STATUS_BAR_HEIGHT / 2 - (int)_yTitle / 2, Width, Native.ACTION_BAR_HEIGHT);
-            g.DrawString(Text, Font, Brushes.White, rect, new StringFormat() { Alignment = StringAlignment.Near });
+
+            Rectangle rect = new Rectangle(offset + 14, Native.STATUS_BAR_HEIGHT / 2 - (int) _yTitle / 2, Width, Native.ACTION_BAR_HEIGHT);
+            g.DrawString(Text, Font, Brushes.White, rect, new StringFormat {Alignment = StringAlignment.Near});
 
 
             using (var borderPen = new Pen(ColorsTable.Black0, 1))
@@ -363,7 +331,6 @@ namespace EnhancedMap.GUI
                 g.FillRectangle(new SolidBrush(ColorsTable.Black2), _closeButton);
 
 
-
             using (Pen pen = new Pen(Brushes.White, 2))
             {
                 if (showMin)
@@ -371,42 +338,19 @@ namespace EnhancedMap.GUI
                     int x = showMax ? _minimizeButton.X : _maximizeButton.X;
                     int y = showMax ? _minimizeButton.Y : _maximizeButton.Y;
 
-                    g.DrawLine(
-                        pen,
-                        x + (int)(_minimizeButton.Width * 0.33),
-                        y + (int)(_minimizeButton.Height * 0.66),
-                        x + (int)(_minimizeButton.Width * 0.66),
-                        y + (int)(_minimizeButton.Height * 0.66)
-                   );
+                    g.DrawLine(pen, x + (int) (_minimizeButton.Width * 0.33), y + (int) (_minimizeButton.Height * 0.66), x + (int) (_minimizeButton.Width * 0.66), y + (int) (_minimizeButton.Height * 0.66));
                 }
 
                 if (showMax)
                 {
-                    g.DrawRectangle(
-                        pen,
-                        _maximizeButton.X + (int)(_maximizeButton.Width * 0.33),
-                        _maximizeButton.Y + (int)(_maximizeButton.Height * 0.36),
-                        (int)(_maximizeButton.Width * 0.39),
-                        (int)(_maximizeButton.Height * 0.31)
-                   );
+                    g.DrawRectangle(pen, _maximizeButton.X + (int) (_maximizeButton.Width * 0.33), _maximizeButton.Y + (int) (_maximizeButton.Height * 0.36), (int) (_maximizeButton.Width * 0.39), (int) (_maximizeButton.Height * 0.31));
                 }
 
                 if (ControlBox)
                 {
-                    g.DrawLine(
-                        pen,
-                        _closeButton.X + (int)(_closeButton.Width * 0.33),
-                        _closeButton.Y + (int)(_closeButton.Height * 0.33),
-                        _closeButton.X + (int)(_closeButton.Width * 0.66),
-                        _closeButton.Y + (int)(_closeButton.Height * 0.66)
-                   );
+                    g.DrawLine(pen, _closeButton.X + (int) (_closeButton.Width * 0.33), _closeButton.Y + (int) (_closeButton.Height * 0.33), _closeButton.X + (int) (_closeButton.Width * 0.66), _closeButton.Y + (int) (_closeButton.Height * 0.66));
 
-                    g.DrawLine(
-                        pen,
-                        _closeButton.X + (int)(_closeButton.Width * 0.66),
-                        _closeButton.Y + (int)(_closeButton.Height * 0.33),
-                        _closeButton.X + (int)(_closeButton.Width * 0.33),
-                        _closeButton.Y + (int)(_closeButton.Height * 0.66));
+                    g.DrawLine(pen, _closeButton.X + (int) (_closeButton.Width * 0.66), _closeButton.Y + (int) (_closeButton.Height * 0.33), _closeButton.X + (int) (_closeButton.Width * 0.33), _closeButton.Y + (int) (_closeButton.Height * 0.66));
                 }
             }
         }
@@ -416,12 +360,8 @@ namespace EnhancedMap.GUI
             base.WndProc(ref m);
 
             if (m.Msg == Native.WM_LBUTTONDBLCLK)
-            {
                 MaximizeWindow(!_maximized);
-            }
-            else if (m.Msg == Native.WM_MOUSEMOVE && _maximized &&
-                (_statusBarBounds.Contains(PointToClient(Cursor.Position)) /*|| _actionBarBounds.Contains(PointToClient(Cursor.Position))*/) &&
-                !(_minimizeButton.Contains(PointToClient(Cursor.Position)) || _maximizeButton.Contains(PointToClient(Cursor.Position)) || _closeButton.Contains(PointToClient(Cursor.Position))))
+            else if (m.Msg == Native.WM_MOUSEMOVE && _maximized && _statusBarBounds.Contains(PointToClient(Cursor.Position)) && !(_minimizeButton.Contains(PointToClient(Cursor.Position)) || _maximizeButton.Contains(PointToClient(Cursor.Position)) || _closeButton.Contains(PointToClient(Cursor.Position))))
             {
                 if (_headerMouseDown)
                 {
@@ -430,22 +370,20 @@ namespace EnhancedMap.GUI
 
                     var mousePoint = PointToClient(Cursor.Position);
                     if (mousePoint.X < Width / 2)
-                        Location = mousePoint.X < _previousSize.Width / 2 ?
-                            new Point(Cursor.Position.X - mousePoint.X, Cursor.Position.Y - mousePoint.Y) :
-                            new Point(Cursor.Position.X - _previousSize.Width / 2, Cursor.Position.Y - mousePoint.Y);
+                    {
+                        Location = mousePoint.X < _previousSize.Width / 2 ? new Point(Cursor.Position.X - mousePoint.X, Cursor.Position.Y - mousePoint.Y) : new Point(Cursor.Position.X - _previousSize.Width / 2, Cursor.Position.Y - mousePoint.Y);
+                    }
                     else
-                        Location = Width - mousePoint.X < _previousSize.Width / 2 ?
-                            new Point(Cursor.Position.X - _previousSize.Width + Width - mousePoint.X, Cursor.Position.Y - mousePoint.Y) :
-                            new Point(Cursor.Position.X - _previousSize.Width / 2, Cursor.Position.Y - mousePoint.Y);
+                    {
+                        Location = Width - mousePoint.X < _previousSize.Width / 2 ? new Point(Cursor.Position.X - _previousSize.Width + Width - mousePoint.X, Cursor.Position.Y - mousePoint.Y) : new Point(Cursor.Position.X - _previousSize.Width / 2, Cursor.Position.Y - mousePoint.Y);
+                    }
 
                     Size = _previousSize;
                     Native.ReleaseCapture();
                     Native.SendMessage(Handle, Native.WM_NCLBUTTONDOWN, Native.HT_CAPTION, 0);
                 }
             }
-            else if (m.Msg == Native.WM_LBUTTONDOWN &&
-                (_statusBarBounds.Contains(PointToClient(Cursor.Position)) /*|| _actionBarBounds.Contains(PointToClient(Cursor.Position))*/) &&
-                !(_minimizeButton.Contains(PointToClient(Cursor.Position)) || _maximizeButton.Contains(PointToClient(Cursor.Position)) || _closeButton.Contains(PointToClient(Cursor.Position))))
+            else if (m.Msg == Native.WM_LBUTTONDOWN && _statusBarBounds.Contains(PointToClient(Cursor.Position)) && !(_minimizeButton.Contains(PointToClient(Cursor.Position)) || _maximizeButton.Contains(PointToClient(Cursor.Position)) || _closeButton.Contains(PointToClient(Cursor.Position))))
             {
                 if (!_maximized)
                 {
@@ -453,16 +391,13 @@ namespace EnhancedMap.GUI
                     Native.SendMessage(Handle, Native.WM_NCLBUTTONDOWN, Native.HT_CAPTION, 0);
                 }
                 else
-                {
                     _headerMouseDown = true;
-                }
             }
             else if (m.Msg == Native.WM_RBUTTONDOWN)
             {
                 Point cursorPos = PointToClient(Cursor.Position);
 
-                if (_statusBarBounds.Contains(cursorPos) && !_minimizeButton.Contains(cursorPos) &&
-                    !_maximizeButton.Contains(cursorPos) && !_closeButton.Contains(cursorPos))
+                if (_statusBarBounds.Contains(cursorPos) && !_minimizeButton.Contains(cursorPos) && !_maximizeButton.Contains(cursorPos) && !_closeButton.Contains(cursorPos))
                 {
                     // Show default system menu when right clicking titlebar
                     var id = Native.TrackPopupMenuEx(Native.GetSystemMenu(Handle, false), Native.TPM_LEFTALIGN | Native.TPM_RETURNCMD, Cursor.Position.X, Cursor.Position.Y, Handle, IntPtr.Zero);
@@ -482,37 +417,60 @@ namespace EnhancedMap.GUI
                 byte bFlag = 0;
 
                 // Get which side to resize from
-                if (Native._resizingLocationsToCmd.ContainsKey((int)m.WParam))
-                    bFlag = (byte)Native._resizingLocationsToCmd[(int)m.WParam];
+                if (Native._resizingLocationsToCmd.ContainsKey((int) m.WParam))
+                    bFlag = (byte) Native._resizingLocationsToCmd[(int) m.WParam];
 
                 if (bFlag != 0)
-                    Native.SendMessage(Handle, Native.WM_SYSCOMMAND, 0xF000 | bFlag, (int)m.LParam);
+                    Native.SendMessage(Handle, Native.WM_SYSCOMMAND, 0xF000 | bFlag, (int) m.LParam);
             }
-            else if (m.Msg == Native.WM_LBUTTONUP)
-            {
-                _headerMouseDown = false;
-            }
+            else if (m.Msg == Native.WM_LBUTTONUP) _headerMouseDown = false;
+        }
+
+        private enum ButtonState
+        {
+            None,
+
+            XOver,
+            MaxOver,
+            MinOver,
+
+            XDown,
+            MaxDown,
+            MinDown
+        }
+
+        private enum ResizeDirection
+        {
+            BottomLeft,
+            Left,
+            Right,
+            BottomRight,
+            Bottom,
+            Top,
+            TopLeft,
+            TopRight,
+            None
         }
 
         public class MouseMessageFilter : IMessageFilter
         {
             private const int WM_MOUSEMOVE = 0x0200;
 
-            public static event MouseEventHandler MouseMove;
-
             public bool PreFilterMessage(ref Message m)
             {
-
                 if (m.Msg == WM_MOUSEMOVE)
                 {
                     if (MouseMove != null)
                     {
-                        int x = Control.MousePosition.X, y = Control.MousePosition.Y;
+                        int x = MousePosition.X, y = MousePosition.Y;
                         MouseMove(null, new MouseEventArgs(MouseButtons.None, 0, x, y, 0));
                     }
                 }
+
                 return false;
             }
+
+            public static event MouseEventHandler MouseMove;
         }
     }
 }

@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
+﻿using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Aga.Controls.Tree;
-using System.Collections;
 using System.Xml;
-using EnhancedMap.Core.MapObjects;
+using Aga.Controls.Tree;
 using EnhancedMap.Core;
 
 namespace EnhancedMap.GUI.SettingsLayouts
 {
     public partial class LabelsLayout : UserControl
     {
-        private TreeModel _model;
+        private readonly TreeModel _model;
 
         public LabelsLayout()
         {
@@ -26,12 +18,36 @@ namespace EnhancedMap.GUI.SettingsLayouts
             _model = new TreeModel();
             treeViewAdv1.Model = _model;
 
-            this.customButtonCollapseAll.Click += (sender, e) => { treeViewAdv1.CollapseAll(); };
-            this.customButtonExpandAll.Click += (sender, e) => { treeViewAdv1.ExpandAll(); };
-            this.customButtonEnableAll.Click += (sender, e) => { _model.Nodes.OfType<MyRoot>().ToList().ForEach(s => { s.State = CheckState.Checked; s.Nodes.OfType<MyNode>().ToList().ForEach(k => k.State = CheckState.Checked); treeViewAdv1.Invalidate(); }); };
-            this.customButtonDisableAll.Click += (sender, e) => { _model.Nodes.OfType<MyRoot>().ToList().ForEach(s => { s.State = CheckState.Unchecked; s.Nodes.OfType<MyNode>().ToList().ForEach(k => k.State = CheckState.Unchecked); }); treeViewAdv1.Invalidate(); };
-            this.customButtonHideNamesAll.Click += (sender, e) => { _model.Nodes.OfType<MyRoot>().ToList().ForEach(s => { s.Nodes.OfType<MyNode>().ToList().ForEach(k => k.ShowName = false); }); treeViewAdv1.Invalidate(); };
-            this.customButtonShowNamesAll.Click += (sender, e) => { _model.Nodes.OfType<MyRoot>().ToList().ForEach(s => { s.Nodes.OfType<MyNode>().ToList().ForEach(k => k.ShowName = true); }); treeViewAdv1.Invalidate(); };
+            customButtonCollapseAll.Click += (sender, e) => { treeViewAdv1.CollapseAll(); };
+            customButtonExpandAll.Click += (sender, e) => { treeViewAdv1.ExpandAll(); };
+            customButtonEnableAll.Click += (sender, e) =>
+            {
+                _model.Nodes.OfType<MyRoot>().ToList().ForEach(s =>
+                {
+                    s.State = CheckState.Checked;
+                    s.Nodes.OfType<MyNode>().ToList().ForEach(k => k.State = CheckState.Checked);
+                    treeViewAdv1.Invalidate();
+                });
+            };
+            customButtonDisableAll.Click += (sender, e) =>
+            {
+                _model.Nodes.OfType<MyRoot>().ToList().ForEach(s =>
+                {
+                    s.State = CheckState.Unchecked;
+                    s.Nodes.OfType<MyNode>().ToList().ForEach(k => k.State = CheckState.Unchecked);
+                });
+                treeViewAdv1.Invalidate();
+            };
+            customButtonHideNamesAll.Click += (sender, e) =>
+            {
+                _model.Nodes.OfType<MyRoot>().ToList().ForEach(s => { s.Nodes.OfType<MyNode>().ToList().ForEach(k => k.ShowName = false); });
+                treeViewAdv1.Invalidate();
+            };
+            customButtonShowNamesAll.Click += (sender, e) =>
+            {
+                _model.Nodes.OfType<MyRoot>().ToList().ForEach(s => { s.Nodes.OfType<MyNode>().ToList().ForEach(k => k.ShowName = true); });
+                treeViewAdv1.Invalidate();
+            };
         }
 
 
@@ -71,7 +87,7 @@ namespace EnhancedMap.GUI.SettingsLayouts
             foreach (BuildSet set in FilesManager.BuildSets)
             {
                 CheckState state = set.IsEnabled ? CheckState.Checked : CheckState.Unchecked;
-                MyRoot root = (MyRoot)AddRoot(set.Name, set.Image, state, set);
+                MyRoot root = (MyRoot) AddRoot(set.Name, set.Image, state, set);
 
                 foreach (BuildingEntry label in set.Entries)
                 {
@@ -87,6 +103,7 @@ namespace EnhancedMap.GUI.SettingsLayouts
                     }*/
                 }
             }
+
             treeViewAdv1.EndUpdate();
 
             treeViewAdv1.ExpandAll();
@@ -94,20 +111,14 @@ namespace EnhancedMap.GUI.SettingsLayouts
 
         private Node AddChild(string name, string x, string y, string facet, bool enabled, bool showname, Node parent, BuildingEntry entry)
         {
-            Node node = new MyNode(name, x, y, facet, enabled, showname)
-            {
-                Tag = entry
-            };
+            Node node = new MyNode(name, x, y, facet, enabled, showname) {Tag = entry};
             parent.Nodes.Add(node);
             return node;
         }
 
         private Node AddRoot(string name, Bitmap img, CheckState enabled, BuildSet set)
         {
-            MyRoot node = new MyRoot(name, img, enabled)
-            {
-                Tag = set
-            };
+            MyRoot node = new MyRoot(name, img, enabled) {Tag = set};
             _model.Nodes.Add(node);
             return node;
         }
@@ -116,9 +127,12 @@ namespace EnhancedMap.GUI.SettingsLayouts
         private class MyRoot : Node
         {
             private CheckState _state;
-            public MyRoot(string name, Bitmap img, CheckState enabled) 
+
+            public MyRoot(string name, Bitmap img, CheckState enabled)
             {
-                Name = name;  Icon = img; _state = enabled;
+                Name = name;
+                Icon = img;
+                _state = enabled;
             }
 
             public CheckState State
@@ -131,23 +145,28 @@ namespace EnhancedMap.GUI.SettingsLayouts
                     else
                         _state = value;
 
-                    BuildSet entry = ((BuildSet)Tag);
+                    BuildSet entry = (BuildSet) Tag;
                     entry.IsEnabled = _state != CheckState.Unchecked;
                 }
             }
+
             public Bitmap Icon { get; }
             public string Name { get; }
         }
 
         private class MyNode : Node
         {
-            private CheckState _state;
             private bool _showName;
+            private CheckState _state;
 
-            public MyNode(string name, string x, string y, string facet, bool enabled, bool showname) 
+            public MyNode(string name, string x, string y, string facet, bool enabled, bool showname)
             {
-                Name = name; X = x; Y = y; Facet = facet;
-                _state = enabled ? CheckState.Checked : CheckState.Unchecked; _showName = showname;
+                Name = name;
+                X = x;
+                Y = y;
+                Facet = facet;
+                _state = enabled ? CheckState.Checked : CheckState.Unchecked;
+                _showName = showname;
             }
 
             public CheckState State
@@ -160,7 +179,7 @@ namespace EnhancedMap.GUI.SettingsLayouts
                     else
                         _state = value;
 
-                    BuildingEntry entry = ((BuildingEntry)Tag);
+                    BuildingEntry entry = (BuildingEntry) Tag;
                     entry.IsEnabled = _state == CheckState.Checked;
 
                     /*if (_state == CheckState.Unchecked)
@@ -178,21 +197,21 @@ namespace EnhancedMap.GUI.SettingsLayouts
                     }*/
                 }
             }
+
             public string Name { get; }
             public string X { get; }
             public string Y { get; }
             public string Facet { get; }
+
             public bool ShowName
             {
                 get => _showName;
                 set
                 {
-                    BuildingEntry entry = ((BuildingEntry)Tag);
+                    BuildingEntry entry = (BuildingEntry) Tag;
                     entry.ShowName = _showName = value;
                 }
             }
-
         }
-
     }
 }

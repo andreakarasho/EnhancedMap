@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections;
 
 namespace EnhancedMapServerNetCore.Managers
 {
@@ -17,7 +14,7 @@ namespace EnhancedMapServerNetCore.Managers
         private static IEnumerator ISave()
         {
             while (Core.IsRunning)
-            {            
+            {
                 yield return new WaitForSeconds(IsSaving ? .5f : 5 * 60);
                 Save();
             }
@@ -43,6 +40,5 @@ namespace EnhancedMapServerNetCore.Managers
             Core.Server.Resume();
             IsSaving = false;
         }
-
     }
 }

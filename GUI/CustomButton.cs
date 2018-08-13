@@ -1,33 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EnhancedMap.GUI
 {
     public class CustomButton : Button, ICustomControl
     {
-        //private static readonly Font _font = new Font(Control.DefaultFont.Name, 10, FontStyle.Regular);
-        private static SolidBrush _baseColor = new SolidBrush(ColorsTable.Black0);// new SolidBrush(Color.FromArgb(49, 49, 49));
-        private static SolidBrush _pressedColor = new SolidBrush(ColorsTable.Black2);// new SolidBrush(Color.Gray);
-        private static SolidBrush _hoverColor = new SolidBrush(ColorsTable.Black1);
-
         private const int ITEM_HEIGHT = 30;
 
-        private SizeF _textLen;
+        //private static readonly Font _font = new Font(Control.DefaultFont.Name, 10, FontStyle.Regular);
+        private static SolidBrush _baseColor = new SolidBrush(ColorsTable.Black0); // new SolidBrush(Color.FromArgb(49, 49, 49));
+        private static readonly SolidBrush _pressedColor = new SolidBrush(ColorsTable.Black2); // new SolidBrush(Color.Gray);
+        private static readonly SolidBrush _hoverColor = new SolidBrush(ColorsTable.Black1);
         private bool _forceHover;
 
-        public CustomButton() : base()
+        private SizeF _textLen;
+
+        public CustomButton()
         {
             BackColor = ColorsTable.Black0;
         }
 
         public bool IsPressed { get; set; }
         public bool IsHover { get; set; }
-        public MouseState MouseState { get; set; }
 
         public bool ForceHover
         {
@@ -45,7 +40,7 @@ namespace EnhancedMap.GUI
             set
             {
                 base.Text = value;
-                _textLen = this.CreateGraphics().MeasureString(value, Font);
+                _textLen = CreateGraphics().MeasureString(value, Font);
             }
         }
 
@@ -55,7 +50,7 @@ namespace EnhancedMap.GUI
             set
             {
                 base.Font = value;
-                _textLen = this.CreateGraphics().MeasureString(Text, value);
+                _textLen = CreateGraphics().MeasureString(Text, value);
             }
         }
 
@@ -64,6 +59,8 @@ namespace EnhancedMap.GUI
             get => base.BackColor;
             set => base.BackColor = value;
         }
+
+        public MouseState MouseState { get; set; }
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -80,23 +77,23 @@ namespace EnhancedMap.GUI
             else
                 g.FillRectangle(Brushes.DimGray, ClientRectangle);
 
-            if (this.Image != null)
+            if (Image != null)
             {
-                switch (this.ImageAlign)
+                switch (ImageAlign)
                 {
                     case ContentAlignment.MiddleCenter:
-                        g.DrawImage(this.Image, this.Width / 2 - Image.Width / 2, this.Height / 2 - Image.Width / 2, Image.Width, Image.Height);
+                        g.DrawImage(Image, Width / 2 - Image.Width / 2, Height / 2 - Image.Width / 2, Image.Width, Image.Height);
                         break;
                     default:
                     case ContentAlignment.MiddleLeft:
-                        g.DrawImage(this.Image, 4, this.Height / 2 - Image.Height / 2, Image.Width, Image.Height);
+                        g.DrawImage(Image, 4, Height / 2 - Image.Height / 2, Image.Width, Image.Height);
                         break;
                 }
             }
 
             //  g.DrawRectangle(IsHover ? Pens.Red : Pens.Gray, ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 1, ClientRectangle.Height - 1);
 
-            g.DrawString(Text, Font, Brushes.White, ClientRectangle /*new RectangleF(ClientRectangle.Width / 2 - _textLen.Width / 2, ClientRectangle.Height / 2 - _textLen.Height / 2, Width, Height)*/, new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+            g.DrawString(Text, Font, Brushes.White, ClientRectangle /*new RectangleF(ClientRectangle.Width / 2 - _textLen.Width / 2, ClientRectangle.Height / 2 - _textLen.Height / 2, Width, Height)*/, new StringFormat {Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center});
         }
 
         protected override void OnMouseEnter(EventArgs e)

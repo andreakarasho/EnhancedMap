@@ -1,58 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EnhancedMap.Core
 {
     public static class OEUO_Manager
     {
-        private static IntPtr _clientHandle;
+        private const string DLL = "uo.dll";
 
         public static int ClientIndex { get; set; }
-        public static bool IsOpen => _clientHandle != IntPtr.Zero && CliNr > 0;
-        public static IntPtr ClientHwnd => _clientHandle;
-
-        public static bool Attach(int c = 1)
-        {
-            if (!File.Exists("uo.dll") || Version() != 3)
-                return false;
-
-            try
-            {
-                Close();
-            }
-            catch { }
-
-            if (c < 1)
-                c = 1;
-
-            _clientHandle = Open();
-            if (_clientHandle == IntPtr.Zero)
-                return false;
-
-            SetTop(_clientHandle, 0);
-            PushStrVal(_clientHandle, "Set");
-            PushStrVal(_clientHandle, "CliNr");
-            PushInteger(_clientHandle, c);
-            if (Execute(_clientHandle) != 0)
-                return false;
-
-            InitGet();
-            PushStrVal(_clientHandle, "CliNr");
-            if (Execute(_clientHandle) != 0)
-                return false;
-
-            if (GetInteger(_clientHandle, c) <= 0)
-                return false;
-
-            ClientIndex = c;
-
-            return true;
-        }
+        public static bool IsOpen => ClientHwnd != IntPtr.Zero && CliNr > 0;
+        public static IntPtr ClientHwnd { get; private set; }
 
         public static int CliTop => ReadInt("CliTop");
         public static int CliLeft => ReadInt("CliLeft");
@@ -69,49 +27,87 @@ namespace EnhancedMap.Core
         public static bool CliLogged => ReadBool("CliLogged");
         public static int CursKind => ReadInt("CursKind");
 
+        public static bool Attach(int c = 1)
+        {
+            if (!File.Exists("uo.dll") || Version() != 3)
+                return false;
+
+            try
+            {
+                Close();
+            }
+            catch
+            {
+            }
+
+            if (c < 1)
+                c = 1;
+
+            ClientHwnd = Open();
+            if (ClientHwnd == IntPtr.Zero)
+                return false;
+
+            SetTop(ClientHwnd, 0);
+            PushStrVal(ClientHwnd, "Set");
+            PushStrVal(ClientHwnd, "CliNr");
+            PushInteger(ClientHwnd, c);
+            if (Execute(ClientHwnd) != 0)
+                return false;
+
+            InitGet();
+            PushStrVal(ClientHwnd, "CliNr");
+            if (Execute(ClientHwnd) != 0)
+                return false;
+
+            if (GetInteger(ClientHwnd, c) <= 0)
+                return false;
+
+            ClientIndex = c;
+
+            return true;
+        }
+
         public static void Close()
         {
-            if (!File.Exists("uo.dll") || _clientHandle == IntPtr.Zero)
+            if (!File.Exists("uo.dll") || ClientHwnd == IntPtr.Zero)
                 return;
-            Close(_clientHandle);
+            Close(ClientHwnd);
         }
 
         private static void InitGet()
         {
-            SetTop(_clientHandle, 0);
-            PushStrVal(_clientHandle, "Get");
+            SetTop(ClientHwnd, 0);
+            PushStrVal(ClientHwnd, "Get");
         }
 
         private static bool ReadBool(string cmd)
         {
             InitGet();
-            PushStrVal(_clientHandle, cmd);
-            return Execute(_clientHandle) == 0 && GetBoolean(_clientHandle, ClientIndex);
+            PushStrVal(ClientHwnd, cmd);
+            return Execute(ClientHwnd) == 0 && GetBoolean(ClientHwnd, ClientIndex);
         }
 
         private static int ReadInt(string cmd)
         {
             InitGet();
-            PushStrVal(_clientHandle, cmd);
-            return Execute(_clientHandle) == 0 ? GetInteger(_clientHandle, ClientIndex) : 0;
+            PushStrVal(ClientHwnd, cmd);
+            return Execute(ClientHwnd) == 0 ? GetInteger(ClientHwnd, ClientIndex) : 0;
         }
 
         private static string ReadString(string cmd)
         {
             InitGet();
-            PushStrVal(_clientHandle, cmd);
-            return Execute(_clientHandle) == 0 ? Marshal.PtrToStringAnsi(GetString(_clientHandle, ClientIndex)) : string.Empty;
+            PushStrVal(ClientHwnd, cmd);
+            return Execute(ClientHwnd) == 0 ? Marshal.PtrToStringAnsi(GetString(ClientHwnd, ClientIndex)) : string.Empty;
         }
 
         private static void WriteInt(string cmd, int value)
         {
             InitGet();
-            PushStrVal(_clientHandle, cmd);
-            PushInteger(_clientHandle, value);
-            Execute(_clientHandle);
+            PushStrVal(ClientHwnd, cmd);
+            PushInteger(ClientHwnd, value);
+            Execute(ClientHwnd);
         }
-
-        private const string DLL = "uo.dll";
 
         [DllImport(DLL, CallingConvention = CallingConvention.Winapi)]
         public static extern IntPtr Open();

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace EnhancedMapServerNetCore
 {
@@ -14,7 +13,6 @@ namespace EnhancedMapServerNetCore
             do
             {
                 g = Guid.NewGuid();
-
             } while (_guids.Contains(g));
 
             _guids.Add(g);

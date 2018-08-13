@@ -1,18 +1,14 @@
-﻿using EnhancedMap.Core.Network;
-using EnhancedMap.GUI;
-using EnhancedMap.Properties;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EnhancedMap.Core.Network;
+using EnhancedMap.Properties;
 
 namespace EnhancedMap.Core.MapObjects
 {
     public class ZoomMask : RenderObject
     {
         private float _lastZoom;
+
         private ZoomMask() : base("zoom")
         {
             IsVisible = false;
@@ -29,10 +25,7 @@ namespace EnhancedMap.Core.MapObjects
                 _lastZoom = Global.Zoom;
             }
 
-            if (IsEndOfLife)
-            {
-                IsVisible = false;
-            }
+            if (IsEndOfLife) IsVisible = false;
 
             if (!IsVisible)
                 return false;
@@ -63,19 +56,17 @@ namespace EnhancedMap.Core.MapObjects
             int xLong = 0, yLat = 0, xMins = 0, yMins = 0;
             bool xEast = false, ySouth = false;
 
-            if (Utility.FormatCoordinates(new Point((int)Global.X, (int)Global.Y), Global.Maps[Global.Facet], ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
+            if (Utility.FormatCoordinates(new Point((int) Global.X, (int) Global.Y), Global.Maps[Global.Facet], ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
             {
-                string locString = String.Format("Center: {0}°{1}'{2} {3}°{4}'{5} | ({6},{7})", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W", (int)Global.X, (int)Global.Y);
-                if (Global.FreeView && Utility.FormatCoordinates(new Point(MouseManager.Location.X, MouseManager.Location.Y), Global.Maps[Global.Facet], ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth))
-                {
-                    locString += String.Format("\r\nMouse: {0}°{1}'{2} {3}°{4}'{5} | ({6},{7})", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W", MouseManager.Location.X, MouseManager.Location.Y);
-                }
+                string locString = string.Format("Center: {0}°{1}'{2} {3}°{4}'{5} | ({6},{7})", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W", (int) Global.X, (int) Global.Y);
+                if (Global.FreeView && Utility.FormatCoordinates(new Point(MouseManager.Location.X, MouseManager.Location.Y), Global.Maps[Global.Facet], ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth)) locString += string.Format("\r\nMouse: {0}°{1}'{2} {3}°{4}'{5} | ({6},{7})", yLat, yMins, ySouth ? "S" : "N", xLong, xMins, xEast ? "E" : "W", MouseManager.Location.X, MouseManager.Location.Y);
 
                 SizeF size = g.MeasureString(locString, Font);
 
-                g.FillRectangle(ColorsCache["blackbackground"], new RectangleF(canvasW / 2 - size.Width / 2 - 2, 2 , size.Width + 4, size.Height + 4));
-                g.DrawStringWithBorder(locString, canvasW / 2 - size.Width / 2 , 4 , Brushes.Yellow, Font);
+                g.FillRectangle(ColorsCache["blackbackground"], new RectangleF(canvasW / 2 - size.Width / 2 - 2, 2, size.Width + 4, size.Height + 4));
+                g.DrawStringWithBorder(locString, canvasW / 2 - size.Width / 2, 4, Brushes.Yellow, Font);
             }
+
             return false;
         }
     }
@@ -88,12 +79,14 @@ namespace EnhancedMap.Core.MapObjects
 
             SocketClient.Connected += (sender, e) =>
             {
-                IsVisible = true; LifeTime = DateTime.Now.TimeOfDay.Add(TimeSpan.FromSeconds(3));
+                IsVisible = true;
+                LifeTime = DateTime.Now.TimeOfDay.Add(TimeSpan.FromSeconds(3));
             };
 
             SocketClient.Disconnected += (sender, e) =>
             {
-                IsVisible = true; LifeTime = DateTime.Now.TimeOfDay.Add(TimeSpan.FromSeconds(3));
+                IsVisible = true;
+                LifeTime = DateTime.Now.TimeOfDay.Add(TimeSpan.FromSeconds(3));
             };
 
             SocketClient.Waiting += (sender, e) => IsVisible = true;
@@ -112,9 +105,9 @@ namespace EnhancedMap.Core.MapObjects
                 return false;
             }
 
-            if (Network.NetworkManager.SocketClient.IsConnected && Network.NetworkManager.SocketClient.IsRunning)
+            if (NetworkManager.SocketClient.IsConnected && NetworkManager.SocketClient.IsRunning)
                 g.DrawImage(Resources.right, 5, canvasH - 30, Resources.right.Width, Resources.right.Height);
-            else if (Network.NetworkManager.SocketClient.IsRunning && !Network.NetworkManager.SocketClient.IsConnected)
+            else if (NetworkManager.SocketClient.IsRunning && !NetworkManager.SocketClient.IsConnected)
             {
                 g.DrawWait(12, canvasH - 12, -5, -10, Color.White);
                 return true;
@@ -128,9 +121,9 @@ namespace EnhancedMap.Core.MapObjects
 
     public class FPSMask : RenderObject
     {
-        private DateTime _lastTime; // marks the beginning the measurement began
-        private int _framesRendered; // an increasing count
         private int _fps; // the FPS calculated from the last measurement
+        private int _framesRendered; // an increasing count
+        private DateTime _lastTime; // marks the beginning the measurement began
 
         private FPSMask() : base("fpsmask")
         {
@@ -161,11 +154,11 @@ namespace EnhancedMap.Core.MapObjects
 
     public class PanicMask : RenderObject
     {
-        private bool _render;
         private DateTime _last;
-        private Pen _pen;
+        private readonly Pen _pen;
+        private bool _render;
 
-        private PanicMask() : base ("panicmask")
+        private PanicMask() : base("panicmask")
         {
             _pen = new Pen(Brushes.Red, 5);
             IsVisible = false;
@@ -195,7 +188,6 @@ namespace EnhancedMap.Core.MapObjects
     {
         private RoseMask() : base("panicmask")
         {
-            
         }
 
         public static RoseMask RoseInstance { get; } = new RoseMask();
@@ -211,11 +203,10 @@ namespace EnhancedMap.Core.MapObjects
 
     public class CrossMask : RenderObject
     {
-        private Pen _pen = new Pen(Brushes.Yellow);
+        private readonly Pen _pen = new Pen(Brushes.Yellow);
 
         private CrossMask() : base("crossmask")
         {
-
         }
 
         public static CrossMask CorssInstance { get; } = new CrossMask();

@@ -1,34 +1,29 @@
-﻿using EnhancedMap.Core.MapObjects;
-using EnhancedMap.Core.Network;
-using EnhancedMap.Diagnostic;
-using EnhancedMap.GUI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EnhancedMap.Core.MapObjects;
+using EnhancedMap.Core.Network;
+using EnhancedMap.Diagnostic;
 
 namespace EnhancedMap.Core
 {
     public static class CommandManager
     {
-        const string PREFIX = "--";
+        private const string PREFIX = "--";
 
-        private static Dictionary<string, Action<string, string, string, string,string,string,string,string,string> > _commands { get; } = new Dictionary<string, Action<string, string, string, string, string, string, string, string, string>>()
+        private static Dictionary<string, Action<string, string, string, string, string, string, string, string, string>> _commands { get; } = new Dictionary<string, Action<string, string, string, string, string, string, string, string, string>>
         {
-            { "panic", (string a1, string a2, string a3, string a4, string a5, string a6, string a7, string a8, string a9) =>
+            {
+                "panic", (a1, a2, a3, a4, a5, a6, a7, a8, a9) =>
                 {
                     Global.PlayerInstance.InPanic = true;
                     if (Global.SettingsCollection["panicsounds"].ToBool())
                         SoundsManager.Play(SOUNDS_TYPE.PANIC);
                 }
             },
-            { "unpanic", (string a1, string a2, string a3, string a4, string a5, string a6, string a7, string a8, string a9) => 
-                {
-                    Global.PlayerInstance.InPanic = false;
-                }
-            },
-            { "goto", (string a1, string a2, string a3, string a4, string a5, string a6, string a7, string a8, string a9) =>
+            {"unpanic", (a1, a2, a3, a4, a5, a6, a7, a8, a9) => { Global.PlayerInstance.InPanic = false; }},
+            {
+                "goto", (a1, a2, a3, a4, a5, a6, a7, a8, a9) =>
                 {
                     if (!Global.FreeView)
                         Global.FreeView = true;
@@ -40,43 +35,37 @@ namespace EnhancedMap.Core
                     }
                 }
             },
-            { "setlabel", (string a1, string a2, string a3, string a4, string a5, string a6, string a7, string a8, string a9) => 
+            {
+                "setlabel", (a1, a2, a3, a4, a5, a6, a7, a8, a9) =>
                 {
-                     if (short.TryParse(a1, out short x) &&
-                        short.TryParse(a2, out short y)
-                        && int.TryParse(a3, out int map) && ((map < Global.Maps.Length && map >= 0) || map == 7))
+                    if (short.TryParse(a1, out short x) && short.TryParse(a2, out short y) && int.TryParse(a3, out int map) && (map < Global.Maps.Length && map >= 0 || map == 7))
                     {
                         string name = a4.Trim().ToLower();
                         BuildSet set = FilesManager.BuildSets.FirstOrDefault(s => s.Name.ToLower() == name);
                         if (set != null)
                         {
-                            BuildingEntry entry = new BuildingEntry(set, string.Empty, new Position(x, y), map)
-                            {
-                                IsEnabled = true,
-                                IsUOAM = false,
-                            };
+                            BuildingEntry entry = new BuildingEntry(set, string.Empty, new Position(x, y), map) {IsEnabled = true, IsUOAM = false};
 
                             set.Entries.Add(entry);
 
                             RenderObjectsManager.AddBuilding(new BuildingObject(entry));
                         }
                     }
-
                 }
             },
             {
-                "track", (string a1, string a2, string a3, string a4, string a5, string a6, string a7, string a8, string a9) => 
+                "track", (a1, a2, a3, a4, a5, a6, a7, a8, a9) =>
                 {
                     if (!string.IsNullOrEmpty(a1))
                     {
-                        UserObject u =  RenderObjectsManager.GetUser(a1);
+                        UserObject u = RenderObjectsManager.GetUser(a1);
                         if (u != null && !u.IsDisposing)
                             Global.TrackedUser = u is PlayerObject ? null : u;
                     }
                 }
             },
             {
-                "who", (string a1, string a2, string a3, string a4, string a5, string a6, string a7, string a8, string a9) =>
+                "who", (a1, a2, a3, a4, a5, a6, a7, a8, a9) =>
                 {
                     UserObject[] users = RenderObjectsManager.Get<UserObject>();
                     for (int i = 0; i < users.Length; i++)
@@ -88,29 +77,25 @@ namespace EnhancedMap.Core
                 }
             },
             {
-                "addmarker", (string a1, string a2, string a3, string a4, string a5, string a6, string a7, string a8, string a9) =>
+                "addmarker", (a1, a2, a3, a4, a5, a6, a7, a8, a9) =>
                 {
-                    if (short.TryParse(a1, out short x) &&
-                        short.TryParse(a2, out short y))
-                    {
+                    if (short.TryParse(a1, out short x) && short.TryParse(a2, out short y))
                         RenderObjectsManager.AddMarkerObject(new MarkerObject(Global.PlayerInstance, x, y));
-                    }
                 }
-            },
-           /* {
-                "removemarker", (string a1, string a2, string a3, string a4, string a5, string a6, string a7, string a8, string a9) =>
-                {
-
-                }
-            },*/
-
+            }
+            /* {
+                 "removemarker", (string a1, string a2, string a3, string a4, string a5, string a6, string a7, string a8, string a9) =>
+                 {
+ 
+                 }
+             },*/
         };
 
         public static void DoCommand(string text)
         {
             if (!string.IsNullOrEmpty(text))
             {
-                string[] entries = text.Split(new char[1] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] entries = text.Split(new char[1] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
                 if (_commands.TryGetValue(entries[0], out Action<string, string, string, string, string, string, string, string, string> action))
                 {
@@ -152,10 +137,7 @@ namespace EnhancedMap.Core
                 }
                 else
                 {
-                    if (NetworkManager.SocketClient.IsConnected)
-                    {
-                        NetworkManager.SocketClient.Send(new PChatMessage(text, Global.PlayerInstance.Hue.Color));                       
-                    }
+                    if (NetworkManager.SocketClient.IsConnected) NetworkManager.SocketClient.Send(new PChatMessage(text, Global.PlayerInstance.Hue.Color));
                 }
             }
             else

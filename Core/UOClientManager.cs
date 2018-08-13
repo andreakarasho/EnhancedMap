@@ -1,14 +1,12 @@
-﻿using EnhancedMap.Core.MapObjects;
-using EnhancedMap.Diagnostic;
-using System;
-using System.Collections.Concurrent;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using EnhancedMap.Diagnostic;
 
 namespace EnhancedMap.Core
 {
@@ -66,21 +64,15 @@ namespace EnhancedMap.Core
 
     public static class UOClientManager
     {
-        const string CLASS_NAME = "UOASSIST-TP-MSG-WND";
-        const string UO_CLASSIC_CLIENT = "client";
-        const string UO_ENHANCED_CLIENT = "UOSA";
-        const string UO_ORION_CLIENT = "OrionUO";
-
-
         public delegate bool EnumWindowsProc(IntPtr hwnd, IntPtr lParam);
+
+        private const string CLASS_NAME = "UOASSIST-TP-MSG-WND";
+        private const string UO_CLASSIC_CLIENT = "client";
+        private const string UO_ENHANCED_CLIENT = "UOSA";
+        private const string UO_ORION_CLIENT = "OrionUO";
 
         private static IntPtr _maphWnd;
         private static bool _isScanning;
-
-        static UOClientManager()
-        {
-
-        }
 
         public static bool IsAttached { get; private set; }
         public static IntPtr hWnd { get; private set; }
@@ -100,7 +92,7 @@ namespace EnhancedMap.Core
                     clientName = UO_CLASSIC_CLIENT;
                     break;
                 case 1:
-                    clientName = UO_ENHANCED_CLIENT; 
+                    clientName = UO_ENHANCED_CLIENT;
                     break;
                 case 2:
                     clientName = UO_ORION_CLIENT;
@@ -169,10 +161,7 @@ namespace EnhancedMap.Core
 
                 if (clients.Count == 0)
                 {
-                    if (IsAttached)
-                    {
-                        IsAttached = false;
-                    }
+                    if (IsAttached) IsAttached = false;
                     _isScanning = false;
                     return false;
                 }
@@ -189,25 +178,25 @@ namespace EnhancedMap.Core
                         continue;
 
                     GetWindowThreadProcessId(hwnd, out uint pid);
-                    Process p = Process.GetProcessById((int)pid);
+                    Process p = Process.GetProcessById((int) pid);
                     if (p != null)
                     {
                         Logger.Good("Assistants founds: " + p.MainWindowTitle);
 
                         StringBuilder sb = new StringBuilder(510);
                         int f = SendMessageA(hwnd, 13, 510, sb);
-                        f = SendMessage(hwnd, (int)MSG_SEND.ATTACH_TO_UO, _maphWnd.ToInt32(), 1);
+                        f = SendMessage(hwnd, (int) MSG_SEND.ATTACH_TO_UO, _maphWnd.ToInt32(), 1);
 
                         if (f > 1)
                         {
                             int f1 = f;
                             for (int i = 0; i < f1; i++)
-                                f = SendMessage(hwnd, (int)MSG_SEND.ATTACH_TO_UO, _maphWnd.ToInt32(), 1);
+                                f = SendMessage(hwnd, (int) MSG_SEND.ATTACH_TO_UO, _maphWnd.ToInt32(), 1);
                         }
 
                         if (f == 1)
                         {
-                            f = SendMessage(hwnd, (int)MSG_SEND.GET_HOUSES_BOATS_INFO, 0, 0);
+                            f = SendMessage(hwnd, (int) MSG_SEND.GET_HOUSES_BOATS_INFO, 0, 0);
                             if (f != 1)
                                 Logger.Warn("Unable to get Houses and Boats info from assistants. Probably assistants doesn't support this feature.");
 
@@ -220,7 +209,6 @@ namespace EnhancedMap.Core
 
                             return true;
                         }
-
                     }
                 }
             }
@@ -232,10 +220,7 @@ namespace EnhancedMap.Core
 
         public static IEnumerable<IntPtr> FindWindowsWithText(string titleText)
         {
-            return FindWindows(delegate (IntPtr wnd, IntPtr param)
-            {
-                return GetWindowText(wnd).Contains(titleText);
-            });
+            return FindWindows(delegate(IntPtr wnd, IntPtr param) { return GetWindowText(wnd).Contains(titleText); });
         }
 
 
@@ -243,15 +228,15 @@ namespace EnhancedMap.Core
         {
             List<IntPtr> windows = new List<IntPtr>();
 
-            EnumWindows(delegate (IntPtr h, IntPtr lParam)
+            EnumWindows(delegate(IntPtr h, IntPtr lParam)
             {
                 if (filter(h, lParam))
                 {
-                   // Logger.Log("ASSISTUO-CLASS: 0x" + h.ToString("X"));
+                    // Logger.Log("ASSISTUO-CLASS: 0x" + h.ToString("X"));
                     windows.Add(h);
                 }
-                return true;
 
+                return true;
             }, IntPtr.Zero);
             return windows;
         }
@@ -279,12 +264,10 @@ namespace EnhancedMap.Core
             foreach (IntPtr ptr in clients)
             {
                 GetWindowThreadProcessId(ptr, out uint pid);
-                Process p = Process.GetProcessById((int)pid);
-                if (p != null)
-                {
-                    titles[ptr] = p.MainWindowTitle;
-                }
+                Process p = Process.GetProcessById((int) pid);
+                if (p != null) titles[ptr] = p.MainWindowTitle;
             }
+
             _isScanning = false;
 
             return titles;
@@ -293,7 +276,7 @@ namespace EnhancedMap.Core
         public static void SysMessage(string msg, int col = 999)
         {
             if (hWnd != IntPtr.Zero && IsAttached)
-                SendMessage(hWnd, (int)MSG_SEND.SEND_SYS_MSG, Get_Hiword_Loword(1, col), GlobalAddAtom(msg));
+                SendMessage(hWnd, (int) MSG_SEND.SEND_SYS_MSG, Get_Hiword_Loword(1, col), GlobalAddAtom(msg));
         }
 
         private static int Get_Hiword_Loword(int hi, int lo)
@@ -329,8 +312,7 @@ namespace EnhancedMap.Core
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        internal static extern bool GetWindowPlacement(
-            IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
+        internal static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
 
         [Serializable]
         [StructLayout(LayoutKind.Sequential)]
@@ -339,17 +321,17 @@ namespace EnhancedMap.Core
             public int length;
             public int flags;
             public ShowWindowCommands showCmd;
-            public System.Drawing.Point ptMinPosition;
-            public System.Drawing.Point ptMaxPosition;
-            public System.Drawing.Rectangle rcNormalPosition;
+            public Point ptMinPosition;
+            public Point ptMaxPosition;
+            public Rectangle rcNormalPosition;
         }
 
-        internal enum ShowWindowCommands : int
+        internal enum ShowWindowCommands
         {
             Hide = 0,
             Normal = 1,
             Minimized = 2,
-            Maximized = 3,
+            Maximized = 3
         }
     }
 }

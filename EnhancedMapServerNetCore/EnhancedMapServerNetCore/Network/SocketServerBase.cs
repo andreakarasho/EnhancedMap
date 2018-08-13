@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Net;
-using System.Net.Sockets;
-using System.Collections.Concurrent;
-using System.Threading;
-using System.Threading.Tasks;
-using EnhancedMapServerNetCore.Logging;
-using System.Net.NetworkInformation;
-using System.Collections;
-
-namespace EnhancedMapServerNetCore.Network
+﻿namespace EnhancedMapServerNetCore.Network
 {
     //https://github.com/Arctium/WoW-Core/blob/master/src/Arctium.Core/src/Network/Sockets/SocketServerBase.cs
 
@@ -256,7 +244,6 @@ namespace EnhancedMapServerNetCore.Network
     //    }
 
 
-
     //     public void StartAcceptConnections() => _acceptConnections = true;
     //     public void StopAcceptConnections() => _acceptConnections = false;
 
@@ -280,7 +267,6 @@ namespace EnhancedMapServerNetCore.Network
 
     //        IsListening = false;
     //    }
-
 
 
     //    protected virtual void Dispose(bool disposing)

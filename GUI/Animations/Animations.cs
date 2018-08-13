@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EnhancedMap.GUI.Animations
 {
-    enum AnimationType
+    internal enum AnimationType
     {
         Linear,
         EaseInOut,
@@ -14,7 +10,7 @@ namespace EnhancedMap.GUI.Animations
         CustomQuadratic
     }
 
-    static class AnimationLinear
+    internal static class AnimationLinear
     {
         public static double CalculateProgress(double progress)
         {
@@ -22,7 +18,7 @@ namespace EnhancedMap.GUI.Animations
         }
     }
 
-    static class AnimationEaseInOut
+    internal static class AnimationEaseInOut
     {
         public static double PI = Math.PI;
         public static double PI_HALF = Math.PI / 2;
@@ -51,7 +47,7 @@ namespace EnhancedMap.GUI.Animations
         public static double CalculateProgress(double progress)
         {
             var kickoff = 0.6;
-            return 1 - Math.Cos((Math.Max(progress, kickoff) - kickoff) * Math.PI / (2 - (2 * kickoff)));
+            return 1 - Math.Cos((Math.Max(progress, kickoff) - kickoff) * Math.PI / (2 - 2 * kickoff));
         }
     }
 }

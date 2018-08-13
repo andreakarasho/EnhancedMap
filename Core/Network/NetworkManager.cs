@@ -1,10 +1,8 @@
-﻿using EnhancedMap.Core.MapObjects;
-using EnhancedMap.GUI;
-using System;
+﻿using System;
 using System.Linq;
 using System.Net;
-using System.Windows;
 using System.Windows.Forms;
+using EnhancedMap.Core.MapObjects;
 
 namespace EnhancedMap.Core.Network
 {
@@ -19,24 +17,25 @@ namespace EnhancedMap.Core.Network
     public static class NetworkManager
     {
         private static readonly Timer _TimerReconnect;
-        public static SocketClient SocketClient { get; }
 
         static NetworkManager()
         {
             SocketClient = new SocketClient();
 
             SocketClient.Disconnected += (sender, e) =>
-            {               
+            {
                 RenderObjectsManager.Get<UserObject>().Where(s => !(s is PlayerObject)).ToList().ForEach(s => s.Dispose());
-                RenderObjectsManager.Get<SharedLabelObject>().ToList().ForEach(s => s.Dispose());         
+                RenderObjectsManager.Get<SharedLabelObject>().ToList().ForEach(s => s.Dispose());
             };
 
-            _TimerReconnect = TimerManager.Create(5000, 5000, () => 
+            _TimerReconnect = TimerManager.Create(5000, 5000, () =>
             {
                 if (!SocketClient.IsConnected)
                     Connect();
             }, false);
         }
+
+        public static SocketClient SocketClient { get; }
 
         public static void Connect()
         {
@@ -44,22 +43,14 @@ namespace EnhancedMap.Core.Network
             int port = Global.SettingsCollection["port"].ToInt();
 
             IPAddress addr = null;
-            if ( (addr = Resolve(ip)) == IPAddress.None || addr == null)
-            {
+            if ((addr = Resolve(ip)) == IPAddress.None || addr == null)
                 MessageBox.Show("Invalid address");
-            }
             else if (port < IPEndPoint.MinPort || port > IPEndPoint.MaxPort)
-            {
                 MessageBox.Show("Invalid port");
-            }
             else if (string.IsNullOrEmpty(Global.SettingsCollection["username"].ToString()))
-            {
                 MessageBox.Show("Invalid Username");
-            }
             else if (string.IsNullOrEmpty(Global.SettingsCollection["password"].ToString()))
-            {
                 MessageBox.Show("Invalid Password");
-            }
             else
             {
                 if (_TimerReconnect.IsRunning)

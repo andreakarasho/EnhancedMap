@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
-
 
 namespace EnhancedMap.Core.Network.Packets
 {
     public sealed class Packet : PacketBase
     {
         private readonly byte[] _data;
-        private readonly int _len;
-        private readonly byte _id;
 
         public Packet(byte[] data, byte id, int length)
         {
-            _data = data; _len = length; _id = id;
+            _data = data;
+            Length = length;
+            ID = id;
         }
 
         protected override byte this[int index]
@@ -33,9 +31,10 @@ namespace EnhancedMap.Core.Network.Packets
             }
         }
 
-        public override byte ID => _id;
+        public override byte ID { get; }
+
         public bool IsChanged { get; private set; }
-        public override int Length => _len;
+        public override int Length { get; }
 
         protected override void EnsureSize(int length)
         {
@@ -43,9 +42,15 @@ namespace EnhancedMap.Core.Network.Packets
                 throw new ArgumentOutOfRangeException("length");
         }
 
-        public override byte[] ToArray() => _data;
+        public override byte[] ToArray()
+        {
+            return _data;
+        }
 
-        public void MoveToData() => Seek(3); // ID (1) + Length (2)
+        public void MoveToData()
+        {
+            Seek(3);
+        }
 
         public byte ReadByte()
         {
@@ -53,20 +58,26 @@ namespace EnhancedMap.Core.Network.Packets
             return this[Position++];
         }
 
-        public sbyte ReadSByte() => (sbyte)ReadByte();
+        public sbyte ReadSByte()
+        {
+            return (sbyte) ReadByte();
+        }
 
-        public bool ReadBool() => ReadByte() != 0;
+        public bool ReadBool()
+        {
+            return ReadByte() != 0;
+        }
 
         public ushort ReadUShort()
         {
             EnsureSize(2);
-            return (ushort)(ReadByte() | (ReadByte() << 8));
+            return (ushort) (ReadByte() | (ReadByte() << 8));
         }
 
         public uint ReadUInt()
         {
             EnsureSize(4);
-            return (uint)(ReadByte() | (ReadByte() << 8) | (ReadByte() << 16) | (ReadByte() << 24));
+            return (uint) (ReadByte() | (ReadByte() << 8) | (ReadByte() << 16) | (ReadByte() << 24));
         }
 
         public string ReadASCII()
@@ -75,7 +86,7 @@ namespace EnhancedMap.Core.Network.Packets
             StringBuilder sb = new StringBuilder();
             char c;
 
-            while ((c = (char)ReadByte()) != '\0')
+            while ((c = (char) ReadByte()) != '\0')
                 sb.Append(c);
             return sb.ToString();
         }
@@ -88,7 +99,7 @@ namespace EnhancedMap.Core.Network.Packets
 
             for (int i = 0; i < length; i++)
             {
-                c = (char)ReadByte();
+                c = (char) ReadByte();
                 if (c != '\0')
                     sb.Append(c);
             }
@@ -102,7 +113,7 @@ namespace EnhancedMap.Core.Network.Packets
             StringBuilder sb = new StringBuilder();
             char c;
 
-            while ((c = (char)ReadUShort()) != '\0')
+            while ((c = (char) ReadUShort()) != '\0')
                 sb.Append(c);
 
             return sb.ToString();
@@ -115,7 +126,7 @@ namespace EnhancedMap.Core.Network.Packets
             char c;
             for (int i = 0; i < length; i++)
             {
-                c = (char)ReadUShort();
+                c = (char) ReadUShort();
                 if (c != '\0')
                     sb.Append(c);
             }
@@ -133,7 +144,7 @@ namespace EnhancedMap.Core.Network.Packets
 
             for (int i = 0; i < length; i++)
             {
-                c = (char)ReadUShortReversed();
+                c = (char) ReadUShortReversed();
                 if (c != '\0')
                     sb.Append(c);
             }
@@ -141,8 +152,14 @@ namespace EnhancedMap.Core.Network.Packets
             return sb.ToString();
         }
 
-        public ushort ReadUShortReversed() => (ushort)(ReadByte() | ReadByte() << 8);
-        public ushort ReadUIntReversed() => (ushort)(ReadByte() | ReadByte() << 8 | ReadByte() << 16 | ReadByte() << 24);
+        public ushort ReadUShortReversed()
+        {
+            return (ushort) (ReadByte() | (ReadByte() << 8));
+        }
 
+        public ushort ReadUIntReversed()
+        {
+            return (ushort) (ReadByte() | (ReadByte() << 8) | (ReadByte() << 16) | (ReadByte() << 24));
+        }
     }
 }

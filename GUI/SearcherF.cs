@@ -1,14 +1,6 @@
-﻿using EnhancedMap.Core;
-using EnhancedMap.Core.MapObjects;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
+using EnhancedMap.Core;
 
 namespace EnhancedMap.GUI
 {
@@ -17,11 +9,11 @@ namespace EnhancedMap.GUI
         public SearcherF()
         {
             InitializeComponent();
-            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
-            this.MinimumSize = this.MaximumSize = this.Size;
-            this.MaximizeBox = false;
+            Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+            MinimumSize = MaximumSize = Size;
+            MaximizeBox = false;
 
-            this.Load += (sender, e) => 
+            Load += (sender, e) =>
             {
                 ImageList imgList = new ImageList();
                 for (int i = 0; i < FilesManager.BuildSets.Count; i++)
@@ -29,6 +21,7 @@ namespace EnhancedMap.GUI
                     BuildSet set = FilesManager.BuildSets[i];
                     imgList.Images.Add(set.Image);
                 }
+
                 listView1.SmallImageList = imgList;
             };
 
@@ -54,10 +47,9 @@ namespace EnhancedMap.GUI
                     Global.Y = entry.Location.Y;
                     Global.Facet = entry.Map == 7 ? 0 : entry.Map;
                 }
-
             };
 
-            this.FormClosing += (sender, e) =>
+            FormClosing += (sender, e) =>
             {
                 if (Global.FreeView)
                     Global.FreeView = false;
@@ -81,10 +73,9 @@ namespace EnhancedMap.GUI
                         item.ImageIndex = i;
 
                         listView1.Items.Add(item);
-                    }                
+                    }
                 }
             }
-
         }
     }
 }

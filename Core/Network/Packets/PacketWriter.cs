@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace EnhancedMap.Core.Network.Packets
 {
@@ -14,7 +13,11 @@ namespace EnhancedMap.Core.Network.Packets
             Position = 3;
         }
 
-        protected override byte this[int index] { get => _data[index]; set => _data[index] = value; }
+        protected override byte this[int index]
+        {
+            get => _data[index];
+            set => _data[index] = value;
+        }
 
         public override byte ID => this[0];
         public override int Length => _data.Length;
@@ -38,8 +41,8 @@ namespace EnhancedMap.Core.Network.Packets
 
         public void WriteSize()
         {
-            this[2] = (byte)(Position >> 8);
-            this[1] = (byte)Position;
+            this[2] = (byte) (Position >> 8);
+            this[1] = (byte) Position;
         }
     }
 }

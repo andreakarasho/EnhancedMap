@@ -1,39 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
-
 
 namespace EnhancedMap.GUI.Animations
 {
-    class AnimationManager
+    internal class AnimationManager
     {
-        public bool InterruptAnimation { get; set; }
-        public double Increment { get; set; }
-        public double SecondaryIncrement { get; set; }
-        public AnimationType AnimationType { get; set; }
-        public bool Singular { get; set; }
-
         public delegate void AnimationFinished(object sender);
-        public event AnimationFinished OnAnimationFinished;
 
         public delegate void AnimationProgress(object sender);
-        public event AnimationProgress OnAnimationProgress;
-
-        private readonly List<double> _animationProgresses;
-        private readonly List<Point> _animationSources;
-        private readonly List<AnimationDirection> _animationDirections;
-        private readonly List<object[]> _animationDatas;
 
         private const double MIN_VALUE = 0.00;
         private const double MAX_VALUE = 1.00;
+        private readonly List<object[]> _animationDatas;
+        private readonly List<AnimationDirection> _animationDirections;
 
-        private readonly System.Windows.Forms.Timer _animationTimer = new System.Windows.Forms.Timer { Interval = 5, Enabled = false };
+        private readonly List<double> _animationProgresses;
+        private readonly List<Point> _animationSources;
+
+        private readonly System.Windows.Forms.Timer _animationTimer = new System.Windows.Forms.Timer {Interval = 5, Enabled = false};
 
         /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
-        /// <param name="singular">If true, only one animation is supported. The current animation will be replaced with the new one. If false, a new animation is added to the list.</param>
+        /// <param name="singular">
+        ///     If true, only one animation is supported. The current animation will be replaced with the new
+        ///     one. If false, a new animation is added to the list.
+        /// </param>
         public AnimationManager(bool singular = true)
         {
             _animationProgresses = new List<double>();
@@ -57,6 +50,14 @@ namespace EnhancedMap.GUI.Animations
             _animationTimer.Tick += AnimationTimerOnTick;
         }
 
+        public bool InterruptAnimation { get; set; }
+        public double Increment { get; set; }
+        public double SecondaryIncrement { get; set; }
+        public AnimationType AnimationType { get; set; }
+        public bool Singular { get; set; }
+        public event AnimationFinished OnAnimationFinished;
+        public event AnimationProgress OnAnimationProgress;
+
         private void AnimationTimerOnTick(object sender, EventArgs eventArgs)
         {
             for (var i = 0; i < _animationProgresses.Count; i++)
@@ -65,22 +66,13 @@ namespace EnhancedMap.GUI.Animations
 
                 if (!Singular)
                 {
-                    if ((_animationDirections[i] == AnimationDirection.InOutIn && _animationProgresses[i] == MAX_VALUE))
-                    {
+                    if (_animationDirections[i] == AnimationDirection.InOutIn && _animationProgresses[i] == MAX_VALUE)
                         _animationDirections[i] = AnimationDirection.InOutOut;
-                    }
-                    else if ((_animationDirections[i] == AnimationDirection.InOutRepeatingIn && _animationProgresses[i] == MIN_VALUE))
-                    {
+                    else if (_animationDirections[i] == AnimationDirection.InOutRepeatingIn && _animationProgresses[i] == MIN_VALUE)
                         _animationDirections[i] = AnimationDirection.InOutRepeatingOut;
-                    }
-                    else if ((_animationDirections[i] == AnimationDirection.InOutRepeatingOut && _animationProgresses[i] == MIN_VALUE))
-                    {
+                    else if (_animationDirections[i] == AnimationDirection.InOutRepeatingOut && _animationProgresses[i] == MIN_VALUE)
                         _animationDirections[i] = AnimationDirection.InOutRepeatingIn;
-                    }
-                    else if (
-                        (_animationDirections[i] == AnimationDirection.In && _animationProgresses[i] == MAX_VALUE) ||
-                        (_animationDirections[i] == AnimationDirection.Out && _animationProgresses[i] == MIN_VALUE) ||
-                        (_animationDirections[i] == AnimationDirection.InOutOut && _animationProgresses[i] == MIN_VALUE))
+                    else if (_animationDirections[i] == AnimationDirection.In && _animationProgresses[i] == MAX_VALUE || _animationDirections[i] == AnimationDirection.Out && _animationProgresses[i] == MIN_VALUE || _animationDirections[i] == AnimationDirection.InOutOut && _animationProgresses[i] == MIN_VALUE)
                     {
                         _animationProgresses.RemoveAt(i);
                         _animationSources.RemoveAt(i);
@@ -90,18 +82,11 @@ namespace EnhancedMap.GUI.Animations
                 }
                 else
                 {
-                    if ((_animationDirections[i] == AnimationDirection.InOutIn && _animationProgresses[i] == MAX_VALUE))
-                    {
+                    if (_animationDirections[i] == AnimationDirection.InOutIn && _animationProgresses[i] == MAX_VALUE)
                         _animationDirections[i] = AnimationDirection.InOutOut;
-                    }
-                    else if ((_animationDirections[i] == AnimationDirection.InOutRepeatingIn && _animationProgresses[i] == MAX_VALUE))
-                    {
+                    else if (_animationDirections[i] == AnimationDirection.InOutRepeatingIn && _animationProgresses[i] == MAX_VALUE)
                         _animationDirections[i] = AnimationDirection.InOutRepeatingOut;
-                    }
-                    else if ((_animationDirections[i] == AnimationDirection.InOutRepeatingOut && _animationProgresses[i] == MIN_VALUE))
-                    {
-                        _animationDirections[i] = AnimationDirection.InOutRepeatingIn;
-                    }
+                    else if (_animationDirections[i] == AnimationDirection.InOutRepeatingOut && _animationProgresses[i] == MIN_VALUE) _animationDirections[i] = AnimationDirection.InOutRepeatingIn;
                 }
             }
 
@@ -123,22 +108,14 @@ namespace EnhancedMap.GUI.Animations
             if (!IsAnimating() || InterruptAnimation)
             {
                 if (Singular && _animationDirections.Count > 0)
-                {
                     _animationDirections[0] = animationDirection;
-                }
                 else
-                {
                     _animationDirections.Add(animationDirection);
-                }
 
                 if (Singular && _animationSources.Count > 0)
-                {
                     _animationSources[0] = animationSource;
-                }
                 else
-                {
                     _animationSources.Add(animationSource);
-                }
 
                 if (!(Singular && _animationProgresses.Count > 0))
                 {
@@ -160,14 +137,9 @@ namespace EnhancedMap.GUI.Animations
                 }
 
                 if (Singular && _animationDatas.Count > 0)
-                {
                     _animationDatas[0] = data ?? new object[] { };
-                }
                 else
-                {
                     _animationDatas.Add(data ?? new object[] { });
-                }
-
             }
 
             _animationTimer.Start();
@@ -215,7 +187,7 @@ namespace EnhancedMap.GUI.Animations
 
         private void DecrementProgress(int index)
         {
-            _animationProgresses[index] -= (_animationDirections[index] == AnimationDirection.InOutOut || _animationDirections[index] == AnimationDirection.InOutRepeatingOut) ? SecondaryIncrement : Increment;
+            _animationProgresses[index] -= _animationDirections[index] == AnimationDirection.InOutOut || _animationDirections[index] == AnimationDirection.InOutRepeatingOut ? SecondaryIncrement : Increment;
             if (_animationProgresses[index] < MIN_VALUE)
             {
                 _animationProgresses[index] = MIN_VALUE;
@@ -263,7 +235,6 @@ namespace EnhancedMap.GUI.Animations
                 default:
                     throw new NotImplementedException("The given AnimationType is not implemented");
             }
-
         }
 
         public Point GetSource(int index)

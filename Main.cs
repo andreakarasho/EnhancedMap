@@ -1,20 +1,15 @@
-﻿using EnhancedMap.Core;
-using EnhancedMap.Core.Network;
-using EnhancedMap.GUI;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Resources;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Threading;
 using System.Windows.Forms;
+using EnhancedMap.Core;
+using EnhancedMap.Core.Network;
+using EnhancedMap.GUI;
+using Microsoft.Win32;
 
 namespace EnhancedMap
 {
@@ -24,10 +19,8 @@ namespace EnhancedMap
         private static DateTime _expireDate = new DateTime(2018, 6, 1);
 
 
-
-        public static bool IsRunning { get;  private set; }
+        public static bool IsRunning { get; private set; }
         public static Version MapVersion => _assembly.GetName().Version;
-       
 
 
         [STAThread]
@@ -58,9 +51,6 @@ namespace EnhancedMap
                 _assembly = Assembly.GetEntryAssembly();
 
 #if BETA
-
-                
-
                 string text = "";
                 string a = "";
                 int processId = -1;
@@ -201,6 +191,7 @@ namespace EnhancedMap
             catch (Exception e)
             {
             }
+
             return false;
         }
 
@@ -212,7 +203,7 @@ namespace EnhancedMap
             {
                 if (ndpKey != null && ndpKey.GetValue("Release") != null)
                 {
-                    int version = (int)ndpKey.GetValue("Release");
+                    int version = (int) ndpKey.GetValue("Release");
                     if (version >= 394802)
                     {
                         Console.WriteLine(".NET Framework found: {0}", version);
@@ -225,7 +216,7 @@ namespace EnhancedMap
 
             return false;
         }
- 
+
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             IsRunning = false;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml;
 
 namespace EnhancedMapServerNetCore.Internals
@@ -30,7 +29,7 @@ namespace EnhancedMapServerNetCore.Internals
         public Guid Guid { get; }
 
         public List<User> Users { get; }
-        
+
         public void Save(XmlWriter xml)
         {
             xml.WriteStartElement("room");
@@ -42,6 +41,9 @@ namespace EnhancedMapServerNetCore.Internals
             xml.WriteEndElement();
         }
 
-        public override string ToString() => $"{Name} - {Guid}";
+        public override string ToString()
+        {
+            return $"{Name} - {Guid}";
+        }
     }
 }

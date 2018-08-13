@@ -1,20 +1,15 @@
-﻿using EnhancedMapServerNetCore.Logging;
-using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
+using EnhancedMapServerNetCore.Logging;
 
 namespace EnhancedMapServerNetCore.Network
 {
     public class ServerHandler
     {
+        private const int MAX = 4096;
         private readonly ReusableArray<byte> _bufferPool = new ReusableArray<byte>(4, 4096);
+        private readonly Server _server;
         private Queue<Session> _workingQueue, _queue;
-        private Server _server;
-
-        const int MAX = 4096;
 
         public ServerHandler(Server server)
         {
@@ -26,7 +21,10 @@ namespace EnhancedMapServerNetCore.Network
         public void Enqueue(Session session)
         {
             lock (this)
+            {
                 _queue.Enqueue(session);
+            }
+
             Core.Set();
         }
 
@@ -104,27 +102,26 @@ namespace EnhancedMapServerNetCore.Network
                 if (args.Length == 0)
                 {
                     Log.Message(LogTypes.Warning, "Reached max connections number!");
-                    
+
                     try
                     {
                         accepted[i].Shutdown(SocketShutdown.Both);
                     }
-                    catch { }
+                    catch
+                    {
+                    }
 
                     try
                     {
                         accepted[i].Close();
                     }
-                    catch { }
+                    catch
+                    {
+                    }
                 }
                 else
                 {
-
-                    Session session = new Session(accepted[i], this)
-                    {
-                        Args = args,
-                        Disconnect = _server.Disconnect
-                    };
+                    Session session = new Session(accepted[i], this) {Args = args, Disconnect = _server.Disconnect};
 
                     session.Accept();
 
@@ -132,7 +129,6 @@ namespace EnhancedMapServerNetCore.Network
 
                     Log.Message(LogTypes.Info, "New session connected.");
                 }
-
             }
         }
     }

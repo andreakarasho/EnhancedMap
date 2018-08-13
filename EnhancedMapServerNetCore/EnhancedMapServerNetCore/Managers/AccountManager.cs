@@ -1,40 +1,31 @@
-﻿using EnhancedMapServerNetCore.Internals;
-using EnhancedMapServerNetCore.Logging;
-using EnhancedMapServerNetCore.Network;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Xml;
+using EnhancedMapServerNetCore.Internals;
+using EnhancedMapServerNetCore.Logging;
+using EnhancedMapServerNetCore.Network;
 
 namespace EnhancedMapServerNetCore.Managers
 {
     public static class AccountManager
     {
+        private static readonly ConcurrentDictionary<string, Account> _accounts = new ConcurrentDictionary<string, Account>();
+
+        public static ICollection<Account> Accounts => _accounts.Values;
+
         public static void Init()
         {
-            Core.ServerInizialized += (sender, e) =>
-            {
-                Load();
-            };
+            Core.ServerInizialized += (sender, e) => { Load(); };
 
             Core.ServerShuttingDown += (sender, e) =>
             {
                 if (e) // crashed
                 {
-
-                }
-                else
-                {
-
                 }
             };
         }
-
-        private static readonly ConcurrentDictionary<string, Account> _accounts = new ConcurrentDictionary<string, Account>();
-
-        public static ICollection<Account> Accounts => _accounts.Values;
 
         public static Account Get(string name)
         {
@@ -43,7 +34,7 @@ namespace EnhancedMapServerNetCore.Managers
         }
 
         /// <summary>
-        /// Add new user by console or remote
+        ///     Add new user by console or remote
         /// </summary>
         /// <param name="name"></param>
         /// <param name="password"></param>
@@ -53,16 +44,12 @@ namespace EnhancedMapServerNetCore.Managers
         {
             Account account = Get(name);
             if (account != null)
-            {
                 Log.Message(LogTypes.Warning, $"Account '{name}' already exists.");
-            }
             else
             {
                 Room room = RoomManager.Get(roomname);
                 if (room == null)
-                {
                     Log.Message(LogTypes.Panic, $"Room '{roomname}' not exists.");
-                }
                 else
                 {
                     account = new Account(name, password, room, level, true);
@@ -73,15 +60,13 @@ namespace EnhancedMapServerNetCore.Managers
         }
 
         /// <summary>
-        /// Add user loaded from XML
+        ///     Add user loaded from XML
         /// </summary>
         /// <param name="account"></param>
         public static void Add(Account account)
         {
             if (Get(account.Name) != null)
-            {
                 Log.Message(LogTypes.Warning, $"Account already exists '{account.Name}'");
-            }
             else
             {
                 if (!_accounts.TryAdd(account.Name, account))
@@ -90,7 +75,7 @@ namespace EnhancedMapServerNetCore.Managers
         }
 
         /// <summary>
-        /// Delete an account
+        ///     Delete an account
         /// </summary>
         /// <param name="name"></param>
         public static void Remove(string name)
@@ -150,17 +135,11 @@ namespace EnhancedMapServerNetCore.Managers
             }
 
             var connectedUser = UserManager.Get(username);
-            if (connectedUser != null)
-            {
-                connectedUser.Session.Dispose();
-            }
+            if (connectedUser != null) connectedUser.Session.Dispose();
 
             Log.Message(LogTypes.Trace, "Account credentials confirmed for '" + username + "'.");
 
-            if (!UserManager.Add(account, session))
-            {
-                return false;
-            }
+            if (!UserManager.Add(account, session)) return false;
 
             session.IsAccepted = true;
 
@@ -179,10 +158,7 @@ namespace EnhancedMapServerNetCore.Managers
             _accounts.Clear();
 
             string folderPath = Path.Combine(Core.RootPath, isbackup ? "Backup" : "Data");
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
+            if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
 
             string path = Path.Combine(folderPath, "Accounts.xml");
 
@@ -223,10 +199,7 @@ namespace EnhancedMapServerNetCore.Managers
                     Log.Message(LogTypes.Error, "Accounts.xml restored.");
                 }
                 else
-                {
                     Log.Message(LogTypes.Error, "Impossible to restore Accounts.xml");
-
-                }
 
                 return;
             }
@@ -243,11 +216,7 @@ namespace EnhancedMapServerNetCore.Managers
 
             path = Path.Combine(path, "Accounts.xml");
 
-            XmlWriterSettings settings = new XmlWriterSettings
-            {
-                Indent = true,
-                IndentChars = "\t"
-            };
+            XmlWriterSettings settings = new XmlWriterSettings {Indent = true, IndentChars = "\t"};
 
             Log.Message(LogTypes.Trace, (isbackup ? "Backup: " : "") + "Saving accounts...");
 

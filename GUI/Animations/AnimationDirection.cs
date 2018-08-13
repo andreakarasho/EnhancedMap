@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EnhancedMap.GUI.Animations
+﻿namespace EnhancedMap.GUI.Animations
 {
-    enum AnimationDirection
+    internal enum AnimationDirection
     {
         In, //In. Stops if finished.
         Out, //Out. Stops if finished.

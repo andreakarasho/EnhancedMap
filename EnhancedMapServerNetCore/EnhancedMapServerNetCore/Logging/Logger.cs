@@ -7,56 +7,39 @@ namespace EnhancedMapServerNetCore.Logging
 {
     public class Logger
     {
-        public static readonly Dictionary<LogTypes, Tuple<ConsoleColor, string>> LogTypeInfo = new Dictionary<LogTypes, Tuple<ConsoleColor, string>>
-        {
-            { LogTypes.None,    Tuple.Create(ConsoleColor.White,     "") },
-            { LogTypes.Info,    Tuple.Create(ConsoleColor.Green,     "  Info    ") },
-            { LogTypes.Debug,   Tuple.Create(ConsoleColor.DarkGreen, "  Debug   ") },
-            { LogTypes.Trace,   Tuple.Create(ConsoleColor.Green,     "  Trace   ") },
-            { LogTypes.Warning, Tuple.Create(ConsoleColor.Yellow,    "  Warning ") },
-            { LogTypes.Error,   Tuple.Create(ConsoleColor.Red,       "  Error   ") },
-            { LogTypes.Panic,   Tuple.Create(ConsoleColor.Red,       "  Panic   ") },
-        };
+        private const int tableWidth = 77;
 
-        // No volatile support for properties, let's use a private backing field.
-        public LogTypes LogTypes { get; set; }
+        public static readonly Dictionary<LogTypes, Tuple<ConsoleColor, string>> LogTypeInfo = new Dictionary<LogTypes, Tuple<ConsoleColor, string>> {{LogTypes.None, Tuple.Create(ConsoleColor.White, "")}, {LogTypes.Info, Tuple.Create(ConsoleColor.Green, "  Info    ")}, {LogTypes.Debug, Tuple.Create(ConsoleColor.DarkGreen, "  Debug   ")}, {LogTypes.Trace, Tuple.Create(ConsoleColor.Green, "  Trace   ")}, {LogTypes.Warning, Tuple.Create(ConsoleColor.Yellow, "  Warning ")}, {LogTypes.Error, Tuple.Create(ConsoleColor.Red, "  Error   ")}, {LogTypes.Panic, Tuple.Create(ConsoleColor.Red, "  Panic   ")}};
 
-        readonly BlockingCollection<Tuple<LogTypes, string, string>> logQueue;
-        bool isLogging;
+        private readonly BlockingCollection<Tuple<LogTypes, string, string>> logQueue;
+        private bool isLogging;
 
         public Logger()
         {
             logQueue = new BlockingCollection<Tuple<LogTypes, string, string>>();
         }
 
-        const int tableWidth = 77;
+        // No volatile support for properties, let's use a private backing field.
+        public LogTypes LogTypes { get; set; }
 
 
-        void PrintRow(params string[] columns)
+        private void PrintRow(params string[] columns)
         {
             int width = (tableWidth - columns.Length) / columns.Length;
             string row = "|";
 
-            foreach (string column in columns)
-            {
-                row += AlignCentre(column, width) + "|";
-            }
+            foreach (string column in columns) row += AlignCentre(column, width) + "|";
 
             Console.WriteLine(row);
         }
 
-        string AlignCentre(string text, int width)
+        private string AlignCentre(string text, int width)
         {
             text = text.Length > width ? text.Substring(0, width - 3) + "..." : text;
 
             if (string.IsNullOrEmpty(text))
-            {
                 return new string(' ', width);
-            }
-            else
-            {
-                return text.PadRight(width - (width - text.Length) / 2).PadLeft(width);
-            }
+            return text.PadRight(width - (width - text.Length) / 2).PadLeft(width);
         }
 
 
@@ -79,7 +62,7 @@ namespace EnhancedMapServerNetCore.Logging
 
                         if (log.Item1 == LogTypes.Table)
                         {
-                            Console.WriteLine(String.Format(log.Item3));
+                            Console.WriteLine(string.Format(log.Item3));
                             continue;
                         }
 
@@ -112,26 +95,38 @@ namespace EnhancedMapServerNetCore.Logging
                         }
                     }
                 }
-            })
-            {
-                IsBackground = true
-            };
+            }) {IsBackground = true};
             logThread.Start();
 
             isLogging = logThread.ThreadState == ThreadState.Running || logThread.ThreadState == ThreadState.Background;
         }
 
-        public void Stop() => isLogging = false;
+        public void Stop()
+        {
+            isLogging = false;
+        }
 
-        public void Message(LogTypes logType, string text) => SetLogger(logType, text);
+        public void Message(LogTypes logType, string text)
+        {
+            SetLogger(logType, text);
+        }
 
-        public void NewLine() => SetLogger(LogTypes.None, "");
+        public void NewLine()
+        {
+            SetLogger(LogTypes.None, "");
+        }
 
-        public void WaitForKey() => Console.ReadKey(true);
+        public void WaitForKey()
+        {
+            Console.ReadKey(true);
+        }
 
-        public void Clear() => Console.Clear();
+        public void Clear()
+        {
+            Console.Clear();
+        }
 
-        void SetLogger(LogTypes type, string text)
+        private void SetLogger(LogTypes type, string text)
         {
             if ((LogTypes & type) == type)
             {

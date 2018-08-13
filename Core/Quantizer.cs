@@ -57,10 +57,7 @@ namespace EnhancedMap.Core
         {
             var result = new double[256];
 
-            for (var value = 0; value < 256; value++)
-            {
-                result[value] = value / 255.0;
-            }
+            for (var value = 0; value < 256; value++) result[value] = value / 255.0;
 
             return result;
         }
@@ -79,9 +76,9 @@ namespace EnhancedMap.Core
                 // performs a alpha blending (second color is BackgroundColor, by default a Control color)
                 var colorFactor = _Factors[color.A];
                 var backgroundFactor = _Factors[255 - color.A];
-                var red = (int)(color.R * colorFactor + _BackgroundColor.R * backgroundFactor);
-                var green = (int)(color.G * colorFactor + _BackgroundColor.G * backgroundFactor);
-                var blue = (int)(color.B * colorFactor + _BackgroundColor.B * backgroundFactor);
+                var red = (int) (color.R * colorFactor + _BackgroundColor.R * backgroundFactor);
+                var green = (int) (color.G * colorFactor + _BackgroundColor.G * backgroundFactor);
+                var blue = (int) (color.B * colorFactor + _BackgroundColor.B * backgroundFactor);
                 result = Color.FromArgb(255, red, green, blue);
             }
 
@@ -187,8 +184,7 @@ namespace EnhancedMap.Core
         ///     Initializes a new instance of the <see cref="ColorInfo" /> struct.
         /// </summary>
         /// <param name="color">The color.</param>
-        public ColorInfo(Color color)
-            : this()
+        public ColorInfo(Color color) : this()
         {
             Color = color;
             Count = 1;
@@ -213,8 +209,8 @@ namespace EnhancedMap.Core
 
     public class OctreeQuantizer : IColorQuantizer
     {
-        private OctreeNode _root;
         private readonly List<OctreeNode>[] _levels;
+        private OctreeNode _root;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Octree" /> class.
@@ -225,10 +221,7 @@ namespace EnhancedMap.Core
             _levels = new List<OctreeNode>[7];
 
             // creates the octree level lists
-            for (var level = 0; level < 7; level++)
-            {
-                _levels[level] = new List<OctreeNode>();
-            }
+            for (var level = 0; level < 7; level++) _levels[level] = new List<OctreeNode>();
 
             // creates a root node
             _root = new OctreeNode(0, this);
@@ -291,8 +284,7 @@ namespace EnhancedMap.Core
                 if (_levels[level].Count > 0)
                 {
                     // orders the level node list by pixel presence (those with least pixels are at the top)
-                    IEnumerable<OctreeNode> sortedNodeList = _levels[level].
-                        OrderBy(node => node.ActiveNodesPixelCount);
+                    IEnumerable<OctreeNode> sortedNodeList = _levels[level].OrderBy(node => node.ActiveNodesPixelCount);
 
                     // removes the nodes unless the count of the leaves is lower or equal than our requested color count
                     foreach (var node in sortedNodeList)
@@ -325,8 +317,7 @@ namespace EnhancedMap.Core
             // we're unable to reduce the Octree with enough precision, and the leaf count is zero
             if (result.Count == 0)
             {
-                throw new NotSupportedException(
-                    "The Octree contains after the reduction 0 colors, it may happen for 1-16 colors because it reduces by 1-8 nodes at time. Should be used on 8 or above to ensure the correct functioning.");
+                throw new NotSupportedException("The Octree contains after the reduction 0 colors, it may happen for 1-16 colors because it reduces by 1-8 nodes at time. Should be used on 8 or above to ensure the correct functioning.");
             }
 
             // returns the palette
@@ -362,10 +353,7 @@ namespace EnhancedMap.Core
         public void Clear()
         {
             // clears all the node list levels
-            foreach (var level in _levels)
-            {
-                level.Clear();
-            }
+            foreach (var level in _levels) level.Clear();
 
             // creates a new root node (thus throwing away the old tree)
             _root = new OctreeNode(0, this);
@@ -376,16 +364,16 @@ namespace EnhancedMap.Core
 
     internal class OctreeNode
     {
-        private static readonly byte[] _Mask = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
-
-        private int _red;
-        private int _green;
-        private int _blue;
-
-        private int _pixelCount;
-        private int _paletteIndex;
+        private static readonly byte[] _Mask = {0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01};
 
         private readonly OctreeNode[] _nodes;
+        private int _blue;
+        private int _green;
+        private int _paletteIndex;
+
+        private int _pixelCount;
+
+        private int _red;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="OctreeNode" /> class.
@@ -394,10 +382,7 @@ namespace EnhancedMap.Core
         {
             _nodes = new OctreeNode[8];
 
-            if (level < 7)
-            {
-                parent.AddLevelNode(level, this);
-            }
+            if (level < 7) parent.AddLevelNode(level, this);
         }
 
         #region | Calculated properties |
@@ -406,10 +391,7 @@ namespace EnhancedMap.Core
         ///     Gets a value indicating whether this node is a leaf.
         /// </summary>
         /// <value><c>true</c> if this node is a leaf; otherwise, <c>false</c>.</value>
-        public bool IsLeaf
-        {
-            get { return _pixelCount > 0; }
-        }
+        public bool IsLeaf => _pixelCount > 0;
 
         /// <summary>
         ///     Gets the averaged leaf color.
@@ -436,9 +418,7 @@ namespace EnhancedMap.Core
                     }
                 }
                 else
-                {
                     throw new InvalidOperationException("Cannot retrieve a color for other node than leaf.");
-                }
 
                 return result;
             }
@@ -459,10 +439,7 @@ namespace EnhancedMap.Core
                 {
                     var node = _nodes[index];
 
-                    if (node != null)
-                    {
-                        result += node._pixelCount;
-                    }
+                    if (node != null) result += node._pixelCount;
                 }
 
                 return result;
@@ -487,13 +464,9 @@ namespace EnhancedMap.Core
                     if (node != null)
                     {
                         if (node.IsLeaf)
-                        {
                             result.Add(node);
-                        }
                         else
-                        {
                             result.AddRange(node.ActiveNodes);
-                        }
                     }
                 }
 
@@ -527,10 +500,7 @@ namespace EnhancedMap.Core
                 var index = GetColorIndexAtLevel(color, level);
 
                 // if that branch doesn't exist, grows it
-                if (_nodes[index] == null)
-                {
-                    _nodes[index] = new OctreeNode(level, parent);
-                }
+                if (_nodes[index] == null) _nodes[index] = new OctreeNode(level, parent);
 
                 // adds a color to that branch
                 _nodes[index].AddColor(color, level + 1, parent);
@@ -549,9 +519,7 @@ namespace EnhancedMap.Core
 
             // if a node is leaf, then we've found are best match already
             if (IsLeaf)
-            {
                 result = _paletteIndex;
-            }
             else // otherwise continue in to the lower depths
             {
                 var index = GetColorIndexAtLevel(color, level);
@@ -608,9 +576,7 @@ namespace EnhancedMap.Core
         /// <returns>The color index at a certain depth level.</returns>
         private static int GetColorIndexAtLevel(Color color, int level)
         {
-            return ((color.R & _Mask[level]) == _Mask[level] ? 4 : 0) |
-                   ((color.G & _Mask[level]) == _Mask[level] ? 2 : 0) |
-                   ((color.B & _Mask[level]) == _Mask[level] ? 1 : 0);
+            return ((color.R & _Mask[level]) == _Mask[level] ? 4 : 0) | ((color.G & _Mask[level]) == _Mask[level] ? 2 : 0) | ((color.B & _Mask[level]) == _Mask[level] ? 1 : 0);
         }
 
         /// <summary>

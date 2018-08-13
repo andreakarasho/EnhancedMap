@@ -1,16 +1,12 @@
-﻿using EnhancedMap.GUI;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EnhancedMap.Core.MapObjects
 {
     public class BuildingObject : RenderObject
     {
+        private readonly LabelObject _label = new LabelObject {Background = ColorsCache["transparent"], Hue = ColorsCache["stamina"]};
+
         public BuildingObject(BuildingEntry entry) : base(entry.Description)
         {
             Entry = entry;
@@ -21,26 +17,15 @@ namespace EnhancedMap.Core.MapObjects
         public BuildingEntry Entry { get; }
         public bool IsMouseOver { get; private set; }
 
-        private LabelObject _label = new LabelObject()
-        {
-            Background = ColorsCache["transparent"],
-            Hue = ColorsCache["stamina"],
-        };
-
 
         public override bool Render(Graphics g, int x, int y, int canvasW, int canvasH)
         {
             if (!IsVisible)
                 return false;
 
-            if ((Entry.Map == Global.Facet || (Entry.Map == 7 && (Global.Facet == 0 || Global.Facet == 1))) &&
-                Entry.IsEnabled && Entry.Parent.IsEnabled)
+            if ((Entry.Map == Global.Facet || Entry.Map == 7 && (Global.Facet == 0 || Global.Facet == 1)) && Entry.IsEnabled && Entry.Parent.IsEnabled)
             {
-
-                if (Entry.Parent.IsSmart && Global.Zoom < 1f && Global.SettingsCollection["hidelessimportantplaces"].ToBool())
-                {
-                    return false;
-                }
+                if (Entry.Parent.IsSmart && Global.Zoom < 1f && Global.SettingsCollection["hidelessimportantplaces"].ToBool()) return false;
 
                 int buildX = RelativePosition.X;
                 int buildY = RelativePosition.Y;
@@ -51,17 +36,16 @@ namespace EnhancedMap.Core.MapObjects
 
                 Image img = Entry.Parent.Image;
 
-                if (buildX > -img.Width / 2 && buildX - img.Width / 2 < canvasW
-                    && buildY > -img.Height / 2 && buildY - img.Height / 2 < canvasH)
+                if (buildX > -img.Width / 2 && buildX - img.Width / 2 < canvasW && buildY > -img.Height / 2 && buildY - img.Height / 2 < canvasH)
                 {
                     int wx = img.Width / 2;
                     int wy = img.Height / 2;
 
                     g.DrawImageUnscaled(img, buildX - wx, buildY - wy);
-                    wx = (int)(wx / Global.Zoom);
-                    wy = (int)(wy / Global.Zoom);
+                    wx = (int) (wx / Global.Zoom);
+                    wy = (int) (wy / Global.Zoom);
 
-                    if (Entry.ShowName || (Entry.IsTown && Global.SettingsCollection["showtownsnames"].ToBool()))
+                    if (Entry.ShowName || Entry.IsTown && Global.SettingsCollection["showtownsnames"].ToBool())
                     {
                         if (!_label.IsVisible)
                         {
@@ -72,14 +56,10 @@ namespace EnhancedMap.Core.MapObjects
 
                         _label.Render(g, x, y, canvasW, canvasH);
                     }
-                    else if (_label.IsVisible)
-                    {
-                        _label.IsVisible = false;
-                    }
+                    else if (_label.IsVisible) _label.IsVisible = false;
 
 
-                    if (MouseManager.Location.X >= Position.X - wx && MouseManager.Location.X <= Position.X + wx &&
-                        MouseManager.Location.Y >= Position.Y - wy && MouseManager.Location.Y <= Position.Y + wy && MouseManager.IsEnter)
+                    if (MouseManager.Location.X >= Position.X - wx && MouseManager.Location.X <= Position.X + wx && MouseManager.Location.Y >= Position.Y - wy && MouseManager.Location.Y <= Position.Y + wy && MouseManager.IsEnter)
                     {
                         if (!IsMouseOver)
                             IsMouseOver = true;
@@ -94,12 +74,9 @@ namespace EnhancedMap.Core.MapObjects
 
                         return true;
                     }
-                    else
-                    {
-                        if (IsMouseOver)
-                            IsMouseOver = false;
-                    }
 
+                    if (IsMouseOver)
+                        IsMouseOver = false;
                 }
             }
 
@@ -141,21 +118,21 @@ namespace EnhancedMap.Core.MapObjects
 
             int delta = Math.Max(canvasW, canvasH) * 2;
 
-            int aa = (int)Global.X - canvasW / 2;
-            int bb = (int)Global.Y - canvasH / 2;
+            int aa = (int) Global.X - canvasW / 2;
+            int bb = (int) Global.Y - canvasH / 2;
 
-            int bx = (int)((Entry.Location.X - aa - canvasW / 2) / (1f / Global.Zoom));
-            int by = (int)((Entry.Location.Y - bb - canvasH / 2) / (1f / Global.Zoom));
+            int bx = (int) ((Entry.Location.X - aa - canvasW / 2) / (1f / Global.Zoom));
+            int by = (int) ((Entry.Location.Y - bb - canvasH / 2) / (1f / Global.Zoom));
 
             RectangleF houseRect = new RectangleF(bx, by, Entry.Size.Width * Global.Zoom, Entry.Size.Height * Global.Zoom);
-            if (Utility.Distance(Entry.Location.X, Entry.Location.Y, (int)Global.X, (int)Global.Y) < delta / Global.Zoom)
+            if (Utility.Distance(Entry.Location.X, Entry.Location.Y, (int) Global.X, (int) Global.Y) < delta / Global.Zoom)
             {
                 g.FillRectangle(Brushes.Gray, houseRect);
                 g.DrawRectangle(Pens.Black, bx - 1, by - 1, Entry.Size.Width * Global.Zoom + 2, Entry.Size.Height * Global.Zoom + 2);
             }
 
-            int mouseX = (int)((MouseManager.Location.X - aa - canvasW / 2) / (1f / Global.Zoom));
-            int mouseY = (int)((MouseManager.Location.Y - bb - canvasH / 2) / (1f / Global.Zoom));
+            int mouseX = (int) ((MouseManager.Location.X - aa - canvasW / 2) / (1f / Global.Zoom));
+            int mouseY = (int) ((MouseManager.Location.Y - bb - canvasH / 2) / (1f / Global.Zoom));
 
             if (houseRect.Contains(mouseX, mouseY))
             {
@@ -172,18 +149,15 @@ namespace EnhancedMap.Core.MapObjects
                     IsMouseOver = true;
                 return true;
             }
-            else //if (MouseManager.IsOverAnObject)
-            {
-                //MouseManager.IsOverAnObject = false;
-                if (IsMouseOver)
-                    IsMouseOver = false;
-            }
+
+            //MouseManager.IsOverAnObject = false;
+            if (IsMouseOver)
+                IsMouseOver = false;
             /*/ int rX = -(int)(canvasW * 1.75f);
              int rY = -(int)(canvasH * 1.75f);
              int rW = (int)( )
              */
             //if (bx > -canvasW * 1.75f && bx + Entry.Size.Height * Global.Zoom < )
-
 
 
             return false;
@@ -206,20 +180,17 @@ namespace EnhancedMap.Core.MapObjects
             if (!IsVisible || !Global.SettingsCollection["showguardlines"].ToBool())
                 return false;
 
-            if ((Entry.Map == Global.Facet || (Entry.Map == 7 && (Global.Facet == 0 || Global.Facet == 1))))
+            if (Entry.Map == Global.Facet || Entry.Map == 7 && (Global.Facet == 0 || Global.Facet == 1))
             {
                 int delta = Math.Max(canvasW, canvasH) * 2;
 
-                int aa = (int)Global.X - canvasW / 2;
-                int bb = (int)Global.Y - canvasH / 2;
+                int aa = (int) Global.X - canvasW / 2;
+                int bb = (int) Global.Y - canvasH / 2;
 
-                int bx = (int)((Entry.Location.X - aa - canvasW / 2) / (1f / Global.Zoom));
-                int by = (int)((Entry.Location.Y - bb - canvasH / 2) / (1f / Global.Zoom));
+                int bx = (int) ((Entry.Location.X - aa - canvasW / 2) / (1f / Global.Zoom));
+                int by = (int) ((Entry.Location.Y - bb - canvasH / 2) / (1f / Global.Zoom));
 
-                if (Utility.Distance(Entry.Location.X, Entry.Location.Y, (int)Global.X, (int)Global.Y) < delta / Global.Zoom)
-                {
-                    g.DrawRectangle(Pens.Green, bx, by , Entry.Size.Width * Global.Zoom , Entry.Size.Height * Global.Zoom );
-                }
+                if (Utility.Distance(Entry.Location.X, Entry.Location.Y, (int) Global.X, (int) Global.Y) < delta / Global.Zoom) g.DrawRectangle(Pens.Green, bx, by, Entry.Size.Width * Global.Zoom, Entry.Size.Height * Global.Zoom);
             }
 
             return false;

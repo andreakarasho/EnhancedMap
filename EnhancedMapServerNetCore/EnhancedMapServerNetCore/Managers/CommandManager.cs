@@ -1,61 +1,33 @@
-﻿using EnhancedMapServerNetCore.Internals;
-using EnhancedMapServerNetCore.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using EnhancedMapServerNetCore.Configuration;
+using EnhancedMapServerNetCore.Internals;
+using EnhancedMapServerNetCore.Logging;
+using EnhancedMapServerNetCore.Network;
 
 namespace EnhancedMapServerNetCore.Managers
 {
     public enum SERVER_MESSAGE_TYPE
     {
-        NORMAL,
+        NORMAL
     }
 
     public static class CommandManager
     {
-        private static readonly Dictionary<string, Tuple<ACCOUNT_LEVEL, Action<User, string[]>>> _commands = new Dictionary<string, Tuple<ACCOUNT_LEVEL, Action<User, string[]>>>
-        {
-            { "adduser", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, AddUser) },
-            { "removeuser", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, RemoveUser) },
-            { "addroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AddRoom) },
-            { "removeroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, RemoveRoom) },
-            { "setpassword", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, SetPassword) },
-            { "setroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetRoom) },
-            { "allusersonline", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AllUsersOnline) },
-            { "userinfo", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, UserInfo) },
-            { "kick", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, Kick) },
-            { "ban", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, Ban) },
-            { "enableuser", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, EnableUser) },
-            { "allusersinroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, AllUsersInRoom) },
-            { "allusers", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AllUsers) },
-            { "statistics", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, Statistics) },
-            { "setprivileges", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetPrivileges) },
-            { "setloginsys", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetLoginSystem) },
-            { "setroompassword", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetRoomPassword) },
-            { "getroompassword", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, GetRoomPassword) },
-            { "allrooms", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AllRooms) },
-            { "getport", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, GetPort) },
-            { "setkicktime", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetKickTime) }
-        };
+        private static readonly Dictionary<string, Tuple<ACCOUNT_LEVEL, Action<User, string[]>>> _commands = new Dictionary<string, Tuple<ACCOUNT_LEVEL, Action<User, string[]>>> {{"adduser", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, AddUser)}, {"removeuser", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, RemoveUser)}, {"addroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AddRoom)}, {"removeroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, RemoveRoom)}, {"setpassword", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, SetPassword)}, {"setroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetRoom)}, {"allusersonline", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AllUsersOnline)}, {"userinfo", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, UserInfo)}, {"kick", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, Kick)}, {"ban", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, Ban)}, {"enableuser", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, EnableUser)}, {"allusersinroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, AllUsersInRoom)}, {"allusers", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AllUsers)}, {"statistics", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, Statistics)}, {"setprivileges", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetPrivileges)}, {"setloginsys", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetLoginSystem)}, {"setroompassword", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetRoomPassword)}, {"getroompassword", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, GetRoomPassword)}, {"allrooms", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AllRooms)}, {"getport", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, GetPort)}, {"setkicktime", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetKickTime)}};
 
 
-
-        private static void SendTo(User user, string msg, bool istable = false)
+        private static void SendTo(in User user, in string msg, in bool istable = false)
         {
             if (user != null)
-            {
-                user.Session.Send(new Network.PServerResponseCmdToClient(msg, SERVER_MESSAGE_TYPE.NORMAL));
-            }
+                user.Session.Send(new PServerResponseCmdToClient(msg, SERVER_MESSAGE_TYPE.NORMAL));
             else
-            {
                 Log.Message(istable ? LogTypes.Table : LogTypes.None, msg);
-            }
         }
 
 
-        public static void Execute(string action, User user, params string[] args)
+        public static void Execute(string action, in User user, params string[] args)
         {
             action = action.ToLower();
 
@@ -70,23 +42,18 @@ namespace EnhancedMapServerNetCore.Managers
                 }
             }
             else
-            {
                 Log.Message(LogTypes.Warning, $"Invalid action '{action}' from {user}");
-            }
         }
 
         public static void ExecuteFromConsole(string action, params string[] args)
         {
-            if (_commands.TryGetValue(action, out var tuple))
-            {
-                tuple.Item2(null, args);
-            }
+            if (_commands.TryGetValue(action, out var tuple)) tuple.Item2(null, args);
         }
 
 
         private static void GetPort(User user, params string[] args)
         {
-            SendTo(user, "Server port: " + SettingsManager.Configuration.Port.ToString());
+            SendTo(user, "Server port: " + SettingsManager.Configuration.Port);
         }
 
         private static void SetKickTime(User user, params string[] args)
@@ -103,7 +70,6 @@ namespace EnhancedMapServerNetCore.Managers
             }
             else
                 SendTo(user, "Wrong input.");
-
         }
 
         private static void AddUser(User user, params string[] args)
@@ -121,10 +87,7 @@ namespace EnhancedMapServerNetCore.Managers
             string password = args[1];
             string room = args[2];
 
-            if (!int.TryParse(args[3], out var level))
-            {
-                SendTo(user, "Wrong value for access level");
-            }
+            if (!int.TryParse(args[3], out var level)) SendTo(user, "Wrong value for access level");
 
             if (string.IsNullOrWhiteSpace(username))
                 SendTo(user, "Username is null");
@@ -146,8 +109,8 @@ namespace EnhancedMapServerNetCore.Managers
                 SendTo(user, "Wrong value for Access Level");
             else
             {
-                AccountManager.Add(username, password, room, (ACCOUNT_LEVEL)level);
-                SendTo(user, "User added with parameters:\r\nUsername: " + username + "\r\nPassword: " + password + "\r\nRoom: " + room + "\r\nPrivileges: " + (ACCOUNT_LEVEL)level);
+                AccountManager.Add(username, password, room, (ACCOUNT_LEVEL) level);
+                SendTo(user, "User added with parameters:\r\nUsername: " + username + "\r\nPassword: " + password + "\r\nRoom: " + room + "\r\nPrivileges: " + (ACCOUNT_LEVEL) level);
             }
         }
 
@@ -190,9 +153,7 @@ namespace EnhancedMapServerNetCore.Managers
             string psw = args.Length == 2 ? args[1] : string.Empty;
 
             if (RoomManager.Get(name) != null)
-            {
                 SendTo(user, "Room already exists.");
-            }
             else
             {
                 RoomManager.Add(name, psw);
@@ -207,16 +168,12 @@ namespace EnhancedMapServerNetCore.Managers
 
             string name = args[0];
             if (name == "General")
-            {
                 SendTo(user, "Cannot remove 'General' room");
-            }
             else
             {
                 Room room = RoomManager.Get(name);
                 if (room == null)
-                {
                     SendTo(user, "Room not exists.");
-                }
                 else
                 {
                     RoomManager.Remove(name);
@@ -286,10 +243,7 @@ namespace EnhancedMapServerNetCore.Managers
             for (int i = 0; i < Core.Server.Sessions.Count; i++)
             {
                 User u = UserManager.Get(Core.Server.Sessions[i].Guid);
-                if (u != null)
-                {
-                    SendTo(user, u.Name);
-                }
+                if (u != null) SendTo(user, string.Format("|{0,24}|{1,24}|{2,24}|", u.Name, u.Room.Name, u.Account.AccountLevel), true);
             }
         }
 
@@ -300,11 +254,11 @@ namespace EnhancedMapServerNetCore.Managers
 
             string username = args[0];
 
-            User userI = UserManager.Get(username);            
+            User userI = UserManager.Get(username);
             Account account = userI?.Account ?? AccountManager.Get(username);
             if (account != null)
             {
-                string info = $"Name: {account.Name}\r\nPassword: {account.CryptedPassword}\r\nRoom: {account.Room}\r\nEnabled: {!account.IsBanned}\r\nPrivileges: {account.AccountLevel}\r\nStatus: { (userI != null && userI.Session != null ? userI.Session.Address.ToString() : "OFFLINE")}";
+                string info = $"Name: {account.Name}\r\nPassword: {account.CryptedPassword}\r\nRoom: {account.Room}\r\nEnabled: {!account.IsBanned}\r\nPrivileges: {account.AccountLevel}\r\nStatus: {(userI != null && userI.Session != null ? userI.Session.Address.ToString() : "OFFLINE")}";
                 SendTo(user, info);
             }
             else
@@ -313,10 +267,7 @@ namespace EnhancedMapServerNetCore.Managers
 
         private static void AllRooms(User user, params string[] args)
         {
-            foreach (Room room in RoomManager.Rooms)
-            {
-                SendTo(user, $"{room.Name} - [{room.Users.Count}]");
-            }
+            foreach (Room room in RoomManager.Rooms) SendTo(user, $"{room.Name} - [{room.Users.Count}]");
         }
 
         private static void Kick(User user, params string[] args)
@@ -328,10 +279,7 @@ namespace EnhancedMapServerNetCore.Managers
 
             User tokick = UserManager.Get(username);
             if (tokick == null)
-            {
                 SendTo(user, "Cannot kick an offline user");
-                return;
-            }
             else
             {
                 Account account = tokick.Account ?? AccountManager.Get(username);
@@ -340,7 +288,7 @@ namespace EnhancedMapServerNetCore.Managers
                     SendTo(user, "Account not exists.");
                 else if (user != null && user.Account == account)
                     SendTo(user, "Cannot kick yourself.");
-                else if (user != null && ((user.Account.AccountLevel < ACCOUNT_LEVEL.SERVER_ADMIN && account.AccountLevel == ACCOUNT_LEVEL.SERVER_ADMIN) || (user.Account.AccountLevel <= ACCOUNT_LEVEL.ROOM_ADMIN && user.Room != account.Room) ))
+                else if (user != null && (user.Account.AccountLevel < ACCOUNT_LEVEL.SERVER_ADMIN && account.AccountLevel == ACCOUNT_LEVEL.SERVER_ADMIN || user.Account.AccountLevel <= ACCOUNT_LEVEL.ROOM_ADMIN && user.Room != account.Room))
                     SendTo(user, "You haven't right privileges");
                 else
                 {
@@ -364,13 +312,12 @@ namespace EnhancedMapServerNetCore.Managers
                 SendTo(user, "Account not exists.");
             else if (user != null && user.Account == account)
                 SendTo(user, "Cannot ban yourself.");
-            else if (user != null && ((account.AccountLevel < ACCOUNT_LEVEL.SERVER_ADMIN && account.AccountLevel == ACCOUNT_LEVEL.SERVER_ADMIN) || (user.Account.AccountLevel <= ACCOUNT_LEVEL.ROOM_ADMIN && user.Room != account.Room)))
+            else if (user != null && (account.AccountLevel < ACCOUNT_LEVEL.SERVER_ADMIN && account.AccountLevel == ACCOUNT_LEVEL.SERVER_ADMIN || user.Account.AccountLevel <= ACCOUNT_LEVEL.ROOM_ADMIN && user.Room != account.Room))
                 SendTo(user, "You haven't right privileges.");
             else
             {
                 User toban = UserManager.Get(username);
-                if (toban != null)
-                    toban.Session.Dispose();
+                toban?.Session.Dispose();
 
                 account.IsBanned = true;
                 SendTo(user, "Account banned.");
@@ -389,7 +336,7 @@ namespace EnhancedMapServerNetCore.Managers
                 SendTo(user, "Account not exists.");
             else if (user != null && user.Account == account)
                 SendTo(user, "Cannot ban yourself.");
-            else if (user != null && ((account.AccountLevel < ACCOUNT_LEVEL.SERVER_ADMIN && account.AccountLevel == ACCOUNT_LEVEL.SERVER_ADMIN) || (user.Account.AccountLevel <= ACCOUNT_LEVEL.ROOM_ADMIN && user.Room != account.Room)))
+            else if (user != null && (account.AccountLevel < ACCOUNT_LEVEL.SERVER_ADMIN && account.AccountLevel == ACCOUNT_LEVEL.SERVER_ADMIN || user.Account.AccountLevel <= ACCOUNT_LEVEL.ROOM_ADMIN && user.Room != account.Room))
                 SendTo(user, "You haven't right privileges.");
             else
             {
@@ -408,19 +355,23 @@ namespace EnhancedMapServerNetCore.Managers
             if (user == null && args.Length == 0)
                 return;
 
-            string room = args.Length == 0 ? user.Room.Name : args[0];
+            string room = args.Length == 0 ? user?.Room.Name : args[0];
 
-            AccountManager.Accounts.Where(s => s.Room != null && s.Room.Name == room).ToList().ForEach(s => SendTo(user, $"{s.Name} - {s.AccountLevel}"));
+            var list = AccountManager.Accounts.Where(s => s.Room != null && s.Room.Name == room).ToList();
+
+            foreach (var s in list)
+                SendTo(user, $"{s.Name} - {s.AccountLevel}");
         }
 
         private static void AllUsers(User user, params string[] args)
         {
-            AccountManager.Accounts.ToList().ForEach(s => SendTo(user, string.Format("|{0,24}|{1,24}|{2,24}|", s.Name, s.Room.Name, s.AccountLevel), true));
+            var list = AccountManager.Accounts.ToList();
+            foreach (var s in list)
+                SendTo(user, string.Format("|{0,24}|{1,24}|{2,24}|", s.Name, s.Room.Name, s.AccountLevel), true);
         }
 
         private static void Statistics(User user, params string[] args)
         {
-
         }
 
         private static void SetPrivileges(User user, params string[] args)
@@ -436,14 +387,12 @@ namespace EnhancedMapServerNetCore.Managers
             else
             {
                 if (!int.TryParse(args[1], out int level) || level < 0 || level > 2)
-                {
                     SendTo(user, "Wrong data inserted.");
-                }
                 else
-                {                  
-                    ACCOUNT_LEVEL acclevel = (ACCOUNT_LEVEL)level;
+                {
+                    ACCOUNT_LEVEL acclevel = (ACCOUNT_LEVEL) level;
                     account.AccountLevel = acclevel;
-                    SendTo(user, $"New privileges setted right: {account.Name} - {acclevel}");                
+                    SendTo(user, $"New privileges setted right: {account.Name} - {acclevel}");
                 }
             }
         }
@@ -455,7 +404,7 @@ namespace EnhancedMapServerNetCore.Managers
 
             if (int.TryParse(args[0], out int result) && (result == 0 || result == 1))
             {
-                SettingsManager.Configuration.CredentialsSystem = (CREDENTIAL_SYSTEM)result;
+                SettingsManager.Configuration.CredentialsSystem = (CREDENTIAL_SYSTEM) result;
                 SendTo(user, "Done");
             }
             else
@@ -475,9 +424,7 @@ namespace EnhancedMapServerNetCore.Managers
             else if (string.IsNullOrEmpty(password))
                 SendTo(user, "Null password.");
             else if (RoomManager.Rooms.Any(s => s.Password == password))
-            {
                 SendTo(user, $"Password '{password}' already setted for another room. Please insert a different password.");
-            }
             else
             {
                 Room room = RoomManager.Get(name);
@@ -498,13 +445,9 @@ namespace EnhancedMapServerNetCore.Managers
 
             Room room = RoomManager.Get(args[0]);
             if (room == null)
-            {
                 SendTo(user, "Room not exists.");
-            }
             else
-            {
-                SendTo(user, string.IsNullOrEmpty(room.Password) ? "Password not exists for this room" : "Password: " + room.Password );
-            }
+                SendTo(user, string.IsNullOrEmpty(room.Password) ? "Password not exists for this room" : "Password: " + room.Password);
         }
 
         private static void SendMessage(User user, params string[] args)
@@ -512,7 +455,7 @@ namespace EnhancedMapServerNetCore.Managers
             if (args.Length < 1)
                 return;
 
-            SendTo(user, args[0]);           
+            SendTo(user, args[0]);
         }
     }
 }

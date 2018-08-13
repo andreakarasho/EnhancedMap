@@ -40,7 +40,9 @@ namespace EnhancedMap.Core.Network
                 return;
 
             lock (this)
+            {
                 _freeSegment.Enqueue(segment);
+            }
         }
     }
 }

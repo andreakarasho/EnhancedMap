@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using System.Xml;
 
 namespace EnhancedMapServerNetCore.Configuration
@@ -15,7 +13,8 @@ namespace EnhancedMapServerNetCore.Configuration
     public sealed class Config
     {
         public Config()
-        { }
+        {
+        }
 
         public Config(XmlElement xml)
         {
@@ -31,7 +30,7 @@ namespace EnhancedMapServerNetCore.Configuration
 
             int cred = Convert.ToInt32(Utility.GetText(set["credentialssystem"], "0"));
             if (cred == 0 || cred == 1)
-                CredentialsSystem = (CREDENTIAL_SYSTEM)cred;
+                CredentialsSystem = (CREDENTIAL_SYSTEM) cred;
 
             MaxActiveConnections = Convert.ToUInt16(Utility.GetText(set["maxsimultaneconnections"], "10"));
             MaxSimultaneConnections = Convert.ToUInt16(Utility.GetText(set["maxactiveconnections"], "1000"));
@@ -51,7 +50,7 @@ namespace EnhancedMapServerNetCore.Configuration
 
             writer.WriteElementString("port", Port.ToString());
             writer.WriteElementString("kicktimer", KickTimer.ToString());
-            writer.WriteElementString("credentialssystem", ((int)CredentialsSystem).ToString());
+            writer.WriteElementString("credentialssystem", ((int) CredentialsSystem).ToString());
             writer.WriteElementString("maxsimultaneconnections", MaxSimultaneConnections.ToString());
             writer.WriteElementString("maxactiveconnections", MaxActiveConnections.ToString());
 

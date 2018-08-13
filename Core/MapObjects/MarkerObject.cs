@@ -1,22 +1,14 @@
-﻿using EnhancedMap.Properties;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
+using System.Drawing.Drawing2D;
+using EnhancedMap.Properties;
 
 namespace EnhancedMap.Core.MapObjects
 {
     public class MarkerObject : RenderObject
     {
-        private static readonly Pen _pen = new Pen(Color.White)
-        {
-            DashStyle = System.Drawing.Drawing2D.DashStyle.Dot,
-            DashPattern = new float[] { 9, 4, 3, 4, 3, 4 }
-        };
+        private static readonly Pen _pen = new Pen(Color.White) {DashStyle = DashStyle.Dot, DashPattern = new float[] {9, 4, 3, 4, 3, 4}};
 
-        private Image _img;
+        private readonly Image _img;
 
         public MarkerObject(UserObject parent, int x, int y) : base("marker")
         {
@@ -42,7 +34,8 @@ namespace EnhancedMap.Core.MapObjects
             (gameX, gameY) = Geometry.RotatePoint(gameX, gameY, Global.Zoom, 1, Global.Angle);
             AdjustPosition(gameX, gameY, x - 4, y - 4, out int relativeX, out int relativeY);
 
-            gameX = relativeX; gameY = relativeY;
+            gameX = relativeX;
+            gameY = relativeY;
 
             relativeX = gameX + x;
             relativeY = gameY + y;
@@ -52,17 +45,17 @@ namespace EnhancedMap.Core.MapObjects
             int playerY = Global.PlayerInstance.RelativePosition.Y;
 
             (playerX, playerY) = Geometry.RotatePoint(playerX, playerY, Global.Zoom, 1, Global.Angle);
-           // AdjustPosition(playerX, playerY, x - 4, y - 4, out int plRelX, out int plRelY);
-           // bool inwindow = playerX == plRelX && playerY == plRelY;
+            // AdjustPosition(playerX, playerY, x - 4, y - 4, out int plRelX, out int plRelY);
+            // bool inwindow = playerX == plRelX && playerY == plRelY;
 
-           // playerX = plRelX; playerY = plRelY;
+            // playerX = plRelX; playerY = plRelY;
 
-           // if (inwindow)
-           // {
-                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                g.DrawLine(_pen, relativeX, relativeY, x + playerX, y + playerY);
-                g.ResetTransform();
-           // }
+            // if (inwindow)
+            // {
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.DrawLine(_pen, relativeX, relativeY, x + playerX, y + playerY);
+            g.ResetTransform();
+            // }
 
             g.DrawImage(_img, relativeX - _img.Width / 2, relativeY - _img.Height, _img.Width, _img.Height);
 

@@ -1,7 +1,5 @@
-﻿using EnhancedMap.Core.Network;
-using EnhancedMap.GUI;
-using System;
-using System.Linq;
+﻿using System;
+using EnhancedMap.Core.Network;
 
 namespace EnhancedMap.Core
 {

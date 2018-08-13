@@ -1,26 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using EnhancedMap.Core.Network;
 using EnhancedMap.Core;
+using EnhancedMap.Core.Network;
 
 namespace EnhancedMap.GUI.SettingsLayouts
 {
     public partial class ServerCommLayout : UserControl
     {
-        private readonly string[] _commands = new string[]
-        {
-            "adduser", "addroom", "removeuser", "removeroom", "setroom",
-            "kick", "ban", "enableuser", "setpassword", "allusersonline",
-            "userinfo", "sendmsg", "setprivileges", "allrooms",
-            "statistics", "allusersinroom"
-        };
+        private readonly string[] _commands = {"adduser", "addroom", "removeuser", "removeroom", "setroom", "kick", "ban", "enableuser", "setpassword", "allusersonline", "userinfo", "sendmsg", "setprivileges", "allrooms", "statistics", "allusersinroom"};
 
         public ServerCommLayout()
         {
@@ -29,7 +18,7 @@ namespace EnhancedMap.GUI.SettingsLayouts
             comboBox1.Enabled = customButtonSend.Enabled = false;
             comboBox1.Items.AddRange(_commands);
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox1.SelectedIndexChanged += (sender, e) => 
+            comboBox1.SelectedIndexChanged += (sender, e) =>
             {
                 panel1.Controls.Clear();
 
@@ -86,7 +75,6 @@ namespace EnhancedMap.GUI.SettingsLayouts
                 }
             };
 
-            
 
             void func(ConnectionStatus status)
             {
@@ -98,13 +86,7 @@ namespace EnhancedMap.GUI.SettingsLayouts
             SocketClient.Disconnected += (sender, e) => func(ConnectionStatus.Offline);
             SocketClient.Waiting += (sender, e) => func(ConnectionStatus.Waiting);
 
-            EventSink.ServerResponseMessageEvent += (sender, e) =>
-            {
-                textBox1.Do(s => 
-                {
-                    s.AppendText(string.Format("{0}: {1}\r\n", DateTime.Now.ToString("HH:mm:ss"), e.Message));
-                });
-            };
+            EventSink.ServerResponseMessageEvent += (sender, e) => { textBox1.Do(s => { s.AppendText(string.Format("{0}: {1}\r\n", DateTime.Now.ToString("HH:mm:ss"), e.Message)); }); };
 
             customButtonSend.Click += (sender, e) =>
             {
@@ -118,7 +100,7 @@ namespace EnhancedMap.GUI.SettingsLayouts
                 {
                     if (c is TextBox)
                     {
-                        var tb = (TextBox)c;
+                        var tb = (TextBox) c;
                         if (!string.IsNullOrEmpty(tb.Text))
                         {
                             if (tb.Enabled)
@@ -136,10 +118,10 @@ namespace EnhancedMap.GUI.SettingsLayouts
                     else if (c is CheckBox)
                     {
                         if (c.Enabled)
-                            args.Add(((CheckBox)c).Checked ? "y" : "n");
+                            args.Add(((CheckBox) c).Checked ? "y" : "n");
                     }
                     else if (c is ComboBox)
-                        args.Add(((ComboBox)c).SelectedIndex.ToString());
+                        args.Add(((ComboBox) c).SelectedIndex.ToString());
                 }
 
                 textBox1.Clear();
@@ -151,52 +133,24 @@ namespace EnhancedMap.GUI.SettingsLayouts
         {
             labelDescription.Text = "Description: Add a new user";
             int offset = 30;
-            var lname = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Username:",
-                Location = new Point(10, 12)
-            };
+            var lname = new Label {ForeColor = Color.White, Text = "Username:", Location = new Point(10, 12)};
 
-            var lpsw = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Password:",
-                Location = new Point(10, 12 + offset)
-            };
+            var lpsw = new Label {ForeColor = Color.White, Text = "Password:", Location = new Point(10, 12 + offset)};
 
-            var lroom = new Label()
-            {
-                ForeColor = Color.White,
-            };
+            var lroom = new Label {ForeColor = Color.White};
             lroom.Text = "Room *:";
             lroom.Location = new Point(10, 12 + offset * 2);
 
-            var lisRoomAdmin = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Privileges*: ",
-                Location = new Point(10, 12 + offset * 3)
-            };
+            var lisRoomAdmin = new Label {ForeColor = Color.White, Text = "Privileges*: ", Location = new Point(10, 12 + offset * 3)};
 
-            var name = new TextBox
-            {
-                Location = new Point(113, 9)
-            };
+            var name = new TextBox {Location = new Point(113, 9)};
 
-            var psw = new TextBox
-            {
-                Location = new Point(113, 9 + offset)
-            };
+            var psw = new TextBox {Location = new Point(113, 9 + offset)};
 
-            var room = new TextBox
-            {
-                Name = "*",
-                Location = new Point(113, 9 + offset * 2)
-            };
+            var room = new TextBox {Name = "*", Location = new Point(113, 9 + offset * 2)};
 
-            ComboBox comboBox = new ComboBox() { Name = "*", Location = new Point(113, 9 + offset * 3), DropDownStyle = ComboBoxStyle.DropDownList };
-            comboBox.Items.AddRange(new string[3] { "Normal", "RoomAdmin", "ServerAdmin" });
+            ComboBox comboBox = new ComboBox {Name = "*", Location = new Point(113, 9 + offset * 3), DropDownStyle = ComboBoxStyle.DropDownList};
+            comboBox.Items.AddRange(new string[3] {"Normal", "RoomAdmin", "ServerAdmin"});
             comboBox.SelectedIndex = 0;
 
             if (NetworkManager.SocketClient.AccessLevel != AccessLevel.ServerAdmin)
@@ -208,34 +162,23 @@ namespace EnhancedMap.GUI.SettingsLayouts
                     name.Enabled = false;
                     psw.Enabled = false;
                 }
+
                 lroom.Enabled = false;
                 lisRoomAdmin.Enabled = false;
                 room.Enabled = false;
                 comboBox.Enabled = false;
             }
 
-            panel1.Controls.AddRange(new Control[]
-                        {
-                        lname, lpsw, lroom, lisRoomAdmin, name, psw, room, comboBox
-                        });
+            panel1.Controls.AddRange(new Control[] {lname, lpsw, lroom, lisRoomAdmin, name, psw, room, comboBox});
         }
 
         private void AddRoom()
         {
             labelDescription.Text = "Description: Add a new room";
 
-            var lname = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Room name *:",
-                Location = new Point(10, 12)
-            };
+            var lname = new Label {ForeColor = Color.White, Text = "Room name *:", Location = new Point(10, 12)};
 
-            var name = new TextBox
-            {
-                Name = "*",
-                Location = new Point(113, 9)
-            };
+            var name = new TextBox {Name = "*", Location = new Point(113, 9)};
 
             if (NetworkManager.SocketClient.AccessLevel != AccessLevel.ServerAdmin)
             {
@@ -243,28 +186,16 @@ namespace EnhancedMap.GUI.SettingsLayouts
                 name.Enabled = false;
             }
 
-            panel1.Controls.AddRange(new Control[]
-            {
-                        lname, name
-            });
+            panel1.Controls.AddRange(new Control[] {lname, name});
         }
 
         private void RemoveUser()
         {
             labelDescription.Text = "Description: Remove an user";
 
-            var lname = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Username:",
-                Location = new Point(10, 12)
+            var lname = new Label {ForeColor = Color.White, Text = "Username:", Location = new Point(10, 12)};
 
-            };
-
-            var name = new TextBox
-            {
-                Location = new Point(113, 9)
-            };
+            var name = new TextBox {Location = new Point(113, 9)};
 
             if (NetworkManager.SocketClient.AccessLevel == AccessLevel.Normal)
             {
@@ -272,29 +203,16 @@ namespace EnhancedMap.GUI.SettingsLayouts
                 name.Enabled = false;
             }
 
-            panel1.Controls.AddRange(new Control[]
-            {
-                        lname, name
-            });
-
+            panel1.Controls.AddRange(new Control[] {lname, name});
         }
 
         private void RemoveRoom()
         {
             labelDescription.Text = "Description: Remove a room";
 
-            var lname = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Room name *:",
-                Location = new Point(10, 12)
-            };
+            var lname = new Label {ForeColor = Color.White, Text = "Room name *:", Location = new Point(10, 12)};
 
-            var name = new TextBox
-            {
-                Name = "*",
-                Location = new Point(113, 9)
-            };
+            var name = new TextBox {Name = "*", Location = new Point(113, 9)};
 
             if (NetworkManager.SocketClient.AccessLevel != AccessLevel.ServerAdmin)
             {
@@ -302,10 +220,7 @@ namespace EnhancedMap.GUI.SettingsLayouts
                 name.Enabled = false;
             }
 
-            panel1.Controls.AddRange(new Control[]
-            {
-                        lname, name
-            });
+            panel1.Controls.AddRange(new Control[] {lname, name});
         }
 
         private void SetRoom()
@@ -313,31 +228,13 @@ namespace EnhancedMap.GUI.SettingsLayouts
             labelDescription.Text = "Description: Assigns an existing room to an user";
             int offset = 30;
 
-            var lname = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Username *:",
-                Location = new Point(10, 12)
-            };
+            var lname = new Label {ForeColor = Color.White, Text = "Username *:", Location = new Point(10, 12)};
 
-            var lroomname = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Room Name *:",
-                Location = new Point(10, 12 + offset)
-            };
+            var lroomname = new Label {ForeColor = Color.White, Text = "Room Name *:", Location = new Point(10, 12 + offset)};
 
-            var name = new TextBox
-            {
-                Name = "*",
-                Location = new Point(113, 9)
-            };
+            var name = new TextBox {Name = "*", Location = new Point(113, 9)};
 
-            var roomname = new TextBox
-            {
-                Name = "*",
-                Location = new Point(113, 9 + offset)
-            };
+            var roomname = new TextBox {Name = "*", Location = new Point(113, 9 + offset)};
 
             if (NetworkManager.SocketClient.AccessLevel != AccessLevel.ServerAdmin)
             {
@@ -347,29 +244,16 @@ namespace EnhancedMap.GUI.SettingsLayouts
                 roomname.Enabled = false;
             }
 
-            panel1.Controls.AddRange(new Control[]
-            {
-                        lname, lroomname, name, roomname
-            });
-
+            panel1.Controls.AddRange(new Control[] {lname, lroomname, name, roomname});
         }
 
         private void Kick()
         {
             labelDescription.Text = "Description: Kick an user from the server";
 
-            var lname = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Username:",
-                Location = new Point(10, 12)
-            };
+            var lname = new Label {ForeColor = Color.White, Text = "Username:", Location = new Point(10, 12)};
 
-            var name = new TextBox
-            {
-                Name = "*",
-                Location = new Point(113, 9)
-            };
+            var name = new TextBox {Name = "*", Location = new Point(113, 9)};
 
             if (NetworkManager.SocketClient.AccessLevel == AccessLevel.Normal)
             {
@@ -377,28 +261,16 @@ namespace EnhancedMap.GUI.SettingsLayouts
                 name.Enabled = false;
             }
 
-            panel1.Controls.AddRange(new Control[]
-            {
-                        lname, name
-            });
-
+            panel1.Controls.AddRange(new Control[] {lname, name});
         }
 
         private void Ban()
         {
             labelDescription.Text = "Description: Ban and kick an user from the server";
 
-            var lname = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Username:",
-                Location = new Point(10, 12)
-            };
+            var lname = new Label {ForeColor = Color.White, Text = "Username:", Location = new Point(10, 12)};
 
-            var name = new TextBox
-            {
-                Location = new Point(113, 9)
-            };
+            var name = new TextBox {Location = new Point(113, 9)};
 
             if (NetworkManager.SocketClient.AccessLevel == AccessLevel.Normal)
             {
@@ -406,27 +278,16 @@ namespace EnhancedMap.GUI.SettingsLayouts
                 name.Enabled = false;
             }
 
-            panel1.Controls.AddRange(new Control[]
-            {
-                        lname, name
-            });
+            panel1.Controls.AddRange(new Control[] {lname, name});
         }
 
         private void EnableUser()
         {
             labelDescription.Text = "Description: Enable an user to connect (after a ban)";
 
-            var lname = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Username:",
-                Location = new Point(10, 12)
-            };
+            var lname = new Label {ForeColor = Color.White, Text = "Username:", Location = new Point(10, 12)};
 
-            var name = new TextBox
-            {
-                Location = new Point(113, 9)
-            };
+            var name = new TextBox {Location = new Point(113, 9)};
 
             if (NetworkManager.SocketClient.AccessLevel == AccessLevel.Normal)
             {
@@ -434,10 +295,7 @@ namespace EnhancedMap.GUI.SettingsLayouts
                 name.Enabled = false;
             }
 
-            panel1.Controls.AddRange(new Control[]
-            {
-                        lname, name
-            });
+            panel1.Controls.AddRange(new Control[] {lname, name});
         }
 
         private void SetPassword()
@@ -445,29 +303,13 @@ namespace EnhancedMap.GUI.SettingsLayouts
             labelDescription.Text = "Description: Set a new password for an user";
             int offset = 30;
 
-            var lname = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Username:",
-                Location = new Point(10, 12)
-            };
+            var lname = new Label {ForeColor = Color.White, Text = "Username:", Location = new Point(10, 12)};
 
-            var lnewpsw = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "New password:",
-                Location = new Point(10, 12 + offset)
-            };
+            var lnewpsw = new Label {ForeColor = Color.White, Text = "New password:", Location = new Point(10, 12 + offset)};
 
-            var name = new TextBox
-            {
-                Location = new Point(113, 9)
-            };
+            var name = new TextBox {Location = new Point(113, 9)};
 
-            var newpsw = new TextBox
-            {
-                Location = new Point(113, 9 + offset)
-            };
+            var newpsw = new TextBox {Location = new Point(113, 9 + offset)};
 
             if (NetworkManager.SocketClient.AccessLevel == AccessLevel.Normal)
             {
@@ -477,10 +319,7 @@ namespace EnhancedMap.GUI.SettingsLayouts
                 newpsw.Enabled = false;
             }
 
-            panel1.Controls.AddRange(new Control[]
-            {
-                        lname, lnewpsw, name, newpsw
-            });
+            panel1.Controls.AddRange(new Control[] {lname, lnewpsw, name, newpsw});
         }
 
         private void AllUsersOnline()
@@ -492,56 +331,34 @@ namespace EnhancedMap.GUI.SettingsLayouts
         {
             labelDescription.Text = "Description: Get info from an user";
 
-            var lname = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Username *:",
-                Location = new Point(10, 12)
-            };
+            var lname = new Label {ForeColor = Color.White, Text = "Username *:", Location = new Point(10, 12)};
 
-            var name = new TextBox
-            {
-                Name = "*",
-                Location = new Point(113, 9)
-            };
+            var name = new TextBox {Name = "*", Location = new Point(113, 9)};
 
             if (NetworkManager.SocketClient.AccessLevel != AccessLevel.ServerAdmin)
             {
                 lname.Enabled = false;
                 name.Enabled = false;
             }
-            panel1.Controls.AddRange(new Control[]
-            {
-                        lname, name
-            });
+
+            panel1.Controls.AddRange(new Control[] {lname, name});
         }
 
         private void SendMsg()
         {
             labelDescription.Text = "Description: Send a game message to all User";
 
-            var lname = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Message *:",
-                Location = new Point(10, 12)
-            };
+            var lname = new Label {ForeColor = Color.White, Text = "Message *:", Location = new Point(10, 12)};
 
-            var name = new TextBox
-            {
-                Name = "*",
-                Location = new Point(113, 9)
-            };
+            var name = new TextBox {Name = "*", Location = new Point(113, 9)};
 
             if (NetworkManager.SocketClient.AccessLevel != AccessLevel.ServerAdmin)
             {
                 lname.Enabled = false;
                 name.Enabled = false;
             }
-            panel1.Controls.AddRange(new Control[]
-            {
-                        lname, name
-            });
+
+            panel1.Controls.AddRange(new Control[] {lname, name});
         }
 
         private void SetPrivileges()
@@ -549,38 +366,18 @@ namespace EnhancedMap.GUI.SettingsLayouts
             labelDescription.Text = "Description: Set account access level";
             int offset = 30;
 
-            var lname = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Username *:",
-                Location = new Point(10, 12)
-            };
+            var lname = new Label {ForeColor = Color.White, Text = "Username *:", Location = new Point(10, 12)};
 
-            var lisRoomAdmin = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Privileges*: ",
-                Location = new Point(10, 12 + offset)
-            };
+            var lisRoomAdmin = new Label {ForeColor = Color.White, Text = "Privileges*: ", Location = new Point(10, 12 + offset)};
 
-            var name = new TextBox
-            {
-                Name = "*",
-                Location = new Point(113, 9)
-            };
+            var name = new TextBox {Name = "*", Location = new Point(113, 9)};
 
-            ComboBox comboBox = new ComboBox() { Name = "*", Location = new Point(113, 12 + offset), DropDownStyle = ComboBoxStyle.DropDownList };
-            comboBox.Items.AddRange(new string[3] { "Normal", "RoomAdmin", "ServerAdmin" });
+            ComboBox comboBox = new ComboBox {Name = "*", Location = new Point(113, 12 + offset), DropDownStyle = ComboBoxStyle.DropDownList};
+            comboBox.Items.AddRange(new string[3] {"Normal", "RoomAdmin", "ServerAdmin"});
             comboBox.SelectedIndex = 0;
 
-            if (NetworkManager.SocketClient.AccessLevel != AccessLevel.ServerAdmin)
-            {
-                lname.Enabled = name.Enabled = comboBox.Enabled = false;
-            }
-            panel1.Controls.AddRange(new Control[]
-            {
-                    lname,lisRoomAdmin, name, comboBox
-            });
+            if (NetworkManager.SocketClient.AccessLevel != AccessLevel.ServerAdmin) lname.Enabled = name.Enabled = comboBox.Enabled = false;
+            panel1.Controls.AddRange(new Control[] {lname, lisRoomAdmin, name, comboBox});
         }
 
         private void AllRooms()
@@ -590,26 +387,16 @@ namespace EnhancedMap.GUI.SettingsLayouts
 
         private void Statitics()
         {
-            labelDescription.Text =
-                            "Description: Get statistics about in/out packets from server (if -profile arg is enabled)";
+            labelDescription.Text = "Description: Get statistics about in/out packets from server (if -profile arg is enabled)";
         }
 
         private void AllUsersInRoom()
         {
             labelDescription.Text = "Description: Get all users for a specific room";
 
-            var lname = new Label()
-            {
-                ForeColor = Color.White,
-                Text = "Room:",
-                Location = new Point(10, 12)
-            };
+            var lname = new Label {ForeColor = Color.White, Text = "Room:", Location = new Point(10, 12)};
 
-            var name = new TextBox
-            {
-                Name = "*",
-                Location = new Point(113, 9)
-            };
+            var name = new TextBox {Name = "*", Location = new Point(113, 9)};
 
             if (NetworkManager.SocketClient.AccessLevel < AccessLevel.ServerAdmin)
             {
@@ -617,9 +404,7 @@ namespace EnhancedMap.GUI.SettingsLayouts
                 name.Enabled = false;
             }
 
-            panel1.Controls.AddRange(new Control[] { lname, name });
-
+            panel1.Controls.AddRange(new Control[] {lname, name});
         }
-
     }
 }

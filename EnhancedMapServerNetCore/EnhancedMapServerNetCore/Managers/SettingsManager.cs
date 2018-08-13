@@ -1,10 +1,8 @@
-﻿using EnhancedMapServerNetCore.Configuration;
-using EnhancedMapServerNetCore.Logging;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Text;
 using System.Xml;
+using EnhancedMapServerNetCore.Configuration;
+using EnhancedMapServerNetCore.Logging;
 
 namespace EnhancedMapServerNetCore.Managers
 {
@@ -14,15 +12,9 @@ namespace EnhancedMapServerNetCore.Managers
 
         public static void Init()
         {
-            Core.ServerInizialized += (sender, e) =>
-            {
-                Load();
-            };
+            Core.ServerInizialized += (sender, e) => { Load(); };
 
-            Core.ServerShuttingDown += (sender, e) =>
-            {
-
-            };
+            Core.ServerShuttingDown += (sender, e) => { };
         }
 
         public static void Load(bool isbackup = false)
@@ -30,10 +22,7 @@ namespace EnhancedMapServerNetCore.Managers
             Log.Message(LogTypes.Trace, "Loading server settings...");
 
             string folderPath = Path.Combine(Core.RootPath, isbackup ? "Backup" : "Data");
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
+            if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
 
             string path = Path.Combine(folderPath, "Server.xml");
 
@@ -50,7 +39,7 @@ namespace EnhancedMapServerNetCore.Managers
             {
                 doc.Load(path);
                 XmlElement root = doc["settings"];
-                Configuration = new Config(root);              
+                Configuration = new Config(root);
             }
             catch (Exception ex)
             {
@@ -81,11 +70,7 @@ namespace EnhancedMapServerNetCore.Managers
 
             path = Path.Combine(path, "Server.xml");
 
-            XmlWriterSettings settings = new XmlWriterSettings
-            {
-                Indent = true,
-                IndentChars = "\t"
-            };
+            XmlWriterSettings settings = new XmlWriterSettings {Indent = true, IndentChars = "\t"};
 
             Log.Message(LogTypes.Trace, (isbackup ? "Backup: " : "") + "Saving settings...");
 

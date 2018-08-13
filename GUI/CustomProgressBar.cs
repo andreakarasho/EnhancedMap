@@ -1,36 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EnhancedMap.GUI
 {
     public class CustomProgressBar : ProgressBar
     {
-        private System.Windows.Forms.Timer _timer;
+        private readonly SolidBrush _color = new SolidBrush(ColorsTable.Black1);
+        private int _index = -1;
+        private readonly System.Windows.Forms.Timer _timer;
+
         public CustomProgressBar()
         {
-            this.SetStyle(ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
 
-            _timer = new System.Windows.Forms.Timer
-            {
-                Interval = 1000 / 144
-            };
+            _timer = new System.Windows.Forms.Timer {Interval = 1000 / 144};
 
             _timer.Tick += (sender, e) =>
             {
-                if (this.Style == ProgressBarStyle.Marquee)
-                {
-                    this.Invalidate();
-                }
+                if (Style == ProgressBarStyle.Marquee) Invalidate();
             };
         }
-
-        private SolidBrush _color = new SolidBrush(ColorsTable.Black1);
-        private int _index = -1;
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -43,7 +33,7 @@ namespace EnhancedMap.GUI
                 case ProgressBarStyle.Blocks:
                     if (_timer.Enabled && !DesignMode)
                         _timer.Stop();
-                    rec.Width = (int)(rec.Width * ((double)Value / Maximum));
+                    rec.Width = (int) (rec.Width * ((double) Value / Maximum));
                     e.Graphics.FillRectangle(_color, 0, 0, rec.Width, rec.Height);
                     break;
                 case ProgressBarStyle.Marquee:
@@ -54,8 +44,8 @@ namespace EnhancedMap.GUI
                     if (_index > e.ClipRectangle.Width)
                         _index = 0;
 
-                    rec.X = (_index % rec.Width);                       
-                    rec.Width = (int)(rec.Width * ((double)35 / Maximum));
+                    rec.X = _index % rec.Width;
+                    rec.Width = (int) (rec.Width * ((double) 35 / Maximum));
 
                     int delta = Math.Max(0, rec.Right - e.ClipRectangle.Width);
 
@@ -66,7 +56,6 @@ namespace EnhancedMap.GUI
                 default:
                     break;
             }
-
         }
     }
 }

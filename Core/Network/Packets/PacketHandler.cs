@@ -1,5 +1,5 @@
-﻿using EnhancedMap.Core.Network.Packets;
-using System;
+﻿using System;
+using EnhancedMap.Core.Network.Packets;
 
 namespace EnhancedMap.Core.Network
 {

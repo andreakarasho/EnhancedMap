@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace EnhancedMapServerNetCore
 {
     public class CoroutineManager
     {
-        private static List<Coroutine> _coroutines = new List<Coroutine>();
+        private static readonly List<Coroutine> _coroutines = new List<Coroutine>();
 
         public static Coroutine StartCoroutine(IEnumerator routine)
         {
-            var coroutine = new Coroutine(routine);
+            Coroutine coroutine = new Coroutine(routine);
             _coroutines.Add(coroutine);
             return coroutine;
         }
@@ -20,7 +19,7 @@ namespace EnhancedMapServerNetCore
         {
             for (int i = 0; i < _coroutines.Count; i++)
             {
-                var coroutine = _coroutines[i];
+                Coroutine coroutine = _coroutines[i];
 
                 if (!coroutine.MoveNext())
                 {
@@ -35,17 +34,18 @@ namespace EnhancedMapServerNetCore
     {
         internal IEnumerator routine;
 
-        internal YieldInstruction() { }
+        internal YieldInstruction()
+        {
+        }
 
         internal bool MoveNext()
         {
             if (routine.Current is YieldInstruction yieldInstruction)
             {
                 if (yieldInstruction.MoveNext())
-                {
                     return true;
-                }
             }
+
             return routine.MoveNext();
         }
     }
@@ -62,8 +62,8 @@ namespace EnhancedMapServerNetCore
     {
         public WaitForSeconds(float seconds)
         {
-            var delay = DateTime.Now.AddSeconds(seconds);
-            this.routine = Count(delay);
+            DateTime delay = DateTime.Now.AddSeconds(seconds);
+            routine = Count(delay);
         }
 
         private IEnumerator Count(DateTime delay)
@@ -77,13 +77,13 @@ namespace EnhancedMapServerNetCore
     {
         public WaitUntil(Func<bool> func)
         {
-            this.routine = Until(func);
+            routine = Until(func);
         }
 
         public WaitUntil(Func<bool> func, float seconds)
         {
-            var delay = DateTime.Now.AddSeconds(seconds);
-            this.routine = UntilWithTimeout(func, delay);
+            DateTime delay = DateTime.Now.AddSeconds(seconds);
+            routine = UntilWithTimeout(func, delay);
         }
 
         private IEnumerator Until(Func<bool> func)

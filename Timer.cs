@@ -7,18 +7,18 @@ namespace EnhancedMap
 {
     public static class TimerManager
     {
-        static TimerManager()
-        {
-            Thread t = new Thread(Run) { IsBackground = true };
-            t.Start();
-        }
-
         private static readonly List<Timer> _Timers = new List<Timer>();
 
         private static readonly ConcurrentQueue<Timer> _ToAdd = new ConcurrentQueue<Timer>();
         private static readonly ConcurrentQueue<Timer> _ToRemove = new ConcurrentQueue<Timer>();
 
         private static readonly AutoResetEvent _waitHandle = new AutoResetEvent(true);
+
+        static TimerManager()
+        {
+            Thread t = new Thread(Run) {IsBackground = true};
+            t.Start();
+        }
 
         private static void Run()
         {
@@ -62,7 +62,7 @@ namespace EnhancedMap
             }
         }
 
- 
+
         public static Timer Create(int interval, Action callback, bool started = true)
         {
             return Create(interval, 0, callback, started);
@@ -92,9 +92,9 @@ namespace EnhancedMap
 
     public abstract class Timer
     {
+        internal bool _firstRun;
         internal int _interval, _delay;
         internal DateTime _next, _nextDelay;
-        internal bool _firstRun;
 
         protected Timer(int interval)
         {

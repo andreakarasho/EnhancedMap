@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using EnhancedMapServerNetCore.Internals;
+using EnhancedMapServerNetCore.Managers;
 
 namespace EnhancedMapServerNetCore.Network
 {
     public sealed class PUserData : PacketWriter
     {
-        public PUserData(ushort x, ushort y, byte map,
-            ushort hp, ushort stam, ushort mana,
-            ushort maxhp, ushort maxstam, ushort maxmana,
-            byte flag, bool ispanic, uint color, byte fontlen,
-            string font, byte[] fontsize, byte fontstyle, string name) : base(0x25)
+        public PUserData(ushort x, ushort y, byte map, ushort hp, ushort stam, ushort mana, ushort maxhp, ushort maxstam, ushort maxmana, byte flag, bool ispanic, uint color, byte fontlen, string font, byte[] fontsize, byte fontstyle, string name) : base(0x25)
         {
             WriteUShort(x);
             WriteUShort(y);
@@ -30,18 +25,18 @@ namespace EnhancedMapServerNetCore.Network
             for (int i = 0; i < fontsize.Length; i++)
                 WriteByte(fontsize[i]);
             WriteByte(fontstyle);
-            WriteByte((byte)name.Length);
+            WriteByte((byte) name.Length);
             WriteASCII(name);
         }
     }
 
     public sealed class PLoginResponse : PacketWriter
     {
-        public PLoginResponse(Internals.ACCOUNT_LEVEL level, string name) : base(0x1F)
+        public PLoginResponse(ACCOUNT_LEVEL level, string name) : base(0x1F)
         {
             WriteByte(1);
-            WriteByte((byte)level);
-            WriteByte((byte)name.Length);
+            WriteByte((byte) level);
+            WriteByte((byte) name.Length);
             WriteASCII(name);
             WriteByte(Core.Protocol);
         }
@@ -49,10 +44,10 @@ namespace EnhancedMapServerNetCore.Network
 
     public sealed class PServerResponseCmdToClient : PacketWriter
     {
-        public PServerResponseCmdToClient(string msg, Managers.SERVER_MESSAGE_TYPE type) : base(0x21)
+        public PServerResponseCmdToClient(string msg, SERVER_MESSAGE_TYPE type) : base(0x21)
         {
-            WriteByte((byte)type);
-            WriteUShort((ushort)msg.Length);
+            WriteByte((byte) type);
+            WriteUShort((ushort) msg.Length);
             WriteASCII(msg);
         }
     }
@@ -61,21 +56,21 @@ namespace EnhancedMapServerNetCore.Network
     {
         public PChatMessage(string message, int color, string name) : base(0x23)
         {
-            WriteUShort((ushort)message.Length);
-            WriteUInt((uint)color);
+            WriteUShort((ushort) message.Length);
+            WriteUInt((uint) color);
             WriteASCII(message);
-            WriteByte((byte)name.Length);
+            WriteByte((byte) name.Length);
             WriteASCII(name);
         }
     }
 
     public sealed class PAlertAdvice : PacketWriter
     {
-        public PAlertAdvice(ushort x, ushort y, string name) : base (0x27)
+        public PAlertAdvice(ushort x, ushort y, string name) : base(0x27)
         {
             WriteUShort(x);
             WriteUShort(y);
-            WriteByte((byte)name.Length);
+            WriteByte((byte) name.Length);
             WriteASCII(name);
         }
     }
@@ -85,7 +80,7 @@ namespace EnhancedMapServerNetCore.Network
         public PUserConnection(string name, bool connected) : base(0x29)
         {
             WriteBool(connected);
-            WriteByte((byte)name.Length);
+            WriteByte((byte) name.Length);
             WriteASCII(name);
         }
     }
@@ -110,7 +105,7 @@ namespace EnhancedMapServerNetCore.Network
     {
         public PServerMessage(string message, uint color) : base(0x2F)
         {
-            WriteUShort((ushort)message.Length);
+            WriteUShort((ushort) message.Length);
             WriteASCII(message);
             WriteUInt(color);
         }
@@ -124,9 +119,9 @@ namespace EnhancedMapServerNetCore.Network
             WriteUShort(x);
             WriteUShort(y);
             WriteByte(map);
-            WriteByte((byte)description.Length);
+            WriteByte((byte) description.Length);
             WriteASCII(description);
-            WriteByte((byte)name.Length);
+            WriteByte((byte) name.Length);
             WriteASCII(name);
         }
 
@@ -136,7 +131,7 @@ namespace EnhancedMapServerNetCore.Network
             WriteUShort(x);
             WriteUShort(y);
             WriteByte(map);
-            WriteByte((byte)name.Length);
+            WriteByte((byte) name.Length);
             WriteASCII(name);
         }
     }

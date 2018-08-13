@@ -1,617 +1,60 @@
-﻿using Microsoft.Win32.SafeHandles;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Linq;
+using System.Drawing;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
-using System.Threading.Tasks;
-
+using Microsoft.Win32.SafeHandles;
 
 namespace EnhancedMap
 {
     public static class Native
     {
-        public const int WM_NCLBUTTONDOWN = 0xA1;
-        public const int HT_CAPTION = 0x2;
-        public const int WM_MOUSEMOVE = 0x0200;
-        public const int WM_LBUTTONDOWN = 0x0201;
-        public const int WM_LBUTTONUP = 0x0202;
-        public const int WM_LBUTTONDBLCLK = 0x0203;
-        public const int WM_RBUTTONDOWN = 0x0204;
-        public const int HTBOTTOMLEFT = 16;
-        public const int HTBOTTOMRIGHT = 17;
-        public const int HTLEFT = 10;
-        public const int HTRIGHT = 11;
-        public const int HTBOTTOM = 15;
-        public const int HTTOP = 12;
-        public const int HTTOPLEFT = 13;
-        public const int HTTOPRIGHT = 14;
-        public const int BORDER_WIDTH = 7;
-        public const int WMSZ_TOP = 3;
-        public const int WMSZ_TOPLEFT = 4;
-        public const int WMSZ_TOPRIGHT = 5;
-        public const int WMSZ_LEFT = 1;
-        public const int WMSZ_RIGHT = 2;
-        public const int WMSZ_BOTTOM = 6;
-        public const int WMSZ_BOTTOMLEFT = 7;
-        public const int WMSZ_BOTTOMRIGHT = 8;
-
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 4)]
-        public class MONITORINFOEX
+        [Flags]
+        public enum DWMNCRenderingPolicy : uint
         {
-            public int cbSize = Marshal.SizeOf(typeof(MONITORINFOEX));
-            public RECT rcMonitor = new RECT();
-            public RECT rcWork = new RECT();
-            public int dwFlags = 0;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-            public char[] szDevice = new char[32];
+            UseWindowStyle,
+            Disabled,
+            Enabled,
+            Last
         }
 
-        public static readonly Dictionary<int, int> _resizingLocationsToCmd = new Dictionary<int, int>
+        [Flags]
+        public enum DwmWindowAttribute : uint
         {
-            {HTTOP,         WMSZ_TOP},
-            {HTTOPLEFT,     WMSZ_TOPLEFT},
-            {HTTOPRIGHT,    WMSZ_TOPRIGHT},
-            {HTLEFT,        WMSZ_LEFT},
-            {HTRIGHT,       WMSZ_RIGHT},
-            {HTBOTTOM,      WMSZ_BOTTOM},
-            {HTBOTTOMLEFT,  WMSZ_BOTTOMLEFT},
-            {HTBOTTOMRIGHT, WMSZ_BOTTOMRIGHT}
-        };
-
-        public const int STATUS_BAR_BUTTON_WIDTH = STATUS_BAR_HEIGHT;
-        public const int STATUS_BAR_HEIGHT = 25;
-        public const int ACTION_BAR_HEIGHT = 40;
-
-        public const uint TPM_LEFTALIGN = 0x0000;
-        public const uint TPM_RETURNCMD = 0x0100;
-
-        public const int WM_SYSCOMMAND = 0x0112;
-        public const int WS_MINIMIZEBOX = 0x20000;
-        public const int WS_SYSMENU = 0x00080000;
-
-        public const int MONITOR_DEFAULTTONEAREST = 2;
-
-        [DllImport("user32.dll")]
-        public static extern bool ReleaseCapture();
-
-        [DllImport("user32.dll")]
-        public static extern int TrackPopupMenuEx(IntPtr hmenu, uint fuFlags, int x, int y, IntPtr hwnd, IntPtr lptpm);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
-
-        [DllImport("User32.dll", CharSet = CharSet.Auto)]
-        public static extern bool GetMonitorInfo(HandleRef hmonitor, [In, Out] MONITORINFOEX info);
-        [DllImport("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-
-        [DllImport("user32.dll")]
-        public static extern bool AnimateWindow(IntPtr hwnd, int dwTime, int dwFlags);
-
-        [DllImport("user32.dll")]
-        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        [DllImport("user32.dll")]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-
-        [DllImport("user32.dll")]
-        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-
-        [DllImport("kernel32", CharSet = CharSet.Unicode)]
-        public static extern long WritePrivateProfileString(string Section, string Key, string Value, string FilePath);
-
-        [DllImport("kernel32", CharSet = CharSet.Unicode)]
-        public static extern int GetPrivateProfileString(string Section, string Key, string Default, StringBuilder RetVal, int Size, string FilePath);
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool IsWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-        [DllImport("kernel32.dll")]
-        public static extern int GetCurrentProcessId();
-
-        [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Ansi)]
-        public static extern IntPtr LoadLibrary([MarshalAs(UnmanagedType.LPStr)]string lpFileName);
-
-        [DllImport("msvcrt.dll", CallingConvention = CallingConvention.Cdecl), SuppressUnmanagedCodeSecurity]
-        public static extern unsafe void* memcpy(void* to, void* from, int len);
-
-        [DllImport("kernel32.dll"), SuppressUnmanagedCodeSecurity]
-        public static extern int WaitForSingleObject(IntPtr hHandle, int timeout = -1);
-
-        [DllImport("kernel32.dll"), SuppressUnmanagedCodeSecurity]
-        public static extern uint SignalObjectAndWait(IntPtr hToSignal, IntPtr hToWaitOn, int timeout = -1, bool alertable = false);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool CreateProcess(
-           [MarshalAs(UnmanagedType.LPTStr)] string lpApplicationName, StringBuilder lpCommandLine, SECURITY_ATTRIBUTES lpProcessAttributes,
-           SECURITY_ATTRIBUTES lpThreadAttributes, bool bInheritHandles, uint dwCreationFlags, IntPtr lpEnvironment,
-           [MarshalAs(UnmanagedType.LPTStr)] string lpCurrentDirectory, STARTUPINFO lpStartupInfo, PROCESS_INFORMATION lpProcessInformation);
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern uint ResumeThread(IntPtr hThread);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr OpenProcess(uint dwDesiredAccess, bool inherit, int pId);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool CloseHandle(IntPtr handle);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr VirtualAllocEx(IntPtr hProcess, IntPtr address, IntPtr size, int flAllocationType, int flProtect);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr address, byte[] buffer, IntPtr size, IntPtr written);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr address, [Out] byte[] buffer, IntPtr size, IntPtr read);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, IntPtr dwStackSize,
-            IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool GetExitCodeThread(IntPtr hThread, out IntPtr lpExitCode);
-
-        [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
-        public static extern bool VirtualFreeEx(IntPtr hProcess, IntPtr lpAddress, IntPtr size, uint dwFreeType);
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern IntPtr MapViewOfFile(IntPtr mmf, uint access, uint offsetHigh, uint offsetLow, IntPtr toMap);
-
-        [DllImport("psapi.dll", SetLastError = true)]
-        public static extern bool EnumProcessModulesEx(IntPtr hProcess, [In][Out] IntPtr[] modules, uint size, out uint needed, uint flags);
-
-        [DllImport("psapi.dll", SetLastError = true)]
-        public static extern uint GetModuleBaseName(IntPtr hProcess, IntPtr hModule, StringBuilder lpBaseName, int nSize);
-
-        [DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
-        public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-        public static extern IntPtr GetModuleHandle(string lpModuleName);
-
-        [StructLayout(LayoutKind.Sequential)]
-        public sealed class PROCESS_INFORMATION
-        {
-            public IntPtr hProcess = IntPtr.Zero;
-            public IntPtr hThread = IntPtr.Zero;
-            public uint dwProcessId;
-            public uint dwThreadId;
+            DWMWA_NCRENDERING_ENABLED = 1,
+            DWMWA_NCRENDERING_POLICY,
+            DWMWA_TRANSITIONS_FORCEDISABLED,
+            DWMWA_ALLOW_NCPAINT,
+            DWMWA_CAPTION_BUTTON_BOUNDS,
+            DWMWA_NONCLIENT_RTL_LAYOUT,
+            DWMWA_FORCE_ICONIC_REPRESENTATION,
+            DWMWA_FLIP3D_POLICY,
+            DWMWA_EXTENDED_FRAME_BOUNDS,
+            DWMWA_HAS_ICONIC_BITMAP,
+            DWMWA_DISALLOW_PEEK,
+            DWMWA_EXCLUDED_FROM_PEEK,
+            DWMWA_LAST
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        public sealed class SECURITY_ATTRIBUTES
-        {
-            public int nLength = 12;
-            public SafeLocalMemHandle lpSecurityDescriptor = new SafeLocalMemHandle(IntPtr.Zero, false);
-            public bool bInheritHandle;
-        }
-        [StructLayout(LayoutKind.Sequential)]
-        public sealed class STARTUPINFO
-        {
-            public int cb;
-            public IntPtr lpReserved = IntPtr.Zero;
-            public IntPtr lpDesktop = IntPtr.Zero;
-            public IntPtr lpTitle = IntPtr.Zero;
-            public int dwX;
-            public int dwY;
-            public int dwXSize;
-            public int dwYSize;
-            public int dwXCountChars;
-            public int dwYCountChars;
-            public int dwFillAttribute;
-            public int dwFlags;
-            public short wShowWindow;
-            public short cbReserved2;
-            public IntPtr lpReserved2 = IntPtr.Zero;
-            public SafeFileHandle hStdInput = new SafeFileHandle(IntPtr.Zero, false);
-            public SafeFileHandle hStdOutput = new SafeFileHandle(IntPtr.Zero, false);
-            public SafeFileHandle hStdError = new SafeFileHandle(IntPtr.Zero, false);
-            public STARTUPINFO()
-            {
-                this.cb = Marshal.SizeOf(this);
-            }
-
-            public void Dispose()
-            {
-                if ((this.hStdInput != null) && !this.hStdInput.IsInvalid)
-                {
-                    this.hStdInput.Close();
-                    this.hStdInput = null;
-                }
-                if ((this.hStdOutput != null) && !this.hStdOutput.IsInvalid)
-                {
-                    this.hStdOutput.Close();
-                    this.hStdOutput = null;
-                }
-                if ((this.hStdError != null) && !this.hStdError.IsInvalid)
-                {
-                    this.hStdError.Close();
-                    this.hStdError = null;
-                }
-            }
-        }
-
-        private static bool IsNt
-        {
-            get { return (Environment.OSVersion.Platform == PlatformID.Win32NT); }
-        }
-
-        public const uint CREATE_SUSPENDED = 0x00000004;
-        public const uint CREATE_UNICODE_ENVIRONMENT = 0x00000400;
-        public const uint CREATE_PRESERVE_CODE_AUTHZ_LEVEL = 0x02000000;
-        public const uint CREATE_DEFAULT_ERROR_MODE = 0x04000000;
-        public const uint CREATE_NO_WINDOW = 0x08000000;
-        public const int INVALID_HANDLE_VALUE = -1;
-
-        internal sealed class OrdinalCaseInsensitiveComparer : IComparer
-        {
-            public static readonly OrdinalCaseInsensitiveComparer Default = new OrdinalCaseInsensitiveComparer();
-            public int Compare(object a, object b)
-            {
-                string str = a as string;
-                string str2 = b as string;
-                if ((str != null) && (str2 != null))
-                {
-                    return string.CompareOrdinal(str.ToUpperInvariant(), str2.ToUpperInvariant());
-                }
-                return Comparer.Default.Compare(a, b);
-            }
-        }
-
-        public sealed class SafeProcessHandle : SafeHandleZeroOrMinusOneIsInvalid
-        {
-            public SafeProcessHandle() : base(true) { }
-
-            public SafeProcessHandle(IntPtr handle)
-                : base(true)
-            {
-                base.SetHandle(handle);
-            }
-
-            internal void InitialSetHandle(IntPtr h)
-            {
-                base.handle = h;
-            }
-
-            protected override bool ReleaseHandle()
-            {
-                return CloseHandle(base.handle);
-            }
-        }
-
-        public sealed class SafeThreadHandle : SafeHandleZeroOrMinusOneIsInvalid
-        {
-            public SafeThreadHandle() : base(true) { }
-
-            internal void InitialSetHandle(IntPtr h)
-            {
-                base.SetHandle(h);
-            }
-
-            protected override bool ReleaseHandle()
-            {
-                return CloseHandle(base.handle);
-            }
-        }
-
-        public sealed class SafeLocalMemHandle : SafeHandleZeroOrMinusOneIsInvalid
-        {
-            public SafeLocalMemHandle() : base(true) { }
-
-            public SafeLocalMemHandle(IntPtr existingHandle, bool ownsHandle)
-                : base(ownsHandle)
-            {
-                base.SetHandle(existingHandle);
-            }
-
-            [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            public static extern bool ConvertStringSecurityDescriptorToSecurityDescriptor(string StringSecurityDescriptor, int StringSDRevision, out SafeLocalMemHandle pSecurityDescriptor, IntPtr SecurityDescriptorSize);
-
-            [DllImport("kernel32.dll")]
-            private static extern IntPtr LocalFree(IntPtr hMem);
-
-            protected override bool ReleaseHandle()
-            {
-                return (LocalFree(base.handle) == IntPtr.Zero);
-            }
-        }
-
-        public static byte[] EnvironmentToByteArray(StringDictionary sd, bool unicode)
-        {
-            string[] array = new string[sd.Count];
-            byte[] bytes = null;
-            sd.Keys.CopyTo(array, 0);
-            string[] strArray2 = new string[sd.Count];
-            sd.Values.CopyTo(strArray2, 0);
-            Array.Sort(array, strArray2, OrdinalCaseInsensitiveComparer.Default);
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < sd.Count; i++)
-            {
-                builder.Append(array[i]);
-                builder.Append('=');
-                builder.Append(strArray2[i]);
-                builder.Append('\0');
-            }
-            builder.Append('\0');
-            if (unicode)
-            {
-                bytes = Encoding.Unicode.GetBytes(builder.ToString());
-            }
-            else
-            {
-                bytes = Encoding.Default.GetBytes(builder.ToString());
-            }
-            if (bytes.Length > 0xFFFF)
-            {
-                throw new InvalidOperationException("EnvironmentBlockTooLong");
-            }
-            return bytes;
-        }
-
-        private static StringBuilder BuildCommandLine(string executableFileName, string arguments)
-        {
-            StringBuilder sb = new StringBuilder();
-            executableFileName = executableFileName.Trim();
-            bool ready = executableFileName.StartsWith("\"", StringComparison.Ordinal) && executableFileName.EndsWith("\"", StringComparison.Ordinal);
-            if (!ready)
-            {
-                sb.Append("\"");
-            }
-            sb.Append(executableFileName);
-            if (!ready)
-            {
-                sb.Append("\"");
-            }
-            if (!string.IsNullOrEmpty(arguments))
-            {
-                sb.Append(" ");
-                sb.Append(arguments);
-            }
-            return sb;
-        }
-
-        public static bool CreateProcess(ProcessStartInfo startInfo, bool createSuspended, out SafeProcessHandle process, out SafeThreadHandle thread, out int processID, out int threadID)
-        {
-            StringBuilder cmdLine = BuildCommandLine(startInfo.FileName, startInfo.Arguments);
-            STARTUPINFO lpStartupInfo = new STARTUPINFO();
-            PROCESS_INFORMATION lpProcessInformation = new PROCESS_INFORMATION();
-            SafeProcessHandle processHandle = new SafeProcessHandle();
-            SafeThreadHandle threadHandle = new SafeThreadHandle();
-            GCHandle environment = new GCHandle();
-            uint creationFlags = 0;
-            bool success;
-
-            creationFlags = CREATE_DEFAULT_ERROR_MODE | CREATE_PRESERVE_CODE_AUTHZ_LEVEL;
-
-
-            if (createSuspended)
-                creationFlags |= CREATE_SUSPENDED;
-
-            if (startInfo.CreateNoWindow)
-                creationFlags |= CREATE_NO_WINDOW;
-
-            IntPtr pinnedEnvironment = IntPtr.Zero;
-
-            if (startInfo.EnvironmentVariables != null)
-            {
-                bool unicode = false;
-                if (IsNt)
-                {
-                    creationFlags |= CREATE_UNICODE_ENVIRONMENT;
-                    unicode = true;
-                }
-                environment = GCHandle.Alloc(EnvironmentToByteArray(startInfo.EnvironmentVariables, unicode), GCHandleType.Pinned);
-                pinnedEnvironment = environment.AddrOfPinnedObject();
-            }
-
-            string workingDirectory = startInfo.WorkingDirectory;
-            if (workingDirectory == "")
-                workingDirectory = Environment.CurrentDirectory;
-
-            success = CreateProcess(null, cmdLine, null, null, false, creationFlags, pinnedEnvironment, workingDirectory, lpStartupInfo, lpProcessInformation);
-
-            if ((lpProcessInformation.hProcess != IntPtr.Zero) && (lpProcessInformation.hProcess.ToInt32() != INVALID_HANDLE_VALUE))
-                processHandle.InitialSetHandle(lpProcessInformation.hProcess);
-
-            if ((lpProcessInformation.hThread != IntPtr.Zero) && (lpProcessInformation.hThread.ToInt32() != INVALID_HANDLE_VALUE))
-                threadHandle.InitialSetHandle(lpProcessInformation.hThread);
-
-            if (environment.IsAllocated)
-                environment.Free();
-
-            lpStartupInfo.Dispose();
-
-            if (success && !processHandle.IsInvalid && !threadHandle.IsInvalid)
-            {
-                process = processHandle;
-                thread = threadHandle;
-                processID = (int)lpProcessInformation.dwProcessId;
-                threadID = (int)lpProcessInformation.dwThreadId;
-                return true;
-            }
-
-            process = null;
-            thread = null;
-            processID = 0;
-            threadID = 0;
-            return false;
-        }
-
-
-        [DllImport("dwmapi.dll")]
-        public static extern int DwmSetWindowAttribute(IntPtr hWnd, int attr, ref int value, int attrLen);
-        [DllImport("uxtheme.dll", ExactSpelling = true)]
-        public static extern Int32 CloseThemeData(IntPtr hTheme);
-        [DllImport("uxtheme.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
-        public static extern IntPtr OpenThemeData(IntPtr hWnd, String classList);
-        [DllImport("user32.dll")]
-        public static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
-        [DllImport("user32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool GetWindowPlacement(IntPtr hWnd, ref WindowPlacement lpwndpl);
-        [DllImport("user32")]
-        public static extern IntPtr GetDC(IntPtr hwnd);
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetWindowDC(IntPtr hWnd);
-        [DllImport("gdi32.dll", EntryPoint = "DeleteDC")]
-        public static extern bool DeleteDC([In] IntPtr hdc);
-        [DllImport("gdi32.dll")]
-        public static extern int BitBlt(
-      IntPtr hdcDest,
-      int nXDest,
-      int nYDest,
-      int nWidth,         // width of destination rectangle
-      int nHeight,        // height of destination rectangle
-      IntPtr hdcSrc,      // handle to source DC
-      int nXSrc,          // x-coordinate of source upper-left corner
-      int nYSrc,          // y-coordinate of source upper-left corner
-      int dwRop  // raster operation code
-      );
-        [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool DeleteObject([In] IntPtr hObject);
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetSysColorBrush(int nIndex);
-        [DllImport("user32.dll")]
-        public static extern int FillRect(IntPtr hDC, [In] ref RECT lprc, IntPtr hbr);
-        [DllImport("user32.dll")]
-        public static extern int GetSystemMetrics(SystemMetric smIndex);
-        [DllImport("uxtheme.dll", ExactSpelling = true)]
-        public static extern Int32 DrawThemeBackground(IntPtr hTheme, IntPtr hdc, int iPartId, int iStateId, ref RECT pRect, IntPtr pClipRect);
-        [DllImport("gdi32.dll", EntryPoint = "SelectObject")]
-        public static extern IntPtr SelectObject([In] IntPtr hdc, [In] IntPtr hgdiobj);
-        [DllImport("gdi32.dll", EntryPoint = "CreateCompatibleBitmap")]
-        public static extern IntPtr CreateCompatibleBitmap([In] IntPtr hdc, int nWidth, int nHeight);
-        [DllImport("gdi32.dll", EntryPoint = "CreateCompatibleDC", SetLastError = true)]
-        public static extern IntPtr CreateCompatibleDC([In] IntPtr hdc);
-        [DllImport("user32.dll", SetLastError = true)]
-        public static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RECT
-        {
-            public int Left, Top, Right, Bottom;
-
-            public RECT(int left, int top, int right, int bottom)
-            {
-                Left = left;
-                Top = top;
-                Right = right;
-                Bottom = bottom;
-            }
-
-            public RECT(System.Drawing.Rectangle r) : this(r.Left, r.Top, r.Right, r.Bottom) { }
-
-            public int X
-            {
-                get { return Left; }
-                set { Right -= (Left - value); Left = value; }
-            }
-
-            public int Y
-            {
-                get { return Top; }
-                set { Bottom -= (Top - value); Top = value; }
-            }
-
-            public int Height
-            {
-                get { return Bottom - Top; }
-                set { Bottom = value + Top; }
-            }
-
-            public int Width
-            {
-                get { return Right - Left; }
-                set { Right = value + Left; }
-            }
-
-            public System.Drawing.Point Location
-            {
-                get { return new System.Drawing.Point(Left, Top); }
-                set { X = value.X; Y = value.Y; }
-            }
-
-            public System.Drawing.Size Size
-            {
-                get { return new System.Drawing.Size(Width, Height); }
-                set { Width = value.Width; Height = value.Height; }
-            }
-
-            public static implicit operator System.Drawing.Rectangle(RECT r)
-            {
-                return new System.Drawing.Rectangle(r.Left, r.Top, r.Width, r.Height);
-            }
-
-            public static implicit operator RECT(System.Drawing.Rectangle r)
-            {
-                return new RECT(r);
-            }
-
-            public static bool operator ==(RECT r1, RECT r2)
-            {
-                return r1.Equals(r2);
-            }
-
-            public static bool operator !=(RECT r1, RECT r2)
-            {
-                return !r1.Equals(r2);
-            }
-
-            public bool Equals(RECT r)
-            {
-                return r.Left == Left && r.Top == Top && r.Right == Right && r.Bottom == Bottom;
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (obj is RECT)
-                    return Equals((RECT)obj);
-                else if (obj is System.Drawing.Rectangle)
-                    return Equals(new RECT((System.Drawing.Rectangle)obj));
-                return false;
-            }
-
-            public override int GetHashCode()
-            {
-                return ((System.Drawing.Rectangle)this).GetHashCode();
-            }
-
-            public override string ToString()
-            {
-                return string.Format(System.Globalization.CultureInfo.CurrentCulture, "{{Left={0},Top={1},Right={2},Bottom={3}}}", Left, Top, Right, Bottom);
-            }
-        }
         public enum SystemMetric
         {
-            SM_CXSCREEN = 0,  // 0x00
-            SM_CYSCREEN = 1,  // 0x01
-            SM_CXVSCROLL = 2,  // 0x02
-            SM_CYHSCROLL = 3,  // 0x03
-            SM_CYCAPTION = 4,  // 0x04
-            SM_CXBORDER = 5,  // 0x05
-            SM_CYBORDER = 6,  // 0x06
-            SM_CXDLGFRAME = 7,  // 0x07
-            SM_CXFIXEDFRAME = 7,  // 0x07
-            SM_CYDLGFRAME = 8,  // 0x08
-            SM_CYFIXEDFRAME = 8,  // 0x08
-            SM_CYVTHUMB = 9,  // 0x09
+            SM_CXSCREEN = 0, // 0x00
+            SM_CYSCREEN = 1, // 0x01
+            SM_CXVSCROLL = 2, // 0x02
+            SM_CYHSCROLL = 3, // 0x03
+            SM_CYCAPTION = 4, // 0x04
+            SM_CXBORDER = 5, // 0x05
+            SM_CYBORDER = 6, // 0x06
+            SM_CXDLGFRAME = 7, // 0x07
+            SM_CXFIXEDFRAME = 7, // 0x07
+            SM_CYDLGFRAME = 8, // 0x08
+            SM_CYFIXEDFRAME = 8, // 0x08
+            SM_CYVTHUMB = 9, // 0x09
             SM_CXHTHUMB = 10, // 0x0A
             SM_CXICON = 11, // 0x0B
             SM_CYICON = 12, // 0x0C
@@ -697,50 +140,620 @@ namespace EnhancedMap
 
 
             SM_CONVERTABLESLATEMODE = 0x2003,
-            SM_SYSTEMDOCKED = 0x2004,
+            SM_SYSTEMDOCKED = 0x2004
         }
+
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+        public const int WM_MOUSEMOVE = 0x0200;
+        public const int WM_LBUTTONDOWN = 0x0201;
+        public const int WM_LBUTTONUP = 0x0202;
+        public const int WM_LBUTTONDBLCLK = 0x0203;
+        public const int WM_RBUTTONDOWN = 0x0204;
+        public const int HTBOTTOMLEFT = 16;
+        public const int HTBOTTOMRIGHT = 17;
+        public const int HTLEFT = 10;
+        public const int HTRIGHT = 11;
+        public const int HTBOTTOM = 15;
+        public const int HTTOP = 12;
+        public const int HTTOPLEFT = 13;
+        public const int HTTOPRIGHT = 14;
+        public const int BORDER_WIDTH = 7;
+        public const int WMSZ_TOP = 3;
+        public const int WMSZ_TOPLEFT = 4;
+        public const int WMSZ_TOPRIGHT = 5;
+        public const int WMSZ_LEFT = 1;
+        public const int WMSZ_RIGHT = 2;
+        public const int WMSZ_BOTTOM = 6;
+        public const int WMSZ_BOTTOMLEFT = 7;
+        public const int WMSZ_BOTTOMRIGHT = 8;
+
+        public const int STATUS_BAR_BUTTON_WIDTH = STATUS_BAR_HEIGHT;
+        public const int STATUS_BAR_HEIGHT = 25;
+        public const int ACTION_BAR_HEIGHT = 40;
+
+        public const uint TPM_LEFTALIGN = 0x0000;
+        public const uint TPM_RETURNCMD = 0x0100;
+
+        public const int WM_SYSCOMMAND = 0x0112;
+        public const int WS_MINIMIZEBOX = 0x20000;
+        public const int WS_SYSMENU = 0x00080000;
+
+        public const int MONITOR_DEFAULTTONEAREST = 2;
+
+        public const uint CREATE_SUSPENDED = 0x00000004;
+        public const uint CREATE_UNICODE_ENVIRONMENT = 0x00000400;
+        public const uint CREATE_PRESERVE_CODE_AUTHZ_LEVEL = 0x02000000;
+        public const uint CREATE_DEFAULT_ERROR_MODE = 0x04000000;
+        public const uint CREATE_NO_WINDOW = 0x08000000;
+        public const int INVALID_HANDLE_VALUE = -1;
+
+        public static readonly Dictionary<int, int> _resizingLocationsToCmd = new Dictionary<int, int> {{HTTOP, WMSZ_TOP}, {HTTOPLEFT, WMSZ_TOPLEFT}, {HTTOPRIGHT, WMSZ_TOPRIGHT}, {HTLEFT, WMSZ_LEFT}, {HTRIGHT, WMSZ_RIGHT}, {HTBOTTOM, WMSZ_BOTTOM}, {HTBOTTOMLEFT, WMSZ_BOTTOMLEFT}, {HTBOTTOMRIGHT, WMSZ_BOTTOMRIGHT}};
+
+        private static bool IsNt => Environment.OSVersion.Platform == PlatformID.Win32NT;
+
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        [DllImport("user32.dll")]
+        public static extern int TrackPopupMenuEx(IntPtr hmenu, uint fuFlags, int x, int y, IntPtr hwnd, IntPtr lptpm);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
+
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        public static extern bool GetMonitorInfo(HandleRef hmonitor, [In] [Out] MONITORINFOEX info);
+
+        [DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
+        [DllImport("user32.dll")]
+        public static extern bool AnimateWindow(IntPtr hwnd, int dwTime, int dwFlags);
+
+        [DllImport("user32.dll")]
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32.dll")]
+        public static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        [DllImport("kernel32", CharSet = CharSet.Unicode)]
+        public static extern long WritePrivateProfileString(string Section, string Key, string Value, string FilePath);
+
+        [DllImport("kernel32", CharSet = CharSet.Unicode)]
+        public static extern int GetPrivateProfileString(string Section, string Key, string Default, StringBuilder RetVal, int Size, string FilePath);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool IsWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("kernel32.dll")]
+        public static extern int GetCurrentProcessId();
+
+        [DllImport("kernel32", SetLastError = true, CharSet = CharSet.Ansi)]
+        public static extern IntPtr LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpFileName);
+
+        [DllImport("msvcrt.dll", CallingConvention = CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity]
+        public static extern unsafe void* memcpy(void* to, void* from, int len);
+
+        [DllImport("kernel32.dll")]
+        [SuppressUnmanagedCodeSecurity]
+        public static extern int WaitForSingleObject(IntPtr hHandle, int timeout = -1);
+
+        [DllImport("kernel32.dll")]
+        [SuppressUnmanagedCodeSecurity]
+        public static extern uint SignalObjectAndWait(IntPtr hToSignal, IntPtr hToWaitOn, int timeout = -1, bool alertable = false);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool CreateProcess([MarshalAs(UnmanagedType.LPTStr)] string lpApplicationName, StringBuilder lpCommandLine, SECURITY_ATTRIBUTES lpProcessAttributes, SECURITY_ATTRIBUTES lpThreadAttributes, bool bInheritHandles, uint dwCreationFlags, IntPtr lpEnvironment, [MarshalAs(UnmanagedType.LPTStr)] string lpCurrentDirectory, STARTUPINFO lpStartupInfo, PROCESS_INFORMATION lpProcessInformation);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern uint ResumeThread(IntPtr hThread);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern IntPtr OpenProcess(uint dwDesiredAccess, bool inherit, int pId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool CloseHandle(IntPtr handle);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern IntPtr VirtualAllocEx(IntPtr hProcess, IntPtr address, IntPtr size, int flAllocationType, int flProtect);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr address, byte[] buffer, IntPtr size, IntPtr written);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr address, [Out] byte[] buffer, IntPtr size, IntPtr read);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern IntPtr CreateRemoteThread(IntPtr hProcess, IntPtr lpThreadAttributes, IntPtr dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool GetExitCodeThread(IntPtr hThread, out IntPtr lpExitCode);
+
+        [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
+        public static extern bool VirtualFreeEx(IntPtr hProcess, IntPtr lpAddress, IntPtr size, uint dwFreeType);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern IntPtr MapViewOfFile(IntPtr mmf, uint access, uint offsetHigh, uint offsetLow, IntPtr toMap);
+
+        [DllImport("psapi.dll", SetLastError = true)]
+        public static extern bool EnumProcessModulesEx(IntPtr hProcess, [In] [Out] IntPtr[] modules, uint size, out uint needed, uint flags);
+
+        [DllImport("psapi.dll", SetLastError = true)]
+        public static extern uint GetModuleBaseName(IntPtr hProcess, IntPtr hModule, StringBuilder lpBaseName, int nSize);
+
+        [DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
+        public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr GetModuleHandle(string lpModuleName);
+
+        public static byte[] EnvironmentToByteArray(StringDictionary sd, bool unicode)
+        {
+            string[] array = new string[sd.Count];
+            byte[] bytes = null;
+            sd.Keys.CopyTo(array, 0);
+            string[] strArray2 = new string[sd.Count];
+            sd.Values.CopyTo(strArray2, 0);
+            Array.Sort(array, strArray2, OrdinalCaseInsensitiveComparer.Default);
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < sd.Count; i++)
+            {
+                builder.Append(array[i]);
+                builder.Append('=');
+                builder.Append(strArray2[i]);
+                builder.Append('\0');
+            }
+
+            builder.Append('\0');
+            if (unicode)
+                bytes = Encoding.Unicode.GetBytes(builder.ToString());
+            else
+                bytes = Encoding.Default.GetBytes(builder.ToString());
+            if (bytes.Length > 0xFFFF) throw new InvalidOperationException("EnvironmentBlockTooLong");
+            return bytes;
+        }
+
+        private static StringBuilder BuildCommandLine(string executableFileName, string arguments)
+        {
+            StringBuilder sb = new StringBuilder();
+            executableFileName = executableFileName.Trim();
+            bool ready = executableFileName.StartsWith("\"", StringComparison.Ordinal) && executableFileName.EndsWith("\"", StringComparison.Ordinal);
+            if (!ready) sb.Append("\"");
+            sb.Append(executableFileName);
+            if (!ready) sb.Append("\"");
+            if (!string.IsNullOrEmpty(arguments))
+            {
+                sb.Append(" ");
+                sb.Append(arguments);
+            }
+
+            return sb;
+        }
+
+        public static bool CreateProcess(ProcessStartInfo startInfo, bool createSuspended, out SafeProcessHandle process, out SafeThreadHandle thread, out int processID, out int threadID)
+        {
+            StringBuilder cmdLine = BuildCommandLine(startInfo.FileName, startInfo.Arguments);
+            STARTUPINFO lpStartupInfo = new STARTUPINFO();
+            PROCESS_INFORMATION lpProcessInformation = new PROCESS_INFORMATION();
+            SafeProcessHandle processHandle = new SafeProcessHandle();
+            SafeThreadHandle threadHandle = new SafeThreadHandle();
+            GCHandle environment = new GCHandle();
+            uint creationFlags = 0;
+
+            creationFlags = CREATE_DEFAULT_ERROR_MODE | CREATE_PRESERVE_CODE_AUTHZ_LEVEL;
+
+
+            if (createSuspended)
+                creationFlags |= CREATE_SUSPENDED;
+
+            if (startInfo.CreateNoWindow)
+                creationFlags |= CREATE_NO_WINDOW;
+
+            IntPtr pinnedEnvironment = IntPtr.Zero;
+
+            if (startInfo.EnvironmentVariables != null)
+            {
+                bool unicode = false;
+                if (IsNt)
+                {
+                    creationFlags |= CREATE_UNICODE_ENVIRONMENT;
+                    unicode = true;
+                }
+
+                environment = GCHandle.Alloc(EnvironmentToByteArray(startInfo.EnvironmentVariables, unicode), GCHandleType.Pinned);
+                pinnedEnvironment = environment.AddrOfPinnedObject();
+            }
+
+            string workingDirectory = startInfo.WorkingDirectory;
+            if (workingDirectory == "")
+                workingDirectory = Environment.CurrentDirectory;
+
+            bool success = CreateProcess(null, cmdLine, null, null, false, creationFlags, pinnedEnvironment, workingDirectory, lpStartupInfo, lpProcessInformation);
+
+            if (lpProcessInformation.hProcess != IntPtr.Zero && lpProcessInformation.hProcess.ToInt32() != INVALID_HANDLE_VALUE)
+                processHandle.InitialSetHandle(lpProcessInformation.hProcess);
+
+            if (lpProcessInformation.hThread != IntPtr.Zero && lpProcessInformation.hThread.ToInt32() != INVALID_HANDLE_VALUE)
+                threadHandle.InitialSetHandle(lpProcessInformation.hThread);
+
+            if (environment.IsAllocated)
+                environment.Free();
+
+            lpStartupInfo.Dispose();
+
+            if (success && !processHandle.IsInvalid && !threadHandle.IsInvalid)
+            {
+                process = processHandle;
+                thread = threadHandle;
+                processID = (int) lpProcessInformation.dwProcessId;
+                threadID = (int) lpProcessInformation.dwThreadId;
+                return true;
+            }
+
+            process = null;
+            thread = null;
+            processID = 0;
+            threadID = 0;
+            return false;
+        }
+
+
+        [DllImport("dwmapi.dll")]
+        public static extern int DwmSetWindowAttribute(IntPtr hWnd, int attr, ref int value, int attrLen);
+
+        [DllImport("uxtheme.dll", ExactSpelling = true)]
+        public static extern int CloseThemeData(IntPtr hTheme);
+
+        [DllImport("uxtheme.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
+        public static extern IntPtr OpenThemeData(IntPtr hWnd, string classList);
+
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetWindowPlacement(IntPtr hWnd, ref WindowPlacement lpwndpl);
+
+        [DllImport("user32")]
+        public static extern IntPtr GetDC(IntPtr hwnd);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetWindowDC(IntPtr hWnd);
+
+        [DllImport("gdi32.dll", EntryPoint = "DeleteDC")]
+        public static extern bool DeleteDC([In] IntPtr hdc);
+
+        [DllImport("gdi32.dll")]
+        public static extern int BitBlt(IntPtr hdcDest, int nXDest, int nYDest, int nWidth, // width of destination rectangle
+            int nHeight, // height of destination rectangle
+            IntPtr hdcSrc, // handle to source DC
+            int nXSrc, // x-coordinate of source upper-left corner
+            int nYSrc, // y-coordinate of source upper-left corner
+            int dwRop // raster operation code
+        );
+
+        [DllImport("gdi32.dll", EntryPoint = "DeleteObject")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool DeleteObject([In] IntPtr hObject);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetSysColorBrush(int nIndex);
+
+        [DllImport("user32.dll")]
+        public static extern int FillRect(IntPtr hDC, [In] ref RECT lprc, IntPtr hbr);
+
+        [DllImport("user32.dll")]
+        public static extern int GetSystemMetrics(SystemMetric smIndex);
+
+        [DllImport("uxtheme.dll", ExactSpelling = true)]
+        public static extern int DrawThemeBackground(IntPtr hTheme, IntPtr hdc, int iPartId, int iStateId, ref RECT pRect, IntPtr pClipRect);
+
+        [DllImport("gdi32.dll", EntryPoint = "SelectObject")]
+        public static extern IntPtr SelectObject([In] IntPtr hdc, [In] IntPtr hgdiobj);
+
+        [DllImport("gdi32.dll", EntryPoint = "CreateCompatibleBitmap")]
+        public static extern IntPtr CreateCompatibleBitmap([In] IntPtr hdc, int nWidth, int nHeight);
+
+        [DllImport("gdi32.dll", EntryPoint = "CreateCompatibleDC", SetLastError = true)]
+        public static extern IntPtr CreateCompatibleDC([In] IntPtr hdc);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto, Pack = 4)]
+        public class MONITORINFOEX
+        {
+            public int cbSize = Marshal.SizeOf(typeof(MONITORINFOEX));
+            public int dwFlags = 0;
+            public RECT rcMonitor = new RECT();
+            public RECT rcWork = new RECT();
+
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
+            public char[] szDevice = new char[32];
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public sealed class PROCESS_INFORMATION
+        {
+            public uint dwProcessId;
+            public uint dwThreadId;
+            public IntPtr hProcess = IntPtr.Zero;
+            public IntPtr hThread = IntPtr.Zero;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public sealed class SECURITY_ATTRIBUTES
+        {
+            public bool bInheritHandle;
+            public SafeLocalMemHandle lpSecurityDescriptor = new SafeLocalMemHandle(IntPtr.Zero, false);
+            public int nLength = 12;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public sealed class STARTUPINFO
+        {
+            public int cb;
+            public short cbReserved2;
+            public int dwFillAttribute;
+            public int dwFlags;
+            public int dwX;
+            public int dwXCountChars;
+            public int dwXSize;
+            public int dwY;
+            public int dwYCountChars;
+            public int dwYSize;
+            public SafeFileHandle hStdError = new SafeFileHandle(IntPtr.Zero, false);
+            public SafeFileHandle hStdInput = new SafeFileHandle(IntPtr.Zero, false);
+            public SafeFileHandle hStdOutput = new SafeFileHandle(IntPtr.Zero, false);
+            public IntPtr lpDesktop = IntPtr.Zero;
+            public IntPtr lpReserved = IntPtr.Zero;
+            public IntPtr lpReserved2 = IntPtr.Zero;
+            public IntPtr lpTitle = IntPtr.Zero;
+            public short wShowWindow;
+
+            public STARTUPINFO()
+            {
+                cb = Marshal.SizeOf(this);
+            }
+
+            public void Dispose()
+            {
+                if (hStdInput != null && !hStdInput.IsInvalid)
+                {
+                    hStdInput.Close();
+                    hStdInput = null;
+                }
+
+                if (hStdOutput != null && !hStdOutput.IsInvalid)
+                {
+                    hStdOutput.Close();
+                    hStdOutput = null;
+                }
+
+                if (hStdError != null && !hStdError.IsInvalid)
+                {
+                    hStdError.Close();
+                    hStdError = null;
+                }
+            }
+        }
+
+        internal sealed class OrdinalCaseInsensitiveComparer : IComparer
+        {
+            public static readonly OrdinalCaseInsensitiveComparer Default = new OrdinalCaseInsensitiveComparer();
+
+            public int Compare(object a, object b)
+            {
+                if (a is string str && b is string str2) return string.CompareOrdinal(str.ToUpperInvariant(), str2.ToUpperInvariant());
+                return Comparer.Default.Compare(a, b);
+            }
+        }
+
+        public sealed class SafeProcessHandle : SafeHandleZeroOrMinusOneIsInvalid
+        {
+            public SafeProcessHandle() : base(true)
+            {
+            }
+
+            public SafeProcessHandle(IntPtr handle) : base(true)
+            {
+                SetHandle(handle);
+            }
+
+            internal void InitialSetHandle(IntPtr h)
+            {
+                handle = h;
+            }
+
+            protected override bool ReleaseHandle()
+            {
+                return CloseHandle(handle);
+            }
+        }
+
+        public sealed class SafeThreadHandle : SafeHandleZeroOrMinusOneIsInvalid
+        {
+            public SafeThreadHandle() : base(true)
+            {
+            }
+
+            internal void InitialSetHandle(IntPtr h)
+            {
+                SetHandle(h);
+            }
+
+            protected override bool ReleaseHandle()
+            {
+                return CloseHandle(handle);
+            }
+        }
+
+        public sealed class SafeLocalMemHandle : SafeHandleZeroOrMinusOneIsInvalid
+        {
+            public SafeLocalMemHandle() : base(true)
+            {
+            }
+
+            public SafeLocalMemHandle(IntPtr existingHandle, bool ownsHandle) : base(ownsHandle)
+            {
+                SetHandle(existingHandle);
+            }
+
+            [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+            public static extern bool ConvertStringSecurityDescriptorToSecurityDescriptor(string StringSecurityDescriptor, int StringSDRevision, out SafeLocalMemHandle pSecurityDescriptor, IntPtr SecurityDescriptorSize);
+
+            [DllImport("kernel32.dll")]
+            private static extern IntPtr LocalFree(IntPtr hMem);
+
+            protected override bool ReleaseHandle()
+            {
+                return LocalFree(handle) == IntPtr.Zero;
+            }
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left, Top, Right, Bottom;
+
+            public RECT(int left, int top, int right, int bottom)
+            {
+                Left = left;
+                Top = top;
+                Right = right;
+                Bottom = bottom;
+            }
+
+            public RECT(Rectangle r) : this(r.Left, r.Top, r.Right, r.Bottom)
+            {
+            }
+
+            public int X
+            {
+                get => Left;
+                set
+                {
+                    Right -= Left - value;
+                    Left = value;
+                }
+            }
+
+            public int Y
+            {
+                get => Top;
+                set
+                {
+                    Bottom -= Top - value;
+                    Top = value;
+                }
+            }
+
+            public int Height
+            {
+                get => Bottom - Top;
+                set => Bottom = value + Top;
+            }
+
+            public int Width
+            {
+                get => Right - Left;
+                set => Right = value + Left;
+            }
+
+            public System.Drawing.Point Location
+            {
+                get => new System.Drawing.Point(Left, Top);
+                set
+                {
+                    X = value.X;
+                    Y = value.Y;
+                }
+            }
+
+            public Size Size
+            {
+                get => new Size(Width, Height);
+                set
+                {
+                    Width = value.Width;
+                    Height = value.Height;
+                }
+            }
+
+            public static implicit operator Rectangle(RECT r)
+            {
+                return new Rectangle(r.Left, r.Top, r.Width, r.Height);
+            }
+
+            public static implicit operator RECT(Rectangle r)
+            {
+                return new RECT(r);
+            }
+
+            public static bool operator ==(RECT r1, RECT r2)
+            {
+                return r1.Equals(r2);
+            }
+
+            public static bool operator !=(RECT r1, RECT r2)
+            {
+                return !r1.Equals(r2);
+            }
+
+            public bool Equals(RECT r)
+            {
+                return r.Left == Left && r.Top == Top && r.Right == Right && r.Bottom == Bottom;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (obj is RECT rect)
+                    return Equals(rect);
+                if (obj is Rectangle rectangle)
+                    return Equals(new RECT(rectangle));
+                return false;
+            }
+
+            public override int GetHashCode()
+            {
+                return ((Rectangle) this).GetHashCode();
+            }
+
+            public override string ToString()
+            {
+                return string.Format(CultureInfo.CurrentCulture, "{{Left={0},Top={1},Right={2},Bottom={3}}}", Left, Top, Right, Bottom);
+            }
+        }
+
         public struct Point
         {
-            public int x;
-            public int y;
+            public int X;
+            public int Y;
         }
+
         public struct WindowPlacement
         {
-            public uint length;
-            public uint flags;
-            public uint showCmd;
-            public Point minPosition;
-            public Point maxPosition;
-            public RECT normalPosition;
-
-
+            public uint Length;
+            public uint Flags;
+            public uint ShowCmd;
+            public Point MinPosition;
+            public Point MaxPosition;
+            public RECT NormalPosition;
         }
-        [Flags]
-        public enum DwmWindowAttribute : uint
-        {
-            DWMWA_NCRENDERING_ENABLED = 1,
-            DWMWA_NCRENDERING_POLICY,
-            DWMWA_TRANSITIONS_FORCEDISABLED,
-            DWMWA_ALLOW_NCPAINT,
-            DWMWA_CAPTION_BUTTON_BOUNDS,
-            DWMWA_NONCLIENT_RTL_LAYOUT,
-            DWMWA_FORCE_ICONIC_REPRESENTATION,
-            DWMWA_FLIP3D_POLICY,
-            DWMWA_EXTENDED_FRAME_BOUNDS,
-            DWMWA_HAS_ICONIC_BITMAP,
-            DWMWA_DISALLOW_PEEK,
-            DWMWA_EXCLUDED_FROM_PEEK,
-            DWMWA_LAST
-        }
-
-        [Flags]
-        public enum DWMNCRenderingPolicy : uint
-        {
-            UseWindowStyle,
-            Disabled,
-            Enabled,
-            Last
-        }
-
     }
 }

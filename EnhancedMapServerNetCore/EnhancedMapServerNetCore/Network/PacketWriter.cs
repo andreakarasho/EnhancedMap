@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EnhancedMapServerNetCore.Network
 {
@@ -15,7 +13,11 @@ namespace EnhancedMapServerNetCore.Network
             Position = 3;
         }
 
-        protected override byte this[int index] { get => _data[index]; set => _data[index] = value; }
+        protected override byte this[int index]
+        {
+            get => _data[index];
+            set => _data[index] = value;
+        }
 
         public override byte ID => this[0];
         public override int Length => _data.Length;
@@ -36,11 +38,11 @@ namespace EnhancedMapServerNetCore.Network
             WriteSize();
             return _data;
         }
-       
+
         public void WriteSize()
         {
-            this[2] = (byte)(Position >> 8);
-            this[1] = (byte)Position;         
+            this[2] = (byte) (Position >> 8);
+            this[1] = (byte) Position;
         }
     }
 }

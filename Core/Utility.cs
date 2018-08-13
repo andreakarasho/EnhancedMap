@@ -30,13 +30,7 @@ namespace EnhancedMap.Core
         private static extern void SetStdHandle(int nStdHandle, IntPtr handle);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern IntPtr CreateFile([MarshalAs(UnmanagedType.LPTStr)] string filename,
-            [MarshalAs(UnmanagedType.U4)] uint access,
-            [MarshalAs(UnmanagedType.U4)] FileShare share,
-            IntPtr securityAttributes,
-            [MarshalAs(UnmanagedType.U4)] FileMode creationDisposition,
-            [MarshalAs(UnmanagedType.U4)] FileAttributes flagsAndAttributes,
-            IntPtr templateFile);
+        public static extern IntPtr CreateFile([MarshalAs(UnmanagedType.LPTStr)] string filename, [MarshalAs(UnmanagedType.U4)] uint access, [MarshalAs(UnmanagedType.U4)] FileShare share, IntPtr securityAttributes, [MarshalAs(UnmanagedType.U4)] FileMode creationDisposition, [MarshalAs(UnmanagedType.U4)] FileAttributes flagsAndAttributes, IntPtr templateFile);
 
         public static string GetSizeAdaptive(long bytes)
         {
@@ -53,6 +47,7 @@ namespace EnhancedMap.Core
                     num /= 1024m;
                 }
             }
+
             return $"{Math.Round(num, 2):0.##} {arg}";
         }
 
@@ -65,6 +60,7 @@ namespace EnhancedMap.Core
                 if (screen.WorkingArea.Contains(formRectangle))
                     return true;
             }
+
             return false;
         }
 
@@ -122,7 +118,7 @@ namespace EnhancedMap.Core
             int xDelta = Math.Abs(fx - tx);
             int yDelta = Math.Abs(fy - ty);
 
-            return (xDelta > yDelta ? xDelta : yDelta);
+            return xDelta > yDelta ? xDelta : yDelta;
         }
 
         public static string MD5(this string s)
@@ -149,16 +145,16 @@ namespace EnhancedMap.Core
             if (!ComputeMapDetails(map, x, y, out int xCenter, out int yCenter, out int xWidth, out int yHeight))
                 return false;
 
-            double absLong = (double)((x - xCenter) * 360) / xWidth;
-            double absLat = (double)((y - yCenter) * 360) / yHeight;
+            double absLong = (double) ((x - xCenter) * 360) / xWidth;
+            double absLat = (double) ((y - yCenter) * 360) / yHeight;
 
             if (absLong > 180.0)
-                absLong = -180.0 + (absLong % 180.0);
+                absLong = -180.0 + absLong % 180.0;
 
             if (absLat > 180.0)
-                absLat = -180.0 + (absLat % 180.0);
+                absLat = -180.0 + absLat % 180.0;
 
-            bool east = (absLong >= 0), south = (absLat >= 0);
+            bool east = absLong >= 0, south = absLat >= 0;
 
             if (absLong < 0.0)
                 absLong = -absLong;
@@ -166,11 +162,11 @@ namespace EnhancedMap.Core
             if (absLat < 0.0)
                 absLat = -absLat;
 
-            xLong = (int)absLong;
-            yLat = (int)absLat;
+            xLong = (int) absLong;
+            yLat = (int) absLat;
 
-            xMins = (int)((absLong % 1.0) * 60);
-            yMins = (int)((absLat % 1.0) * 60);
+            xMins = (int) (absLong % 1.0 * 60);
+            yMins = (int) (absLat % 1.0 * 60);
 
             xEast = east;
             ySouth = south;
@@ -180,11 +176,12 @@ namespace EnhancedMap.Core
 
         public static bool ComputeMapDetails(MapEntry map, int x, int y, out int xCenter, out int yCenter, out int xWidth, out int yHeight)
         {
-            xWidth = 5120; yHeight = 4096;
+            xWidth = 5120;
+            yHeight = 4096;
 
             xCenter = (map.Index == 0 || map.Index == 1) && x >= 5120 ? 5936 : 1323;
             yCenter = (map.Index == 0 || map.Index == 1) && y >= 2304 ? 3112 : 1624;
-           
+
             return true;
         }
 
@@ -209,7 +206,7 @@ namespace EnhancedMap.Core
         {
             const int centerX = 1323;
             var tempLon = direction2 != "W" ? Math.Floor(lon) * 60.0 + lon % 1 * 100.0 : -1.0 * Math.Ceiling(lon) * 60.0 + lon % 1 * 100.0;
-            var resultX = (int)(tempLon / 21600.0 * 5120.0) + centerX;
+            var resultX = (int) (tempLon / 21600.0 * 5120.0) + centerX;
             if (resultX < 0)
                 resultX += 5120;
             if (resultX >= 5120)
@@ -222,7 +219,7 @@ namespace EnhancedMap.Core
         {
             const int centerY = 1624;
             var tempLat = direction1 != "N" ? Math.Floor(lat) * 60.0 + lat % 1 * 100.0 : -1.0 * Math.Ceiling(lat) * 60.0 + lat % 1.0 * 100.0;
-            var resultY = (int)(tempLat / 21600.0 * 4096.0) + centerY;
+            var resultY = (int) (tempLat / 21600.0 * 4096.0) + centerY;
             if (resultY < 0)
                 resultY += 4096;
             if (resultY >= 4096)

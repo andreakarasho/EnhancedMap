@@ -1,11 +1,7 @@
-﻿using EnhancedMap.GUI;
-using System;
+﻿using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
-using System.IO.Compression;
 using System.Net;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EnhancedMap.Core.Network
@@ -155,10 +151,8 @@ namespace EnhancedMap.Core.Network
                     if (checkedVersion > MainCore.MapVersion)
                     {
                         Console.WriteLine("New version available: {0}", checkedVersion);
-                       
-                        var dialogResult =
-                            MessageBox.Show($"New version {checkedVersion} is available.\r\n Download now?",
-                                "New Update", MessageBoxButtons.YesNo);
+
+                        var dialogResult = MessageBox.Show($"New version {checkedVersion} is available.\r\n Download now?", "New Update", MessageBoxButtons.YesNo);
 
                         if (dialogResult == DialogResult.Yes)
                         {
@@ -181,7 +175,7 @@ namespace EnhancedMap.Core.Network
                 _client?.Dispose();
                 _client = null;
                 Checking = false;
-            } 
+            }
         }
     }
 }

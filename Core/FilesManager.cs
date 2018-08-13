@@ -1,88 +1,96 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
-using EnhancedMap.Core.MapObjects;
 using System.Text.RegularExpressions;
+using EnhancedMap.Core.MapObjects;
 
 namespace EnhancedMap.Core
 {
     public class BuildSet
     {
+        public List<BuildingEntry> Entries;
+        public Bitmap Image;
+        public bool IsEnabled;
+        public bool IsSmart;
+
+        public string Name;
+
         public BuildSet(string name, Bitmap img, bool smart)
         {
-            Name = name; Image = img; IsSmart = smart;
+            Name = name;
+            Image = img;
+            IsSmart = smart;
             Entries = new List<BuildingEntry>();
             IsEnabled = true;
         }
-
-        public string Name;
-        public Bitmap Image;
-        public bool IsSmart;
-        public List<BuildingEntry> Entries;
-        public bool IsEnabled;
     }
 
     public class BuildingEntry
     {
+        public string Description;
+        public bool IsEnabled;
+        public bool IsTown;
+
+        public bool IsUOAM;
+        public Position Location;
+        public int Map;
+
+        public BuildSet Parent;
+        public bool ShowName;
+
         public BuildingEntry(BuildSet parent, string descr, Position loc, int map)
         {
-            Parent = parent; Description = descr; Location = loc; Map = map;
+            Parent = parent;
+            Description = descr;
+            Location = loc;
+            Map = map;
             IsEnabled = true;
             ShowName = false;
             IsTown = false;
             IsUOAM = false;
         }
 
-        public BuildSet Parent;
-        public string Description;
-        public Position Location;
-        public int Map;
-        public bool IsEnabled;
-        public bool ShowName;
-        public bool IsTown;
-
-        public bool IsUOAM;
-
         public string ToFileFormat()
         {
-            return string.Format("{0}\t{1}\t{2}\t{3}\t{4}",
-                Description, Location.X, Location.Y, Map,
-                (ShowName ? "true" : "false"));
+            return string.Format("{0}\t{1}\t{2}\t{3}\t{4}", Description, Location.X, Location.Y, Map, ShowName ? "true" : "false");
         }
     }
 
     public class HouseEntry
     {
+        public string Description;
+        public ushort Graphic;
+        public Position Location;
+        public int Map;
+        public Size Size;
+
         public HouseEntry(string descr, ushort graphic, Position loc, Size size, int map)
         {
-            Description = descr; Graphic = graphic; Location = loc; Size = size; Map = map;
+            Description = descr;
+            Graphic = graphic;
+            Location = loc;
+            Size = size;
+            Map = map;
         }
-
-        public string Description;
-        public Position Location;
-        public Size Size;
-        public int Map;
-        public ushort Graphic;
     }
 
     public class GuardlineEntry
     {
+        public Position Location;
+        public int Map;
+        public Size Size;
+
         public GuardlineEntry(Position pos, Size size, int map)
         {
-            Location = pos; Size = size; Map = map;
+            Location = pos;
+            Size = size;
+            Map = map;
         }
-
-        public Position Location;
-        public Size Size;
-        public int Map;
     }
-
 
 
     public static class FilesManager
@@ -90,13 +98,9 @@ namespace EnhancedMap.Core
         private static readonly DirectoryInfo _definitionsPath = new DirectoryInfo("Definitions");
         private static readonly DirectoryInfo _iconsPath = new DirectoryInfo("Icon");
 
-        private static readonly string[] _smarts =
-        {
-            "TOWN", "MOONGATE", "BRIDGE", "DOCKS", "DUNGEON", "EXIT", "GATE", "GRAVEYARD",
-            "LANDMARK", "OTHER", "POINT", "SHRINE", "STAIRS", "TELEPORT", "TERRAIN", "TREASURE"
-        };
+        private static readonly string[] _smarts = {"TOWN", "MOONGATE", "BRIDGE", "DOCKS", "DUNGEON", "EXIT", "GATE", "GRAVEYARD", "LANDMARK", "OTHER", "POINT", "SHRINE", "STAIRS", "TELEPORT", "TERRAIN", "TREASURE"};
 
-        private static readonly string[] _ignored = { "GUARDLINES.txt", "HOUSES.txt" };
+        private static readonly string[] _ignored = {"GUARDLINES.txt", "HOUSES.txt"};
 
         public static List<BuildSet> BuildSets { get; } = new List<BuildSet>();
         public static List<HouseEntry> Houses { get; } = new List<HouseEntry>();
@@ -118,10 +122,7 @@ namespace EnhancedMap.Core
                 FileInfo definition = files[i];
                 FileInfo icon = icons.FirstOrDefault(s => s.Name.Contains(Path.GetFileNameWithoutExtension(definition.Name)));
 
-                if (icon == null)
-                {
-                    continue; // found an icon
-                }
+                if (icon == null) continue; // found an icon
 
                 Image img = Image.FromFile(icon.FullName);
                 images[i] = new Bitmap(img.Width, img.Height, PixelFormat.Format32bppPArgb);
@@ -157,21 +158,13 @@ namespace EnhancedMap.Core
                             Position position = Position.Parse(parts[2] + "." + parts[3]);
                             int map = parts[4].ToInt();
 
-                            BuildingEntry entry = new BuildingEntry(buildSet, description, position, map)
-                            {
-                                IsEnabled = enabled,
-                                IsTown = istown
-                            };
+                            BuildingEntry entry = new BuildingEntry(buildSet, description, position, map) {IsEnabled = enabled, IsTown = istown};
 
-                           
-                            if (parts.Length >= 6)
-                            {
-                                entry.ShowName = parts[5] == "true";
-                            }
+
+                            if (parts.Length >= 6) entry.ShowName = parts[5] == "true";
 
                             buildSet.Entries.Add(entry);
                         }
-
                     }
                 }
 
@@ -205,7 +198,7 @@ namespace EnhancedMap.Core
 
 
                         if (!ushort.TryParse(data[0], out ushort graphic))
-                            graphic = ushort.Parse(data[0], System.Globalization.NumberStyles.HexNumber);
+                            graphic = ushort.Parse(data[0], NumberStyles.HexNumber);
 
                         Position loc = Position.Parse(data[1] + "." + data[2]);
                         Size size = new Size(data[3].ToInt(), data[4].ToInt());
@@ -255,7 +248,7 @@ namespace EnhancedMap.Core
                 new FileInfo(Path.Combine(_definitionsPath.FullName, _ignored[0])).Create().Close();
 
 
-            ParseUOAM( );
+            ParseUOAM();
         }
 
         public static void Save()
@@ -263,10 +256,7 @@ namespace EnhancedMap.Core
             foreach (BuildSet set in BuildSets)
             {
                 FileInfo file = new FileInfo(Path.Combine(_definitionsPath.FullName, set.Name + ".txt"));
-                if (set.Entries.Count <= 0 && !file.Exists)
-                {
-                    file.Create().Close();
-                }
+                if (set.Entries.Count <= 0 && !file.Exists) file.Create().Close();
 
                 using (StreamWriter writer = new StreamWriter(file.FullName, false))
                 {
@@ -280,11 +270,7 @@ namespace EnhancedMap.Core
 
             using (StreamWriter writer = new StreamWriter(Path.Combine(_definitionsPath.FullName, "HOUSES.txt")))
             {
-                foreach (HouseEntry house in Houses)
-                {
-                    writer.WriteLine(string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", 
-                        house.Graphic.ToString("X"), house.Location.X, house.Location.Y, house.Size.Width, house.Size.Height, house.Map, house.Description));
-                }
+                foreach (HouseEntry house in Houses) writer.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}", house.Graphic.ToString("X"), house.Location.X, house.Location.Y, house.Size.Width, house.Size.Height, house.Map, house.Description);
             }
         }
 
@@ -299,7 +285,6 @@ namespace EnhancedMap.Core
             {
                 using (StreamReader reader = new StreamReader(File.OpenRead(file.FullName)))
                 {
-
                     while (!reader.EndOfStream)
                     {
                         string line = reader.ReadLine();
@@ -347,14 +332,8 @@ namespace EnhancedMap.Core
                                 continue;
 
                             BuildSet set = BuildSets.FirstOrDefault(s => s.Name.ToLower().Contains(type.Replace(" ", "").ToLower()));
-                            if (set != null)
-                            {
-                                set.Entries.Add(new BuildingEntry(set, descr, new Position((short)x, (short)y), map) { IsUOAM = true });
-                            }
-
+                            if (set != null) set.Entries.Add(new BuildingEntry(set, descr, new Position((short) x, (short) y), map) {IsUOAM = true});
                         }
-
-                     
                     }
                 }
             }

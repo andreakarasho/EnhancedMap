@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Linq;
+using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
-using System.Drawing.Drawing2D;
-
 
 namespace EnhancedMap
 {
     public static class Exstentions
     {
+        private static readonly int[][] _Trs = {new[] {0, 35, 70, 100, 150, 180, 210, 250}, new[] {250, 0, 35, 70, 100, 150, 180, 210}, new[] {210, 250, 0, 35, 70, 100, 150, 180}, new[] {180, 210, 250, 0, 35, 70, 100, 150}, new[] {150, 180, 210, 250, 0, 35, 70, 100}, new[] {100, 150, 180, 210, 250, 0, 35, 70}, new[] {70, 100, 150, 180, 210, 250, 0, 35}, new[] {35, 70, 100, 150, 180, 210, 250, 0}};
+
+        private static int _Count;
+
         [DllImport("kernel32.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.StdCall)]
         private static extern int GlobalGetAtomName(int nAtom, StringBuilder lpBuffer, int nSize);
 
@@ -41,7 +41,7 @@ namespace EnhancedMap
 
         public static int PercentageToColorComponent(this int percentage)
         {
-            return (int)((percentage / 100d) * 255d);
+            return (int) (percentage / 100d * 255d);
         }
 
         public static void Do<TControl>(this TControl control, Action<TControl> action) where TControl : Control
@@ -54,10 +54,7 @@ namespace EnhancedMap
 
         public static Color ToColor(this int argb)
         {
-            return Color.FromArgb(
-                (argb & 0xff0000) >> 16,
-                (argb & 0xff00) >> 8,
-                 argb & 0xff);
+            return Color.FromArgb((argb & 0xff0000) >> 16, (argb & 0xff00) >> 8, argb & 0xff);
         }
 
         public static void Raise(this EventHandler handler, object sender = null)
@@ -72,7 +69,7 @@ namespace EnhancedMap
 
         public static void RaiseAsync(this EventHandler handler, object sender = null)
         {
-           Task.Run( () => handler?.Invoke(sender, EventArgs.Empty));
+            Task.Run(() => handler?.Invoke(sender, EventArgs.Empty));
         }
 
         public static void RaiseAsync<T>(this EventHandler<T> handler, T e, object sender = null)
@@ -111,7 +108,7 @@ namespace EnhancedMap
         }
 
         public static bool ToBool(this object o)
-        {        
+        {
             return Convert.ToBoolean(o);
         }
 
@@ -121,19 +118,6 @@ namespace EnhancedMap
                 return defaultvalue;
             return node.GetAttribute(attr);
         }
-
-        private static readonly int[][] _Trs = {
-           new[] { 0, 35, 70, 100, 150, 180, 210, 250 },
-            new[] {250, 0, 35, 70, 100, 150, 180, 210},
-            new[] {210, 250, 0, 35, 70, 100, 150, 180},
-            new[] {180, 210, 250, 0, 35, 70, 100, 150},
-            new[] {150, 180, 210, 250, 0, 35, 70, 100},
-            new[] {100, 150, 180, 210, 250, 0, 35, 70},
-            new[] {70, 100, 150, 180, 210, 250, 0, 35},
-            new[] {35, 70, 100, 150, 180, 210, 250, 0 }
-        };
-
-        private static int _Count;
 
         public static void DrawWait(this Graphics g, int x, int y, int width, int heigh, Color color)
         {
@@ -146,11 +130,7 @@ namespace EnhancedMap
             Pen p = null;
             for (int i = 0; i < 8; i++)
             {
-                p = new Pen(Color.FromArgb(_Trs[_Count % 8][i], color), 2)
-                {
-                    StartCap = LineCap.Round,
-                    EndCap = LineCap.Round
-                };
+                p = new Pen(Color.FromArgb(_Trs[_Count % 8][i], color), 2) {StartCap = LineCap.Round, EndCap = LineCap.Round};
 
                 g.DrawLine(p, 0, -5, 0, -10);
                 g.RotateTransform(45);
@@ -186,12 +166,11 @@ namespace EnhancedMap
 
         public static void ForEach<T>(this T[] array, Action<T> action) where T : class
         {
-            foreach(T a in array)
+            foreach (T a in array)
             {
                 if (a != null)
                     action(a);
             }
         }
-
     }
 }

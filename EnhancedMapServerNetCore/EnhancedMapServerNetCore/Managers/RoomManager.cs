@@ -1,39 +1,30 @@
-﻿using EnhancedMapServerNetCore.Internals;
-using EnhancedMapServerNetCore.Logging;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Xml;
+using EnhancedMapServerNetCore.Internals;
+using EnhancedMapServerNetCore.Logging;
 
 namespace EnhancedMapServerNetCore.Managers
 {
     public static class RoomManager
     {
+        private static readonly ConcurrentDictionary<string, Room> _rooms = new ConcurrentDictionary<string, Room>();
+
+        public static ICollection<Room> Rooms => _rooms.Values;
+
         public static void Init()
         {
-            Core.ServerInizialized += (sender, e) =>
-            {
-                Load();
-            };
+            Core.ServerInizialized += (sender, e) => { Load(); };
 
             Core.ServerShuttingDown += (sender, e) =>
             {
                 if (e) // crashed
                 {
-
-                }
-                else
-                {
-
                 }
             };
         }
-
-        private static readonly ConcurrentDictionary<string, Room> _rooms = new ConcurrentDictionary<string, Room>();
-
-        public static ICollection<Room> Rooms => _rooms.Values;
 
         public static Room Get(string name)
         {
@@ -45,9 +36,7 @@ namespace EnhancedMapServerNetCore.Managers
         {
             Room room = Get(name);
             if (room != null)
-            {
                 Log.Message(LogTypes.Warning, $"Room '{name}' already exists.");
-            }
             else
             {
                 room = new Room(name, password);
@@ -59,9 +48,7 @@ namespace EnhancedMapServerNetCore.Managers
         public static void Add(Room room)
         {
             if (Get(room.Name) != null)
-            {
                 Log.Message(LogTypes.Warning, $"Room already exists '{room.Name}'");
-            }
             else
             {
                 if (!_rooms.TryAdd(room.Name, room))
@@ -82,10 +69,7 @@ namespace EnhancedMapServerNetCore.Managers
             _rooms.Clear();
 
             string folderPath = Path.Combine(Core.RootPath, isbackup ? "Backup" : "Data");
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
+            if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
 
             string path = Path.Combine(folderPath, "Rooms.xml");
 
@@ -126,10 +110,7 @@ namespace EnhancedMapServerNetCore.Managers
                     Log.Message(LogTypes.Error, "Rooms.xml restored.");
                 }
                 else
-                {
                     Log.Message(LogTypes.Error, "Impossible to restore Rooms.xml");
-
-                }
 
                 return;
             }
@@ -146,11 +127,7 @@ namespace EnhancedMapServerNetCore.Managers
 
             path = Path.Combine(path, "Rooms.xml");
 
-            XmlWriterSettings settings = new XmlWriterSettings
-            {
-                Indent = true,
-                IndentChars = "\t"
-            };
+            XmlWriterSettings settings = new XmlWriterSettings {Indent = true, IndentChars = "\t"};
 
             Log.Message(LogTypes.Trace, (isbackup ? "Backup: " : "") + "Saving rooms...");
 

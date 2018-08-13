@@ -1,7 +1,6 @@
-﻿using EnhancedMapServerNetCore.Network;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using EnhancedMapServerNetCore.Network;
 
 namespace EnhancedMapServerNetCore.Internals
 {
@@ -26,37 +25,40 @@ namespace EnhancedMapServerNetCore.Internals
         public Room Room { get; }
         public List<SharedLabel> SharedLabels { get; } = new List<SharedLabel>();
 
-        public bool Equals(User other) => other.Guid.Equals(this.Guid);
+        public bool Equals(User other)
+        {
+            return other.Guid.Equals(Guid);
+        }
 
         public void SendToUsersInRoom(PacketWriter packet)
         {
-            for(int i = 0; i < Room.Users.Count; i++)
+            for (int i = 0; i < Room.Users.Count; i++)
             {
                 var user = Room.Users[i];
-                if (user != null && user.Session != null && !user.Session.IsDisposed && user != this)
-                {
-                    user.Session.Send(packet);
-                }
+                if (user != null && user.Session != null && !user.Session.IsDisposed && user != this) user.Session.Send(packet);
             }
         }
 
 
         public void RequestSharedLabels()
-        {          
+        {
             for (int i = 0; i < Room.Users.Count; i++)
             {
                 User user = Room.Users[i];
-                if ( user != null && user.Session != null && !user.Session.IsDisposed)
+                if (user != null && user.Session != null && !user.Session.IsDisposed)
                 {
                     for (int j = 0; j < user.SharedLabels.Count; j++)
                     {
                         SharedLabel label = user.SharedLabels[j];
-                        this.Session.Send(new PSharedLabel(label.X, label.Y, label.Map, label.Description));
+                        Session.Send(new PSharedLabel(label.X, label.Y, label.Map, label.Description, user.Name));
                     }
                 }
-            }   
+            }
         }
 
-        public override string ToString() => $"{Name} - {Guid}";
+        public override string ToString()
+        {
+            return $"{Name} - {Guid}";
+        }
     }
 }

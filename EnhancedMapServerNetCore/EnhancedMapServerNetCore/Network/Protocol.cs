@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EnhancedMapServerNetCore.Network
 {
@@ -8,6 +6,6 @@ namespace EnhancedMapServerNetCore.Network
     public enum PROTOCOL
     {
         PROTOCOL_2 = 0x02,
-        PROTOCOL_3 = 0x03,
+        PROTOCOL_3 = 0x03
     }
 }

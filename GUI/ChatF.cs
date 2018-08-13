@@ -1,16 +1,10 @@
-﻿using EnhancedMap.Core;
+﻿using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using EnhancedMap.Core;
 using EnhancedMap.Core.MapObjects;
 using EnhancedMap.Core.Network;
 using EnhancedMap.Diagnostic;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace EnhancedMap.GUI
 {
@@ -21,13 +15,13 @@ namespace EnhancedMap.GUI
         public ChatF()
         {
             InitializeComponent();
-            this.MinimumSize = new Size(this.MinimumSize.Width, 150);
-            this.Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
-            this.Text = "Chat";
+            MinimumSize = new Size(MinimumSize.Width, 150);
+            Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
+            Text = "Chat";
 
             ChatManager.MessageWrited += ChatManager_MessageWrited;
 
-            this.Load += (sender, e) =>
+            Load += (sender, e) =>
             {
                 int chatX = Global.SettingsCollection["chatX"].ToInt();
                 int chatY = Global.SettingsCollection["chatY"].ToInt();
@@ -41,22 +35,38 @@ namespace EnhancedMap.GUI
                 int chatW = Global.SettingsCollection["chatW"].ToInt();
                 int chatH = Global.SettingsCollection["chatH"].ToInt();
                 if (chatW <= -1 || chatH <= -1)
-                    this.Size = new Size(250, 250);
+                    Size = new Size(250, 250);
                 else
-                    this.Size = new Size(chatW, chatH);
+                    Size = new Size(chatW, chatH);
             };
 
             textBoxWriteMsg.Enabled = false;
             textBoxWriteMsg.MaxLength = 100;
             textBoxWriteMsg.BackColor = ColorsTable.Black3;
-           
-
-            SocketClient.Connected += (sender, e) => textBoxWriteMsg.Do((s) => { s.Enabled = true; s.BackColor = ColorsTable.Black0; });
-            SocketClient.Disconnected += (sender, e) => textBoxWriteMsg.Do((s) => { s.Enabled = false; s.BackColor = ColorsTable.Black3; });
-            SocketClient.Waiting += (sender, e) => textBoxWriteMsg.Do((s) => { s.Enabled = false; s.BackColor = ColorsTable.Black3; });
 
 
-            this.FormClosing += (sender, e) => { e.Cancel = true; this.Hide(); };
+            SocketClient.Connected += (sender, e) => textBoxWriteMsg.Do(s =>
+            {
+                s.Enabled = true;
+                s.BackColor = ColorsTable.Black0;
+            });
+            SocketClient.Disconnected += (sender, e) => textBoxWriteMsg.Do(s =>
+            {
+                s.Enabled = false;
+                s.BackColor = ColorsTable.Black3;
+            });
+            SocketClient.Waiting += (sender, e) => textBoxWriteMsg.Do(s =>
+            {
+                s.Enabled = false;
+                s.BackColor = ColorsTable.Black3;
+            });
+
+
+            FormClosing += (sender, e) =>
+            {
+                e.Cancel = true;
+                Hide();
+            };
             richTextBoxChat.Font = textBoxWriteMsg.Font = new Font(Font.Name, Global.SettingsCollection["chatfontsize"].ToInt(), FontStyle.Regular);
             textBoxWriteMsg.KeyDown += (sender, e) =>
             {
@@ -75,16 +85,12 @@ namespace EnhancedMap.GUI
                     if (NetworkManager.SocketClient.IsConnected)
                     {
                         string t = textBoxWriteMsg.Text.TrimEnd();
-                      //  lock (Chat.MessagesQueue)
+                        //  lock (Chat.MessagesQueue)
                         //    Chat.MessagesQueue.Enqueue(t);
                         NetworkManager.SocketClient.Send(new PChatMessage(t, Global.PlayerInstance.Hue.Color));
                     }
-                    else
-                    {
-                        //ChatManager.Add("EnhancedMap", "You are offline :(");
-                    }
 
-                    this.textBoxWriteMsg.Clear();
+                    textBoxWriteMsg.Clear();
                 }
                 else if (newline)
                 {
@@ -116,16 +122,14 @@ namespace EnhancedMap.GUI
 
         private void ChatManager_MessageWrited(object sender, ChatEntry e)
         {
-            this.richTextBoxChat.Do(s =>
+            richTextBoxChat.Do(s =>
             {
                 UserObject user = RenderObjectsManager.GetUser(e.Name);
                 if (user == null)
-                {
                     Logger.Error("[CHAT] User '" + e.Name + "' not found");
-                }
                 else
                 {
-                    string msg;  
+                    string msg;
 
                     //if (_lastChatEntry.Name != e.Name && DateTime.Now.Minute > _lastChatEntry.Time.Minute)
                     {
@@ -150,8 +154,8 @@ namespace EnhancedMap.GUI
 
         public void ChangeFontSize()
         {
-             richTextBoxChat.Font = textBoxWriteMsg.Font = new Font(richTextBoxChat.Font.Name, Global.SettingsCollection["chatfontsize"].ToInt(), FontStyle.Regular);
-             richTextBoxChat.Clear();
+            richTextBoxChat.Font = textBoxWriteMsg.Font = new Font(richTextBoxChat.Font.Name, Global.SettingsCollection["chatfontsize"].ToInt(), FontStyle.Regular);
+            richTextBoxChat.Clear();
         }
 
         private bool LastLineVisible(RichTextBox textbox)

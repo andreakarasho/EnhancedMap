@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EnhancedMapServerNetCore.Network
 {
     public abstract class PacketBase
     {
         protected abstract byte this[int index] { get; set; }
-        protected abstract void EnsureSize(int length);
 
         public abstract int Length { get; }
         public abstract byte ID { get; }
         public int Position { get; protected set; }
+        protected abstract void EnsureSize(int length);
 
         public abstract byte[] ToArray();
 
@@ -35,36 +33,36 @@ namespace EnhancedMapServerNetCore.Network
 
         public void WriteSByte(sbyte v)
         {
-            WriteByte((byte)v);
+            WriteByte((byte) v);
         }
 
         public void WriteBool(bool v)
         {
-            WriteByte(v ? (byte)0x01 : (byte)0x00);
+            WriteByte(v ? (byte) 0x01 : (byte) 0x00);
         }
 
         public void WriteUShort(ushort v)
         {
             EnsureSize(2);
-            WriteByte((byte)v);
-            WriteByte((byte)(v >> 8));
+            WriteByte((byte) v);
+            WriteByte((byte) (v >> 8));
         }
 
         public void WriteUInt(uint v)
         {
             EnsureSize(4);
-            WriteByte((byte)v);
-            WriteByte((byte)(v >> 8));
-            WriteByte((byte)(v >> 16));
-            WriteByte((byte)(v >> 24));
+            WriteByte((byte) v);
+            WriteByte((byte) (v >> 8));
+            WriteByte((byte) (v >> 16));
+            WriteByte((byte) (v >> 24));
         }
 
         public void WriteASCII(string value)
         {
             EnsureSize(value.Length + 1);
             foreach (char c in value)
-                WriteByte((byte)c);
-           // WriteByte(0);
+                WriteByte((byte) c);
+            // WriteByte(0);
         }
 
         public void WriteASCII(string value, int length)
@@ -74,7 +72,7 @@ namespace EnhancedMapServerNetCore.Network
                 throw new ArgumentOutOfRangeException();
 
             for (int i = 0; i < value.Length; i++)
-                WriteByte((byte)value[i]);
+                WriteByte((byte) value[i]);
 
             if (value.Length < length)
             {
@@ -88,9 +86,10 @@ namespace EnhancedMapServerNetCore.Network
             EnsureSize((value.Length + 1) * 2);
             foreach (char c in value)
             {
-                WriteByte((byte)(c >> 8));
-                WriteByte((byte)(c));
+                WriteByte((byte) (c >> 8));
+                WriteByte((byte) c);
             }
+
             WriteUShort(0);
         }
 
@@ -102,8 +101,8 @@ namespace EnhancedMapServerNetCore.Network
 
             for (int i = 0; i < value.Length; i++)
             {
-                WriteByte((byte)(value[i] >> 8));
-                WriteByte((byte)value[i]);
+                WriteByte((byte) (value[i] >> 8));
+                WriteByte((byte) value[i]);
             }
 
             if (value.Length < length)

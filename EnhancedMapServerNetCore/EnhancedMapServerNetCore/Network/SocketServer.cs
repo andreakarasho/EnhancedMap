@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
-
-namespace EnhancedMapServerNetCore.Network
+﻿namespace EnhancedMapServerNetCore.Network
 {
     //public class SocketServer : SocketServerBase<SocketClientSession>
     //{
@@ -44,7 +39,6 @@ namespace EnhancedMapServerNetCore.Network
     //        }
     //    }
 
-        
 
     //}
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace EnhancedMapServerNetCore.Network
 {
@@ -20,23 +19,25 @@ namespace EnhancedMapServerNetCore.Network
             _pending = new Queue<Gram>();
         }
 
-        public bool IsFlushReady => _pending.Count == 0 && _buffered != null;       
+        public bool IsFlushReady => _pending.Count == 0 && _buffered != null;
         public bool IsEmpty => _pending.Count == 0 && _buffered == null;
 
 
         public static byte[] AcquireBuffer()
         {
             lock (_UnusedBuffers)
+            {
                 return _UnusedBuffers.GetSegment();
+            }
         }
 
         public static void ReleaseBuffer(byte[] buffer)
         {
             lock (_UnusedBuffers)
+            {
                 if (buffer != null && buffer.Length == _CoalesceBufferSize)
-                {
                     _UnusedBuffers.Free(buffer);
-                }
+            }
         }
 
         public Gram CheckFlushReady()
@@ -55,45 +56,35 @@ namespace EnhancedMapServerNetCore.Network
             {
                 _pending.Dequeue().Release();
 
-                if (_pending.Count > 0)
-                {
-                    gram = _pending.Peek();
-                }
+                if (_pending.Count > 0) gram = _pending.Peek();
             }
 
             return gram;
         }
 
-        public Gram Enqueue(byte[] buffer, int length) => Enqueue(buffer, 0, length);
+        public Gram Enqueue(byte[] buffer, int length)
+        {
+            return Enqueue(buffer, 0, length);
+        }
 
         public Gram Enqueue(byte[] buffer, int offset, int length)
         {
-            if (buffer == null)
-            {
-                throw new ArgumentNullException("buffer");
-            }
+            if (buffer == null) throw new ArgumentNullException("buffer");
             if (!(offset >= 0 && offset < buffer.Length))
             {
-                throw new ArgumentOutOfRangeException(
-                    "offset", offset,
-                    "Offset must be greater than or equal to zero and less than the size of the buffer.");
+                throw new ArgumentOutOfRangeException("offset", offset, "Offset must be greater than or equal to zero and less than the size of the buffer.");
             }
+
             if (length < 0 || length > buffer.Length)
             {
-                throw new ArgumentOutOfRangeException(
-                    "length", length, "Length cannot be less than zero or greater than the size of the buffer.");
+                throw new ArgumentOutOfRangeException("length", length, "Length cannot be less than zero or greater than the size of the buffer.");
             }
-            if (buffer.Length - offset < length)
-            {
-                throw new ArgumentException("Offset and length do not point to a valid segment within the buffer.");
-            }
+
+            if (buffer.Length - offset < length) throw new ArgumentException("Offset and length do not point to a valid segment within the buffer.");
 
             int existingBytes = _pending.Count * _CoalesceBufferSize + (_buffered?.Length ?? 0);
 
-            if (existingBytes + length > PendingCap)
-            {
-                throw new CapacityExceededException();
-            }
+            if (existingBytes + length > PendingCap) throw new CapacityExceededException();
 
             Gram gram = null;
 
@@ -112,10 +103,7 @@ namespace EnhancedMapServerNetCore.Network
 
                 if (_buffered.IsFull)
                 {
-                    if (_pending.Count == 0)
-                    {
-                        gram = _buffered;
-                    }
+                    if (_pending.Count == 0) gram = _buffered;
 
                     _pending.Enqueue(_buffered);
                     _buffered = null;
@@ -133,10 +121,7 @@ namespace EnhancedMapServerNetCore.Network
                 _buffered = null;
             }
 
-            while (_pending.Count > 0)
-            {
-                _pending.Dequeue().Release();
-            }
+            while (_pending.Count > 0) _pending.Dequeue().Release();
         }
 
         public class Gram
@@ -159,13 +144,9 @@ namespace EnhancedMapServerNetCore.Network
                     Gram gram;
 
                     if (_Pool.Count > 0)
-                    {
                         gram = _Pool.Pop();
-                    }
                     else
-                    {
                         gram = new Gram();
-                    }
 
                     gram.Buffer = AcquireBuffer();
                     gram.Length = 0;
@@ -199,8 +180,7 @@ namespace EnhancedMapServerNetCore.Network
     [Serializable]
     public sealed class CapacityExceededException : Exception
     {
-        public CapacityExceededException()
-            : base("Too much data pending.")
+        public CapacityExceededException() : base("Too much data pending.")
         {
         }
     }

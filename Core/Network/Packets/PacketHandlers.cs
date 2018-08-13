@@ -1,50 +1,22 @@
-﻿using EnhancedMap.Core.MapObjects;
-using EnhancedMap.Core.Network.Packets;
-using EnhancedMap.GUI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
+using EnhancedMap.Core.MapObjects;
+using EnhancedMap.Core.Network.Packets;
 
 namespace EnhancedMap.Core.Network
 {
     public enum ServerMessageType
     {
-        Normal = 0x00,
+        Normal = 0x00
     }
 
     public class PacketHandlers
     {
-        private static Queue<string> _messagesQueue = new Queue<string>();
-
-        public static PacketHandlers Handlers { get; } = new PacketHandlers();
-
-        private PacketHandlers()
-        {
-            for (int i = 0; i < _handlers.Length; i++)
-                _handlers[i] = new List<PacketHandler>();
-        }
+        private static readonly Queue<string> _messagesQueue = new Queue<string>();
 
         private readonly List<PacketHandler>[] _handlers = new List<PacketHandler>[0x100];
-
-        public void Add(byte id, Action<Packet> handler)
-        {
-            lock (_handlers)
-                _handlers[id].Add(new PacketHandler(handler));
-        }
-
-        public void OnPacket(Packet p)
-        {
-            lock (_handlers)
-            {
-                for (int i = 0; i < _handlers[p.ID].Count; i++)
-                {
-                    p.MoveToData();
-                    _handlers[p.ID][i].Callback(p);
-                }
-            }
-        }
 
         static PacketHandlers()
         {
@@ -60,14 +32,49 @@ namespace EnhancedMap.Core.Network
             Handlers.Add(0x31, SharedLabel);
         }
 
+        private PacketHandlers()
+        {
+            for (int i = 0; i < _handlers.Length; i++)
+                _handlers[i] = new List<PacketHandler>();
+        }
 
-        public static void AddMessage(string msg) => _messagesQueue.Enqueue(msg);
-        public static void ClearMessages() => _messagesQueue.Clear();
+        public static PacketHandlers Handlers { get; } = new PacketHandlers();
+
+        public void Add(byte id, Action<Packet> handler)
+        {
+            lock (_handlers)
+            {
+                _handlers[id].Add(new PacketHandler(handler));
+            }
+        }
+
+        public void OnPacket(Packet p)
+        {
+            lock (_handlers)
+            {
+                for (int i = 0; i < _handlers[p.ID].Count; i++)
+                {
+                    p.MoveToData();
+                    _handlers[p.ID][i].Callback(p);
+                }
+            }
+        }
+
+
+        public static void AddMessage(string msg)
+        {
+            _messagesQueue.Enqueue(msg);
+        }
+
+        public static void ClearMessages()
+        {
+            _messagesQueue.Clear();
+        }
 
 
         private static void ServerMessage(Packet p)
         {
-            UOClientManager.SysMessage("[EnhancedMapServer]: " + p.ReadASCII(p.ReadUShort()), (int)p.ReadUInt());
+            UOClientManager.SysMessage("[EnhancedMapServer]: " + p.ReadASCII(p.ReadUShort()), (int) p.ReadUInt());
         }
 
         private static void ChatMessageResponse(Packet p)
@@ -93,8 +100,8 @@ namespace EnhancedMap.Core.Network
         private static void SharedLabel(Packet p)
         {
             bool toremove = p.ReadBool();
-            short x = (short)p.ReadUShort();
-            short y = (short)p.ReadUShort();
+            short x = (short) p.ReadUShort();
+            short y = (short) p.ReadUShort();
             byte map = p.ReadByte();
 
             if (toremove)
@@ -120,14 +127,14 @@ namespace EnhancedMap.Core.Network
 
         private static void ProtocolChoose(Packet p)
         {
-            NetworkManager.SocketClient.Protocol = (Protocol)p.ReadByte();
+            NetworkManager.SocketClient.Protocol = (Protocol) p.ReadByte();
             NetworkManager.SocketClient.Send(new PLoginRequest(Global.SettingsCollection["username"].ToString(), Global.SettingsCollection["password"].ToString()));
         }
 
         private static void NewAlert(Packet p)
         {
-            int x = (short)p.ReadUShort();
-            int y = (short)p.ReadUShort();
+            int x = (short) p.ReadUShort();
+            int y = (short) p.ReadUShort();
             string username = p.ReadASCII(p.ReadByte());
 
             UserObject user = RenderObjectsManager.GetUser(username);
@@ -144,10 +151,10 @@ namespace EnhancedMap.Core.Network
 
             if (p.ReadByte() == 0x01)
             {
-                NetworkManager.SocketClient.AccessLevel = (AccessLevel)p.ReadByte();
+                NetworkManager.SocketClient.AccessLevel = (AccessLevel) p.ReadByte();
                 string username = p.ReadASCII(p.ReadByte());
 
-                if (NetworkManager.SocketClient.Protocol != (Protocol)p.ReadByte())
+                if (NetworkManager.SocketClient.Protocol != (Protocol) p.ReadByte())
                 {
                     UOClientManager.SysMessage("[Login] Wrong protocol. Update your map!", 83);
                     NetworkManager.Disconnect(false);
@@ -169,7 +176,7 @@ namespace EnhancedMap.Core.Network
         private static void NewChatMessage(Packet p)
         {
             ushort msglen = p.ReadUShort();
-            int color = (int)p.ReadUInt();
+            int color = (int) p.ReadUInt();
             string message = p.ReadASCII(msglen);
 
             string username = p.ReadASCII(p.ReadByte());
@@ -196,7 +203,7 @@ namespace EnhancedMap.Core.Network
             p.Skip(1);
             bool panic = p.ReadBool();
 
-            Color msgCol = Color.FromArgb((int)p.ReadUInt());
+            Color msgCol = Color.FromArgb((int) p.ReadUInt());
 
             string fontName = p.ReadASCII(p.ReadByte());
 
@@ -204,11 +211,11 @@ namespace EnhancedMap.Core.Network
             unsafe
             {
                 uint n = p.ReadUInt();
-                fontSize = *(float*)(&n);
+                fontSize = *(float*) &n;
             }
-             
 
-            FontStyle fontStyle = (FontStyle)p.ReadByte();
+
+            FontStyle fontStyle = (FontStyle) p.ReadByte();
 
             FontFamily f = FontFamily.Families.FirstOrDefault(s => s.Name == fontName);
             if (f == null)
@@ -226,21 +233,26 @@ namespace EnhancedMap.Core.Network
             user.Hits.Set(hits, maxhits);
             user.Stamina.Set(stam, maxstam);
             user.Mana.Set(mana, maxmana);
-            
-            switch(flag)
+
+            switch (flag)
             {
                 case 1:
-                    user.IsPoisoned = true; break;
+                    user.IsPoisoned = true;
+                    break;
                 case 2:
-                    user.IsYellowHits = true; break;
+                    user.IsYellowHits = true;
+                    break;
                 case 3:
-                    user.IsParalyzed = true; break;
+                    user.IsParalyzed = true;
+                    break;
                 case 4:
                     if (!user.IsDead)
                         RenderObjectsManager.AddDeathObject(new DeathObject(user, user.Position, user.Map));
-                    user.IsDead = true; break;
+                    user.IsDead = true;
+                    break;
                 case 5:
-                    user.IsHidden = true; break;
+                    user.IsHidden = true;
+                    break;
                 default:
                     user.IsHidden = user.IsPoisoned = user.IsYellowHits = user.IsParalyzed = user.IsDead = false;
                     break;
@@ -262,9 +274,7 @@ namespace EnhancedMap.Core.Network
                 user.LastPanicUpdate = DateTime.Now.AddSeconds(5);
             }
             else if (user.InPanic && !panic) // receve remove panic signal
-            {
                 UOClientManager.SysMessage($"[Panic][{user.Name}] Stopped to panic.", 83);
-            }
 
             user.InPanic = panic;
             user.Font = new Font(fontName, fontSize, fontStyle, GraphicsUnit.Pixel);
@@ -303,14 +313,9 @@ namespace EnhancedMap.Core.Network
 
         public static void ResponseFromServer(Packet p)
         {
-            ServerMessageType type = (ServerMessageType)p.ReadByte();
+            ServerMessageType type = (ServerMessageType) p.ReadByte();
             string msg = p.ReadASCII(p.ReadUShort());
-            EventSink.InvokeServerResponseMessage(new ResponseServerEntry()
-            {
-                Type = type,
-                Message = msg
-            });
+            EventSink.InvokeServerResponseMessage(new ResponseServerEntry {Type = type, Message = msg});
         }
-
     }
 }

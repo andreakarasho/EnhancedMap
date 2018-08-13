@@ -1,13 +1,7 @@
-﻿using EnhancedMap.Core.MapObjects;
-using EnhancedMap.Core.Network.Packets;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
+using EnhancedMap.Core.Network.Packets;
 
 namespace EnhancedMap.Core.Network
 {
@@ -15,44 +9,34 @@ namespace EnhancedMap.Core.Network
     {
         Offline,
         Online,
-        Waiting,
+        Waiting
     }
 
     public class SocketClient
     {
-        public static event EventHandler Connected, Disconnected, Waiting;
-
-        public static void InvokeConnect() { NetworkManager.SocketClient.Status = ConnectionStatus.Online; Connected.Raise(); }
-        public static void InvokeDisconnected() { NetworkManager.SocketClient.Status = ConnectionStatus.Offline; Disconnected.Raise(); }
-        public static void InvokeWaiting() { NetworkManager.SocketClient.Status = ConnectionStatus.Waiting; Waiting.Raise(); }
+        private const int BUFFER_SIZE = 4096;
+        private const int HEADER_SIZE = 3;
 
         private static readonly BufferPool _pool = new BufferPool(10, BUFFER_SIZE);
 
-        const int BUFFER_SIZE = 4096;
-        const int HEADER_SIZE = 3;
+        private readonly byte[] _headerBuffer = new byte[3];
+        private readonly object _send = new object();
+        private CircularBuffer _buffer;
 
         private Socket _clientSocket;
-        private bool _isRunning;
-        private IPEndPoint _hostEndPoint;
-        private SocketAsyncEventArgs _sendEventArgs;
-        private SocketAsyncEventArgs _recvEventArgs;
-        private readonly object _send = new object();
-        private DateTime _updateTime;
-        private SendQueue _sendQueue;
-        private CircularBuffer _buffer;
         private byte[] _dataBuffer;
+        private IPEndPoint _hostEndPoint;
 
-        private readonly byte[] _headerBuffer = new byte[3];
-
-
-        public SocketClient()
-        {
-
-        }
+        private bool _isSending;
+        private SocketAsyncEventArgs _recvEventArgs;
+        private SocketAsyncEventArgs _sendEventArgs;
+        private SendQueue _sendQueue;
+        private DateTime _updateTime;
 
 
         public bool IsConnected => _clientSocket != null && _clientSocket.Connected;
-        public bool IsRunning => _isRunning;
+        public bool IsRunning { get; private set; }
+
         public bool ReceivedPackets { get; private set; }
 
         public AccessLevel AccessLevel { get; internal set; }
@@ -63,6 +47,25 @@ namespace EnhancedMap.Core.Network
         public uint TotalOut { get; private set; }
 
         public bool CanSend { get; set; }
+        public static event EventHandler Connected, Disconnected, Waiting;
+
+        public static void InvokeConnect()
+        {
+            NetworkManager.SocketClient.Status = ConnectionStatus.Online;
+            Connected.Raise();
+        }
+
+        public static void InvokeDisconnected()
+        {
+            NetworkManager.SocketClient.Status = ConnectionStatus.Offline;
+            Disconnected.Raise();
+        }
+
+        public static void InvokeWaiting()
+        {
+            NetworkManager.SocketClient.Status = ConnectionStatus.Waiting;
+            Waiting.Raise();
+        }
 
         public void Connect(IPEndPoint host)
         {
@@ -72,7 +75,7 @@ namespace EnhancedMap.Core.Network
             CanSend = false;
             AccessLevel = AccessLevel.Normal;
             Protocol = Protocol.Unknown;
-            _isRunning = true;
+            IsRunning = true;
 
             InvokeWaiting();
 
@@ -91,17 +94,10 @@ namespace EnhancedMap.Core.Network
             _recvEventArgs.Completed += _recvEventArgs_Completed;
 
 
-            SocketAsyncEventArgs connectEventArgs = new SocketAsyncEventArgs
-            {
-                UserToken = _clientSocket,
-                RemoteEndPoint = _hostEndPoint
-            };
+            SocketAsyncEventArgs connectEventArgs = new SocketAsyncEventArgs {UserToken = _clientSocket, RemoteEndPoint = _hostEndPoint};
             connectEventArgs.Completed += _connectEventArgs_Completed;
 
-            if (!_clientSocket.ConnectAsync(connectEventArgs))
-            {
-                Connect_Process(connectEventArgs);
-            }
+            if (!_clientSocket.ConnectAsync(connectEventArgs)) Connect_Process(connectEventArgs);
         }
 
         private void _connectEventArgs_Completed(object sender, SocketAsyncEventArgs e)
@@ -113,7 +109,7 @@ namespace EnhancedMap.Core.Network
         {
             if (e.SocketError == SocketError.Success)
             {
-                if (!_isRunning)
+                if (!IsRunning)
                     return;
 
                 if (!_clientSocket.ReceiveAsync(_recvEventArgs))
@@ -137,18 +133,19 @@ namespace EnhancedMap.Core.Network
 
         private void ProcessRecv(SocketAsyncEventArgs e)
         {
-            if (!_isRunning)
+            if (!IsRunning)
                 return;
 
             if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
             {
-
                 byte[] buffer = _dataBuffer;
 
                 lock (_buffer)
+                {
                     _buffer.Enqueue(buffer, 0, e.BytesTransferred);
+                }
 
-                TotalIn += (uint)e.BytesTransferred;
+                TotalIn += (uint) e.BytesTransferred;
 
                 /*AsyncUserToken token = e.UserToken as AsyncUserToken;
 
@@ -276,24 +273,29 @@ namespace EnhancedMap.Core.Network
 
         public void Disconnect()
         {
-            if (_clientSocket == null || !_isRunning)
+            if (_clientSocket == null || !IsRunning)
                 return;
 
-            _isRunning = false;
+            IsRunning = false;
             InvokeDisconnected();
 
             try
             {
                 _clientSocket.Shutdown(SocketShutdown.Both);
-            }catch { }
+            }
+            catch
+            {
+            }
 
             try
             {
                 _clientSocket.Close();
             }
-            catch { }
+            catch
+            {
+            }
 
-           // (_recvEventArgs?.UserToken as AsyncUserToken)?.Dispose();
+            // (_recvEventArgs?.UserToken as AsyncUserToken)?.Dispose();
 
             _clientSocket = null;
             _sendEventArgs = null;
@@ -315,9 +317,10 @@ namespace EnhancedMap.Core.Network
             }
         }
 
-        public void Send(PacketWriter packet) => Send(packet.ToArray());
-
-        private bool _isSending;
+        public void Send(PacketWriter packet)
+        {
+            Send(packet.ToArray());
+        }
 
         private void Send(byte[] msg)
         {
@@ -328,7 +331,9 @@ namespace EnhancedMap.Core.Network
                 lock (_send)
                 {
                     lock (_sendQueue)
+                    {
                         buff = _sendQueue.Enqueue(msg, 0, msg.Length);
+                    }
 
                     if (buff != null && !_isSending)
                     {
@@ -372,9 +377,7 @@ namespace EnhancedMap.Core.Network
                     if (!_clientSocket.SendAsync(_sendEventArgs))
                         _sendEventArgs_Completed(null, _sendEventArgs);
                 }
-
             }
-
         }
 
         private void _recvEventArgs_Completed(object sender, SocketAsyncEventArgs e)
@@ -409,7 +412,9 @@ namespace EnhancedMap.Core.Network
             else
             {
                 lock (_send)
+                {
                     _isSending = false;
+                }
             }
         }
 
@@ -417,7 +422,7 @@ namespace EnhancedMap.Core.Network
         {
             if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
             {
-                TotalOut += (uint)e.BytesTransferred;
+                TotalOut += (uint) e.BytesTransferred;
                 _updateTime = DateTime.Now.AddSeconds(1);
 
                 /*if (_isSending)
@@ -426,7 +431,6 @@ namespace EnhancedMap.Core.Network
             else
                 NetworkManager.Disconnect(true);
         }
-
     }
 
     //public sealed class AsyncUserToken : IDisposable

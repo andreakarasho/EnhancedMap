@@ -1,6 +1,6 @@
-﻿using EnhancedMap.Core;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using EnhancedMap.Core;
 
 namespace EnhancedMap.GUI
 {
@@ -19,44 +19,44 @@ namespace EnhancedMap.GUI
         {
             InitializeComponent();
 
-           /* hScrollBar.ValueChanged += OnScrollBarValueChangedX;
-            vScrollBar.ValueChanged += OnScrollBarValueChangedY;
-            hScrollBar.Scroll += ScrollBar_Scroll;
-            vScrollBar.Scroll += ScrollBar_Scroll;
-            */
+            /* hScrollBar.ValueChanged += OnScrollBarValueChangedX;
+             vScrollBar.ValueChanged += OnScrollBarValueChangedY;
+             hScrollBar.Scroll += ScrollBar_Scroll;
+             vScrollBar.Scroll += ScrollBar_Scroll;
+             */
             ECanvas.MouseEnter += ECanvasOnMouseEnter;
             ECanvas.MouseLeave += ECanvasOnMouseLeave;
 
-           // EventSink.ScrollVisibleEvent += EventSink_ScrollVisibleEvent;
+            // EventSink.ScrollVisibleEvent += EventSink_ScrollVisibleEvent;
             //EventSink.MapChangedEvent += EventSink_MapChangedEvent;
-           // Global.FacetChanged += (sender, e) =>
+            // Global.FacetChanged += (sender, e) =>
             //{
-                /*Map = Global.Maps[e.Current];
-                hScrollBar.Maximum = Map.Width + 9;
-                vScrollBar.Maximum = Map.Height + 9;
-                EventSink.InvokeLocationChanged(new OnLocationChangedEventArgs((int)Global.X, (int)Global.Y));*/
+            /*Map = Global.Maps[e.Current];
+            hScrollBar.Maximum = Map.Width + 9;
+            vScrollBar.Maximum = Map.Height + 9;
+            EventSink.InvokeLocationChanged(new OnLocationChangedEventArgs((int)Global.X, (int)Global.Y));*/
             //};
 
-           // EventSink.LocationChangedEvent += EventSink_LocationChangedEvent;
+            // EventSink.LocationChangedEvent += EventSink_LocationChangedEvent;
 
             Zoom = new ZoomInfo();
 
-            SetStyle( ControlStyles.UserPaint | ControlStyles.Opaque | ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw | ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.UserPaint | ControlStyles.Opaque | ControlStyles.AllPaintingInWmPaint | ControlStyles.ResizeRedraw | ControlStyles.OptimizedDoubleBuffer, true);
         }
 
-        public ZoomInfo Zoom { get; private set; }
+        public ZoomInfo Zoom { get; }
         public PictureBox ECanvas { get; private set; }
 
         public bool Scrolls
         {
-            get { return hScrollBar.Visible || vScrollBar.Visible; }
-            set { hScrollBar.Visible = vScrollBar.Visible = statusStrip.Visible = value; }
+            get => hScrollBar.Visible || vScrollBar.Visible;
+            set => hScrollBar.Visible = vScrollBar.Visible = statusStrip.Visible = value;
         }
 
-       // public MapBase Map { get; set; }
+        // public MapBase Map { get; set; }
         public bool MouseInCanvas { get; private set; }
 
-       /* private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
+        /* private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
             if (_scrollUpdate || Map == null)
                 return;
@@ -89,7 +89,7 @@ namespace EnhancedMap.GUI
             base.OnResize(e);
         }
 
-      /*  private void OnScrollBarValueChangedX(object sender, EventArgs e)
+        /*  private void OnScrollBarValueChangedX(object sender, EventArgs e)
         {
             if (_scrollUpdate || Map == null)
                 return;
@@ -98,7 +98,7 @@ namespace EnhancedMap.GUI
             //Global.Y = vScrollBar.Value;
         }*/
 
-       /* private void OnScrollBarValueChangedY(object sender, EventArgs e)
+        /* private void OnScrollBarValueChangedY(object sender, EventArgs e)
         {
             if (_scrollUpdate || Map == null)
                 return;
@@ -113,12 +113,12 @@ namespace EnhancedMap.GUI
                 UpdateScrollbars(e.X, e.Y);
         }*/
 
-       /* private void EventSink_MapChangedEvent(OnMapChangedEventArgs e)
+        /* private void EventSink_MapChangedEvent(OnMapChangedEventArgs e)
         {
             
         }*/
 
-      /*  private void EventSink_ScrollVisibleEvent(OnScrollVisibleEventArgs e)
+        /*  private void EventSink_ScrollVisibleEvent(OnScrollVisibleEventArgs e)
         {
             Scrolls = e.Visible;
             OnResize(null);
@@ -148,32 +148,29 @@ namespace EnhancedMap.GUI
 
         public class ZoomInfo
         {
+            private readonly float[] _zooms = new float[10] {0.125f, 0.25f, 0.5f, 0.75f, 1f, 1.5f, 2f, 4f, 6f, 8f};
             private int _index;
-            private readonly float[] _zooms = new float[10] { 0.125f, 0.25f, 0.5f, 0.75f, 1f, 1.5f, 2f, 4f, 6f, 8f };
 
-            public float CurrentZoom
-            {
-                get { return SetZoom(ZoomType.Nothing); }
-            }
+            public float CurrentZoom => SetZoom(ZoomType.Nothing);
 
             public float SetZoom(ZoomType type)
             {
                 switch (type)
                 {
                     case ZoomType.Minus:
-                        {
-                            _index--;
-                            if (_index < 0)
-                                _index = 0;
-                            return Configuration.MySettings.ZoomValue = _zooms[_index];
-                        }
+                    {
+                        _index--;
+                        if (_index < 0)
+                            _index = 0;
+                        return Configuration.MySettings.ZoomValue = _zooms[_index];
+                    }
                     case ZoomType.Plus:
-                        {
-                            _index++;
-                            if (_index > _zooms.Length - 1)
-                                _index = _zooms.Length - 1;
-                            return Configuration.MySettings.ZoomValue = _zooms[_index];
-                        }
+                    {
+                        _index++;
+                        if (_index > _zooms.Length - 1)
+                            _index = _zooms.Length - 1;
+                        return Configuration.MySettings.ZoomValue = _zooms[_index];
+                    }
                     default:
                         return _zooms[_index];
                 }
@@ -186,6 +183,7 @@ namespace EnhancedMap.GUI
                     if (num == _zooms[_index])
                         return Configuration.MySettings.ZoomValue = num;
                 }
+
                 return CurrentZoom;
             }
         }

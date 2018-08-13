@@ -1,18 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using System.Threading;
-using EnhancedMapServerNetCore.Logging;
+using EnhancedMapServerNetCore.Configuration;
 
 namespace EnhancedMapServerNetCore.Managers
 {
     public static class ConsoleManager
     {
-        public static void Init() =>
-            ThreadPool.QueueUserWorkItem((a) => Read(Console.ReadLine()));
+        private static readonly string _helpString = @"------ COMMANDS ------
+    - /statistics         if ' - profile' args is enabled, get all stats of in/out packets
+    - /save               Save all accounts, rooms and server's settings
+    - /adduser            Add an user
+    - /removeuser         Remove an user
+    - /setpassword        Set a password for an user
+    - /setroom            Set a room for an user
+    - /addroom            Add a room
+    - /removeroom         Remove a room
+    - /allusers           Show all users saved into XML
+    - /allrooms           Show all rooms saved into XML
+    - /allusersinroom     Show all users of a specific room
+    - /setloginsys        ID + PSW or PSW for each room
+    - /getroompassword    Get password for a specific room
+    - /setroompassword    Set password for a specific room
+    - /allusersonline     Show all connected users
+    - /userinfo           Get info about an user
+    - /kick               Kick an user from the server
+    - /ban                Ban and kick an user from the server
+    - /enableuser         Remove ban status
+    - /getport            Get the current server port
+    - /setport            Set the server port
+    - /setkicktime        Set after how many seconds an user can relog
+    - /sendmsg            Send a game message to all users
+    - /setprivileges      Set account privileges
+    - /restart            Restart server
+    - /exit               Close server";
 
-
+        public static void Init()
+        {
+            ThreadPool.QueueUserWorkItem(a => Read(Console.ReadLine()));
+        }
 
 
         private static void Read(string input)
@@ -20,12 +46,9 @@ namespace EnhancedMapServerNetCore.Managers
             const char FIRST = '/';
 
             if (string.IsNullOrEmpty(input) || input.Length == 1 || input[0] != FIRST)
-            {
                 Console.WriteLine(_helpString);
-            }
             else
             {
-
                 input = input.ToLower().Remove(0, 1);
 
                 switch (input)
@@ -35,7 +58,7 @@ namespace EnhancedMapServerNetCore.Managers
                         Console.WriteLine(_helpString);
                         break;
 
-                    
+
                     case "save":
                         SaveManager.Save();
                         break;
@@ -83,7 +106,7 @@ namespace EnhancedMapServerNetCore.Managers
                         result = string.Empty;
                         while (string.IsNullOrEmpty(result))
                             result = Console.ReadLine().Trim();
-                        args = new string[1] { result };
+                        args = new string[1] {result};
 
                         CommandManager.ExecuteFromConsole(input, args);
                         break;
@@ -98,7 +121,7 @@ namespace EnhancedMapServerNetCore.Managers
                             result = Console.ReadLine().Trim();
                         args[0] = result;
 
-                        if (SettingsManager.Configuration.CredentialsSystem == Configuration.CREDENTIAL_SYSTEM.ONLY_PASSWORD)
+                        if (SettingsManager.Configuration.CredentialsSystem == CREDENTIAL_SYSTEM.ONLY_PASSWORD)
                         {
                             Console.Write("Password: ");
                             result = string.Empty;
@@ -116,7 +139,7 @@ namespace EnhancedMapServerNetCore.Managers
                         result = string.Empty;
                         while (string.IsNullOrEmpty(result))
                             result = Console.ReadLine().Trim();
-                        args = new string[1] { result };
+                        args = new string[1] {result};
 
                         CommandManager.ExecuteFromConsole(input, args);
                         break;
@@ -129,7 +152,7 @@ namespace EnhancedMapServerNetCore.Managers
                         result = string.Empty;
                         while (string.IsNullOrEmpty(result))
                             result = Console.ReadLine().Trim();
-                        args = new string[1] { result };
+                        args = new string[1] {result};
 
                         CommandManager.ExecuteFromConsole(input, args);
                         break;
@@ -139,7 +162,7 @@ namespace EnhancedMapServerNetCore.Managers
                         result = string.Empty;
                         while (string.IsNullOrEmpty(result))
                             result = Console.ReadLine().Trim();
-                        args = new string[1] { result };
+                        args = new string[1] {result};
 
                         CommandManager.ExecuteFromConsole(input, args);
                         break;
@@ -152,13 +175,13 @@ namespace EnhancedMapServerNetCore.Managers
                         while (string.IsNullOrEmpty(result))
                             result = Console.ReadLine().Trim();
                         args[0] = result;
-                       
+
                         Console.Write("Password: ");
                         result = string.Empty;
                         while (string.IsNullOrEmpty(result))
                             result = Console.ReadLine().Trim();
                         args[1] = result;
-                        
+
                         CommandManager.ExecuteFromConsole(input, args);
                         break;
                     case "setroom":
@@ -178,12 +201,12 @@ namespace EnhancedMapServerNetCore.Managers
 
                         CommandManager.ExecuteFromConsole(input, args);
                         break;
-                    
+
                     case "setport":
                         Console.Write("Port (needs a restart of server): ");
                         result = string.Empty;
                         ushort port;
-                        while (string.IsNullOrEmpty(result) || !ushort.TryParse(result, out port) || port < IPEndPoint.MinPort || port > IPEndPoint.MaxPort )
+                        while (string.IsNullOrEmpty(result) || !ushort.TryParse(result, out port) || port < IPEndPoint.MinPort || port > IPEndPoint.MaxPort)
                             result = Console.ReadLine().Trim();
 
                         SettingsManager.Configuration.Port = port;
@@ -202,7 +225,7 @@ namespace EnhancedMapServerNetCore.Managers
                         result = string.Empty;
                         while (string.IsNullOrEmpty(result))
                             result = Console.ReadLine().Trim();
-                        args = new string[1] { result };
+                        args = new string[1] {result};
                         CommandManager.ExecuteFromConsole(input, args);
                         break;
                     case "setprivileges":
@@ -224,47 +247,12 @@ namespace EnhancedMapServerNetCore.Managers
                         break;
                     case "setloginsys":
 
-                        
 
                         break;
-                
                 }
-
             }
 
             Init();
         }
-
-
-
-        private static readonly string _helpString =
-                                            @"------ COMMANDS ------
-    - /statistics         if ' - profile' args is enabled, get all stats of in/out packets
-    - /save               Save all accounts, rooms and server's settings
-    - /adduser            Add an user
-    - /removeuser         Remove an user
-    - /setpassword        Set a password for an user
-    - /setroom            Set a room for an user
-    - /addroom            Add a room
-    - /removeroom         Remove a room
-    - /allusers           Show all users saved into XML
-    - /allrooms           Show all rooms saved into XML
-    - /allusersinroom     Show all users of a specific room
-    - /setloginsys        ID + PSW or PSW for each room
-    - /getroompassword    Get password for a specific room
-    - /setroompassword    Set password for a specific room
-    - /allusersonline     Show all connected users
-    - /userinfo           Get info about an user
-    - /kick               Kick an user from the server
-    - /ban                Ban and kick an user from the server
-    - /enableuser         Remove ban status
-    - /getport            Get the current server port
-    - /setport            Set the server port
-    - /setkicktime        Set after how many seconds an user can relog
-    - /sendmsg            Send a game message to all users
-    - /setprivileges      Set account privileges
-    - /restart            Restart server
-    - /exit               Close server";
-
     }
 }

@@ -1,10 +1,8 @@
-﻿using EnhancedMapServerNetCore.Cryptography;
-using EnhancedMapServerNetCore.Managers;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Text;
 using System.Xml;
+using EnhancedMapServerNetCore.Cryptography;
+using EnhancedMapServerNetCore.Managers;
 
 namespace EnhancedMapServerNetCore.Internals
 {
@@ -33,7 +31,7 @@ namespace EnhancedMapServerNetCore.Internals
             Guid = guid;
 
             Room = RoomManager.Get(Utility.GetText(node["room"], string.Empty));
-         
+
             switch (Utility.GetText(node["type"], string.Empty))
             {
                 default:
@@ -61,13 +59,30 @@ namespace EnhancedMapServerNetCore.Internals
         public string CryptedPassword { get; set; }
         public ACCOUNT_LEVEL AccountLevel { get; set; }
         public bool IsKicked { get; set; }
-        public bool IsBanned { get => _isKicked; set { if ((_isKicked = value)) KickTime = DateTime.Now.AddSeconds(SettingsManager.Configuration.KickTimer); else KickTime = DateTime.MinValue; } }
+
+        public bool IsBanned
+        {
+            get => _isKicked;
+            set
+            {
+                if (_isKicked = value) KickTime = DateTime.Now.AddSeconds(SettingsManager.Configuration.KickTimer);
+                else KickTime = DateTime.MinValue;
+            }
+        }
+
         public DateTime KickTime { get; private set; }
         public Room Room { get; set; }
 
 
-        public bool IsPasswordGood(string psw) => CryptedPassword == SHA1.Protect(Name + psw);
-        public void CryptPassword(string input) => CryptedPassword = SHA1.Protect(Name + input);
+        public bool IsPasswordGood(string psw)
+        {
+            return CryptedPassword == SHA1.Protect(Name + psw);
+        }
+
+        public void CryptPassword(string input)
+        {
+            CryptedPassword = SHA1.Protect(Name + input);
+        }
 
 
         public void Save(XmlWriter xml)
@@ -77,7 +92,7 @@ namespace EnhancedMapServerNetCore.Internals
             xml.WriteElementString("username", Name);
             xml.WriteElementString("password", CryptedPassword);
             xml.WriteElementString("room", Room.Name);
-           // xml.WriteElementString("roomguid", Room.Guid.ToString());
+            // xml.WriteElementString("roomguid", Room.Guid.ToString());
             xml.WriteElementString("guid", Guid.ToString());
 
             switch (AccountLevel)

@@ -1,13 +1,11 @@
-﻿using EnhancedMapServerNetCore.Internals;
-using EnhancedMapServerNetCore.Logging;
-using EnhancedMapServerNetCore.Managers;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
+using EnhancedMapServerNetCore.Configuration;
+using EnhancedMapServerNetCore.Logging;
 
 namespace EnhancedMapServerNetCore.Network
 {
@@ -15,26 +13,26 @@ namespace EnhancedMapServerNetCore.Network
     {
         private static readonly Socket[] _emptySockets = new Socket[0];
 
-        private List<Session> _sessions;
-
         private static readonly SocketAsyncEventArgs[] _emptyArgs = new SocketAsyncEventArgs[0];
         private readonly Queue<Socket> _acceptedSockets;
         private readonly object _acceptedSync;
-        private SocketAsyncEventArgs _acceptEventArgs;
-        private Socket _serverSocket;
-        private int _activeConnectionsCount;
-
-        private Stack<SocketAsyncEventArgs> _readwritePoolEventArgs;
 
         private readonly Queue<Session> _disposedSessionsQueue = new Queue<Session>();
+        private readonly SocketAsyncEventArgs _acceptEventArgs;
+        private int _activeConnectionsCount;
 
-        public Server(Configuration.Config config)
+        private readonly Stack<SocketAsyncEventArgs> _readwritePoolEventArgs;
+        private Socket _serverSocket;
+
+        private readonly List<Session> _sessions;
+
+        public Server(Config config)
         {
             IPEndPoint ipep = new IPEndPoint(IPAddress.Any, config.Port);
 
             _sessions = new List<Session>();
             _acceptedSockets = new Queue<Socket>();
-            _acceptedSync = ((ICollection)_acceptedSockets).SyncRoot;
+            _acceptedSync = ((ICollection) _acceptedSockets).SyncRoot;
             _serverSocket = Bind(ipep);
             if (_serverSocket == null)
                 return;
@@ -59,6 +57,12 @@ namespace EnhancedMapServerNetCore.Network
 
 
         public IReadOnlyList<Session> Sessions => _sessions;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         public Socket[] GetAwaitingSockets()
         {
@@ -101,7 +105,9 @@ namespace EnhancedMapServerNetCore.Network
         public void Decrease(Session session)
         {
             lock (_disposedSessionsQueue)
+            {
                 _disposedSessionsQueue.Enqueue(session);
+            }
 
             Interlocked.Decrement(ref _activeConnectionsCount);
         }
@@ -118,42 +124,28 @@ namespace EnhancedMapServerNetCore.Network
 
         public void Flush()
         {
-            for (int i = 0; i < _sessions.Count; i++)
-            {
-                _sessions[i].Flush();
-            }
+            for (int i = 0; i < _sessions.Count; i++) _sessions[i].Flush();
         }
 
         public void CheckSessionsAlive()
         {
             try
             {
-                for (int i = 0; i < _sessions.Count; i++)
-                {
-                    _sessions[i].CheckAlive();
-                }
+                for (int i = 0; i < _sessions.Count; i++) _sessions[i].CheckAlive();
             }
             catch
             {
-
             }
-           
         }
 
         public void Pause()
         {
-            for (int i = 0; i < _sessions.Count; i++)
-            {
-                _sessions[i].Pause();
-            }
+            for (int i = 0; i < _sessions.Count; i++) _sessions[i].Pause();
         }
 
         public void Resume()
         {
-            for (int i = 0; i < _sessions.Count; i++)
-            {
-                _sessions[i].Resume();
-            }
+            for (int i = 0; i < _sessions.Count; i++) _sessions[i].Resume();
         }
 
         public void ReleaseDisposed()
@@ -162,7 +154,7 @@ namespace EnhancedMapServerNetCore.Network
             {
                 int i = 0;
 
-                while ( i < 200 && _disposedSessionsQueue.Count > 0)
+                while (i < 200 && _disposedSessionsQueue.Count > 0)
                 {
                     i++;
 
@@ -173,7 +165,6 @@ namespace EnhancedMapServerNetCore.Network
                     _sessions.Remove(s);
                 }
             }
-
         }
 
         private void StartAccept()
@@ -190,11 +181,13 @@ namespace EnhancedMapServerNetCore.Network
                 {
                     break;
                 }
-                catch (ObjectDisposedException) { break; }
+                catch (ObjectDisposedException)
+                {
+                    break;
+                }
 
                 if (result)
                     ProcessAccept(_acceptEventArgs);
-
             } while (result);
         }
 
@@ -210,7 +203,9 @@ namespace EnhancedMapServerNetCore.Network
         private void Enqueue(Socket s)
         {
             lock (_acceptedSync)
+            {
                 _acceptedSockets.Enqueue(s);
+            }
 
             Core.Set();
         }
@@ -229,7 +224,6 @@ namespace EnhancedMapServerNetCore.Network
             }
             catch (SocketException e)
             {
-
             }
 
             s.Close();
@@ -251,17 +245,10 @@ namespace EnhancedMapServerNetCore.Network
             {
                 if (e is SocketException se)
                 {
-
                 }
 
                 return null;
             }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         private void Dispose(bool disposing)

@@ -1,11 +1,9 @@
-﻿using EnhancedMapServerNetCore.Internals;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Linq;
+using EnhancedMapServerNetCore.Internals;
 using EnhancedMapServerNetCore.Logging;
 using EnhancedMapServerNetCore.Network;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace EnhancedMapServerNetCore.Managers
 {
@@ -19,16 +17,17 @@ namespace EnhancedMapServerNetCore.Managers
             return user;
         }
 
-        public static User Get(string name) => _users.Values.FirstOrDefault(s => s.Name == name);
+        public static User Get(string name)
+        {
+            return _users.Values.FirstOrDefault(s => s.Name == name);
+        }
 
 
         public static bool Add(Account account, Session session)
         {
             User user = Get(session.Guid);
             if (user != null)
-            {
                 Log.Message(LogTypes.Panic, $"User '{user}' already exists.");
-            }
             else
             {
                 user = new User(account, session);
@@ -37,8 +36,10 @@ namespace EnhancedMapServerNetCore.Managers
                     InsertIntoRoom(user);
                     return true;
                 }
+
                 Log.Message(LogTypes.Panic, $"Impossible to add user session '{user}'");
             }
+
             return false;
         }
 
@@ -46,9 +47,7 @@ namespace EnhancedMapServerNetCore.Managers
         {
             User user = Get(session.Guid);
             if (user != null)
-            {
                 Log.Message(LogTypes.Panic, $"User '{user}' already exists.");
-            }
             else
             {
                 user = new User(name, session);
@@ -57,17 +56,16 @@ namespace EnhancedMapServerNetCore.Managers
                     InsertIntoRoom(user);
                     return true;
                 }
+
                 Log.Message(LogTypes.Panic, $"Impossible to add user session '{user}'");
             }
+
             return false;
         }
 
         public static void Remove(Guid guid)
-        {          
-            if (_users.TryRemove(guid, out var user))
-            {
-                RemoveFromRoom(user);
-            }
+        {
+            if (_users.TryRemove(guid, out var user)) RemoveFromRoom(user);
         }
 
         public static void InsertIntoRoom(User user)
@@ -94,10 +92,7 @@ namespace EnhancedMapServerNetCore.Managers
             lock (user.Room.Users)
             {
                 user.SendToUsersInRoom(new PUserConnection(user.Name, false));
-                if (user.Room.Users.Remove(user))
-                {
-                    Log.Message(LogTypes.Info, $"User '{user}' removed from room '{user.Room}'");
-                }
+                if (user.Room.Users.Remove(user)) Log.Message(LogTypes.Info, $"User '{user}' removed from room '{user.Room}'");
             }
         }
     }
