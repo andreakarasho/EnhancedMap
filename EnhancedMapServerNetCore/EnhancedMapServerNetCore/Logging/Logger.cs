@@ -33,7 +33,7 @@ namespace EnhancedMapServerNetCore.Logging
             Console.WriteLine(row);
         }
 
-        private string AlignCentre(string text, int width)
+        private string AlignCentre(string text, in int width)
         {
             text = text.Length > width ? text.Substring(0, width - 3) + "..." : text;
 
@@ -106,7 +106,7 @@ namespace EnhancedMapServerNetCore.Logging
             isLogging = false;
         }
 
-        public void Message(LogTypes logType, string text)
+        public void Message(in LogTypes logType, in string text)
         {
             SetLogger(logType, text);
         }
@@ -126,7 +126,7 @@ namespace EnhancedMapServerNetCore.Logging
             Console.Clear();
         }
 
-        private void SetLogger(LogTypes type, string text)
+        private void SetLogger(in LogTypes type, in string text)
         {
             if ((LogTypes & type) == type)
             {

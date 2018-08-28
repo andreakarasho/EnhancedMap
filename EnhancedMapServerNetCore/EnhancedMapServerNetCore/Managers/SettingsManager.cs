@@ -17,7 +17,7 @@ namespace EnhancedMapServerNetCore.Managers
             Core.ServerShuttingDown += (sender, e) => { };
         }
 
-        public static void Load(bool isbackup = false)
+        public static void Load(in bool isbackup = false)
         {
             Log.Message(LogTypes.Trace, "Loading server settings...");
 
@@ -61,7 +61,7 @@ namespace EnhancedMapServerNetCore.Managers
             Log.Message(LogTypes.Trace, "Server settings loaded.");
         }
 
-        public static void Save(bool isbackup = false)
+        public static void Save(in bool isbackup = false)
         {
             string path = Path.Combine(Core.RootPath, isbackup ? "Backup" : "Data");
 

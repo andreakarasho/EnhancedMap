@@ -11,7 +11,7 @@ namespace EnhancedMapServerNetCore.Network
         private readonly Server _server;
         private Queue<Session> _workingQueue, _queue;
 
-        public ServerHandler(Server server)
+        public ServerHandler(in Server server)
         {
             _server = server;
             _workingQueue = new Queue<Session>();
@@ -48,7 +48,7 @@ namespace EnhancedMapServerNetCore.Network
         }
 
 
-        private void HandlePackets(Session s)
+        private void HandlePackets(in Session s)
         {
             if (s == null)
                 return;

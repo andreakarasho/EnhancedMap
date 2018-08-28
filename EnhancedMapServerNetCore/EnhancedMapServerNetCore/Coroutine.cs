@@ -8,7 +8,7 @@ namespace EnhancedMapServerNetCore
     {
         private static readonly List<Coroutine> _coroutines = new List<Coroutine>();
 
-        public static Coroutine StartCoroutine(IEnumerator routine)
+        public static Coroutine StartCoroutine(in IEnumerator routine)
         {
             Coroutine coroutine = new Coroutine(routine);
             _coroutines.Add(coroutine);
@@ -52,7 +52,7 @@ namespace EnhancedMapServerNetCore
 
     public class Coroutine : YieldInstruction
     {
-        public Coroutine(IEnumerator routine)
+        public Coroutine(in IEnumerator routine)
         {
             this.routine = routine;
         }
@@ -60,7 +60,7 @@ namespace EnhancedMapServerNetCore
 
     public class WaitForSeconds : YieldInstruction
     {
-        public WaitForSeconds(float seconds)
+        public WaitForSeconds(in float seconds)
         {
             DateTime delay = DateTime.Now.AddSeconds(seconds);
             routine = Count(delay);
@@ -75,7 +75,7 @@ namespace EnhancedMapServerNetCore
 
     public class WaitUntil : YieldInstruction
     {
-        public WaitUntil(Func<bool> func)
+        public WaitUntil(in Func<bool> func)
         {
             routine = Until(func);
         }

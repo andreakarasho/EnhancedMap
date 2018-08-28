@@ -31,7 +31,7 @@ namespace EnhancedMapServerNetCore.Network
 
         public static PacketHandlers Handlers { get; } = new PacketHandlers();
 
-        public void Add(byte id, Action<Session, Packet> handler)
+        public void Add(in byte id, in Action<Session, Packet> handler)
         {
             lock (_handlers)
             {
@@ -39,7 +39,7 @@ namespace EnhancedMapServerNetCore.Network
             }
         }
 
-        public void OnPacket(Session client, Packet p)
+        public void OnPacket(in Session client, in Packet p)
         {
             lock (_handlers)
             {
@@ -63,7 +63,8 @@ namespace EnhancedMapServerNetCore.Network
             string username = p.ReadASCII(userlen);
             string password = p.ReadASCII(passwordlen);
 
-            if (!AccountManager.CanConnect(username, password, client)) client.Dispose();
+            if (!AccountManager.CanConnect(username, password, client))
+                client.Dispose();
         }
 
         private static void RemoteAdminCmds(Session client, Packet p)

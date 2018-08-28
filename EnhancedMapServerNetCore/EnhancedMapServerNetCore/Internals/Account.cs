@@ -10,7 +10,7 @@ namespace EnhancedMapServerNetCore.Internals
     {
         private bool _isKicked;
 
-        public Account(string name, string password, Room room, ACCOUNT_LEVEL level, bool enabled)
+        public Account(in string name, in string password, in Room room, in ACCOUNT_LEVEL level, in bool enabled)
         {
             Name = name;
             CryptPassword(password);
@@ -21,7 +21,7 @@ namespace EnhancedMapServerNetCore.Internals
             Room = room;
         }
 
-        public Account(XmlElement node)
+        public Account(in XmlElement node)
         {
             Name = Utility.GetText(node["username"], string.Empty);
             CryptedPassword = Utility.GetText(node["password"], string.Empty);
@@ -74,18 +74,18 @@ namespace EnhancedMapServerNetCore.Internals
         public Room Room { get; set; }
 
 
-        public bool IsPasswordGood(string psw)
+        public bool IsPasswordGood(in string psw)
         {
             return CryptedPassword == SHA1.Protect(Name + psw);
         }
 
-        public void CryptPassword(string input)
+        public void CryptPassword(in string input)
         {
             CryptedPassword = SHA1.Protect(Name + input);
         }
 
 
-        public void Save(XmlWriter xml)
+        public void Save(in XmlWriter xml)
         {
             xml.WriteStartElement("account");
 

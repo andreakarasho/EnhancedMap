@@ -21,7 +21,7 @@ namespace EnhancedMapServerNetCore.Network
         public Action<Session> Disconnect;
 
 
-        public Session(Socket socket, ServerHandler manager)
+        public Session(in Socket socket, in ServerHandler manager)
         {
             _socket = socket;
             _manager = manager;
@@ -106,7 +106,7 @@ namespace EnhancedMapServerNetCore.Network
             }
         }
 
-        public void Send(PacketWriter writer)
+        public void Send(in PacketWriter writer)
         {
             Send(writer.ToArray());
         }
@@ -140,7 +140,7 @@ namespace EnhancedMapServerNetCore.Network
         }
 
 
-        private void ProcessReceive(SocketAsyncEventArgs e)
+        private void ProcessReceive(in SocketAsyncEventArgs e)
         {
             if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
             {
@@ -178,7 +178,7 @@ namespace EnhancedMapServerNetCore.Network
             }
         }
 
-        private void ProcessSend(SocketAsyncEventArgs e)
+        private void ProcessSend(in SocketAsyncEventArgs e)
         {
             if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
             {
@@ -195,7 +195,7 @@ namespace EnhancedMapServerNetCore.Network
                 SendCompleted(null, _sendEventArgs);
         }
 
-        private void Send(byte[] data)
+        private void Send(in byte[] data)
         {
             if (_socket == null)
                 return;
@@ -309,7 +309,7 @@ namespace EnhancedMapServerNetCore.Network
             }
         }
 
-        private void Dispose(bool flush)
+        private void Dispose(in bool flush)
         {
             if (IsDisposed)
                 return;

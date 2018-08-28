@@ -249,6 +249,16 @@ namespace EnhancedMapServerNetCore.Managers
 
 
                         break;
+
+                    case "setmaxusersconnection":
+                        Console.Write("Max users: ");
+                        result = string.Empty;
+                        while (string.IsNullOrEmpty(result))
+                            result = Console.ReadLine().Trim();
+                        args = new string[1] { result };
+                        CommandManager.ExecuteFromConsole(input, args);
+
+                        break;
                 }
             }
 

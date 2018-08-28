@@ -15,7 +15,31 @@ namespace EnhancedMapServerNetCore.Managers
 
     public static class CommandManager
     {
-        private static readonly Dictionary<string, Tuple<ACCOUNT_LEVEL, Action<User, string[]>>> _commands = new Dictionary<string, Tuple<ACCOUNT_LEVEL, Action<User, string[]>>> {{"adduser", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, AddUser)}, {"removeuser", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, RemoveUser)}, {"addroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AddRoom)}, {"removeroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, RemoveRoom)}, {"setpassword", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, SetPassword)}, {"setroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetRoom)}, {"allusersonline", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AllUsersOnline)}, {"userinfo", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, UserInfo)}, {"kick", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, Kick)}, {"ban", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, Ban)}, {"enableuser", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, EnableUser)}, {"allusersinroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, AllUsersInRoom)}, {"allusers", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AllUsers)}, {"statistics", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, Statistics)}, {"setprivileges", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetPrivileges)}, {"setloginsys", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetLoginSystem)}, {"setroompassword", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetRoomPassword)}, {"getroompassword", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, GetRoomPassword)}, {"allrooms", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AllRooms)}, {"getport", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, GetPort)}, {"setkicktime", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetKickTime)}};
+        private static readonly Dictionary<string, Tuple<ACCOUNT_LEVEL, Action<User, string[]>>> _commands = new Dictionary<string, Tuple<ACCOUNT_LEVEL, Action<User, string[]>>>
+        {
+            { "adduser", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, AddUser)},
+            { "removeuser", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, RemoveUser)},
+            { "addroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AddRoom)},
+            { "removeroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, RemoveRoom)},
+            { "setpassword", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, SetPassword)},
+            { "setroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetRoom)},
+            { "allusersonline", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AllUsersOnline)},
+            { "userinfo", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, UserInfo)},
+            { "kick", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, Kick)},
+            { "ban", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, Ban)},
+            { "enableuser", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, EnableUser)},
+            { "allusersinroom", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.ROOM_ADMIN, AllUsersInRoom)},
+            { "allusers", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AllUsers)},
+            { "statistics", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, Statistics)},
+            { "setprivileges", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetPrivileges)},
+            { "setloginsys", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetLoginSystem)},
+            { "setroompassword", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetRoomPassword)},
+            { "getroompassword", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, GetRoomPassword)},
+            { "allrooms", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, AllRooms)},
+            { "getport", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, GetPort)},
+            { "setkicktime", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetKickTime)},
+            { "setmaxusersconnection", new Tuple<ACCOUNT_LEVEL, Action<User, string[]>>(ACCOUNT_LEVEL.SERVER_ADMIN, SetMaxUsersConnection)}
+        };
 
 
         private static void SendTo(in User user, in string msg, in bool istable = false)
@@ -50,6 +74,19 @@ namespace EnhancedMapServerNetCore.Managers
             if (_commands.TryGetValue(action, out var tuple)) tuple.Item2(null, args);
         }
 
+        private static void SetMaxUsersConnection(User user, params string[] args)
+        {
+            if (args.Length < 1)
+                return;
+
+            if (ushort.TryParse(args[0], out ushort max))
+            {
+                SettingsManager.Configuration.MaxActiveConnections = max;
+                SendTo(user, "Server max connections: " + max);
+            }
+            else
+                SendTo(user, "Wrong typed number.");
+        }
 
         private static void GetPort(User user, params string[] args)
         {

@@ -16,7 +16,7 @@ namespace EnhancedMapServerNetCore.Configuration
         {
         }
 
-        public Config(XmlElement xml)
+        public Config(in XmlElement xml)
         {
             XmlElement set = xml["setting"];
 
@@ -32,8 +32,8 @@ namespace EnhancedMapServerNetCore.Configuration
             if (cred == 0 || cred == 1)
                 CredentialsSystem = (CREDENTIAL_SYSTEM) cred;
 
-            MaxActiveConnections = Convert.ToUInt16(Utility.GetText(set["maxsimultaneconnections"], "10"));
-            MaxSimultaneConnections = Convert.ToUInt16(Utility.GetText(set["maxactiveconnections"], "1000"));
+            MaxSimultaneConnections = Convert.ToUInt16(Utility.GetText(set["maxsimultaneconnections"], "10"));
+            MaxActiveConnections = Convert.ToUInt16(Utility.GetText(set["maxactiveconnections"], "1000"));
         }
 
 
@@ -44,7 +44,7 @@ namespace EnhancedMapServerNetCore.Configuration
         public ushort MaxActiveConnections { get; set; } = 1000;
 
 
-        public void Save(XmlWriter writer)
+        public void Save(in XmlWriter writer)
         {
             writer.WriteStartElement("setting");
 

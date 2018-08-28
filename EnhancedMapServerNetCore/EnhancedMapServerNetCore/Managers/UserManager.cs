@@ -11,7 +11,7 @@ namespace EnhancedMapServerNetCore.Managers
     {
         private static readonly ConcurrentDictionary<Guid, User> _users = new ConcurrentDictionary<Guid, User>();
 
-        public static User Get(Guid guid)
+        public static User Get(in Guid guid)
         {
             _users.TryGetValue(guid, out var user);
             return user;
@@ -23,7 +23,7 @@ namespace EnhancedMapServerNetCore.Managers
         }
 
 
-        public static bool Add(Account account, Session session)
+        public static bool Add(in Account account, in Session session)
         {
             User user = Get(session.Guid);
             if (user != null)
@@ -43,7 +43,7 @@ namespace EnhancedMapServerNetCore.Managers
             return false;
         }
 
-        public static bool Add(string name, Session session)
+        public static bool Add(in string name, in Session session)
         {
             User user = Get(session.Guid);
             if (user != null)
@@ -63,12 +63,12 @@ namespace EnhancedMapServerNetCore.Managers
             return false;
         }
 
-        public static void Remove(Guid guid)
+        public static void Remove(in Guid guid)
         {
             if (_users.TryRemove(guid, out var user)) RemoveFromRoom(user);
         }
 
-        public static void InsertIntoRoom(User user)
+        public static void InsertIntoRoom(in User user)
         {
             lock (user.Room.Users)
             {
@@ -87,7 +87,7 @@ namespace EnhancedMapServerNetCore.Managers
             }
         }
 
-        public static void RemoveFromRoom(User user)
+        public static void RemoveFromRoom(in User user)
         {
             lock (user.Room.Users)
             {

@@ -7,7 +7,7 @@ namespace EnhancedMapServerNetCore.Network
     {
         private readonly byte[] _data;
 
-        public Packet(byte[] data, byte id, int length)
+        public Packet(in byte[] data, in byte id, in int length)
         {
             _data = data;
             Length = length;
@@ -36,7 +36,7 @@ namespace EnhancedMapServerNetCore.Network
         public bool IsChanged { get; private set; }
         public override int Length { get; }
 
-        protected override void EnsureSize(int length)
+        protected override void EnsureSize(in int length)
         {
             if (length < 0 || Position + length > Length)
                 throw new ArgumentOutOfRangeException("length");
@@ -91,7 +91,7 @@ namespace EnhancedMapServerNetCore.Network
             return sb.ToString();
         }
 
-        public string ReadASCII(int length)
+        public string ReadASCII(in int length)
         {
             EnsureSize(length);
             StringBuilder sb = new StringBuilder(length);
@@ -119,7 +119,7 @@ namespace EnhancedMapServerNetCore.Network
             return sb.ToString();
         }
 
-        public string ReadUnicode(int length)
+        public string ReadUnicode(in int length)
         {
             EnsureSize(length);
             StringBuilder sb = new StringBuilder(length);

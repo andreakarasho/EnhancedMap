@@ -26,7 +26,7 @@ namespace EnhancedMapServerNetCore.Network
 
         private readonly List<Session> _sessions;
 
-        public Server(Config config)
+        public Server(in Config config)
         {
             IPEndPoint ipep = new IPEndPoint(IPAddress.Any, config.Port);
 
@@ -96,13 +96,13 @@ namespace EnhancedMapServerNetCore.Network
             return args;
         }
 
-        public void Increase(Session session)
+        public void Increase(in Session session)
         {
             _sessions.Add(session);
             Interlocked.Increment(ref _activeConnectionsCount);
         }
 
-        public void Decrease(Session session)
+        public void Decrease(in Session session)
         {
             lock (_disposedSessionsQueue)
             {
@@ -191,7 +191,7 @@ namespace EnhancedMapServerNetCore.Network
             } while (result);
         }
 
-        private void ProcessAccept(SocketAsyncEventArgs e)
+        private void ProcessAccept(in SocketAsyncEventArgs e)
         {
             if (e.SocketError == SocketError.Success && VerifySocket(e.AcceptSocket))
                 Enqueue(e.AcceptSocket);
@@ -200,7 +200,7 @@ namespace EnhancedMapServerNetCore.Network
             e.AcceptSocket = null;
         }
 
-        private void Enqueue(Socket s)
+        private void Enqueue(in Socket s)
         {
             lock (_acceptedSync)
             {
@@ -210,13 +210,13 @@ namespace EnhancedMapServerNetCore.Network
             Core.Set();
         }
 
-        private bool VerifySocket(Socket s)
+        private bool VerifySocket(in Socket s)
         {
             s.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, 1);
             return true;
         }
 
-        private void Release(Socket s)
+        private void Release(in Socket s)
         {
             try
             {
@@ -229,7 +229,7 @@ namespace EnhancedMapServerNetCore.Network
             s.Close();
         }
 
-        private Socket Bind(IPEndPoint local)
+        private Socket Bind(in IPEndPoint local)
         {
             Socket s = new Socket(local.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
@@ -251,7 +251,7 @@ namespace EnhancedMapServerNetCore.Network
             }
         }
 
-        private void Dispose(bool disposing)
+        private void Dispose(in bool disposing)
         {
             if (disposing)
             {

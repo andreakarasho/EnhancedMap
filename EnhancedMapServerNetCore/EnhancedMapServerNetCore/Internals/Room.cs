@@ -6,7 +6,7 @@ namespace EnhancedMapServerNetCore.Internals
 {
     public sealed class Room
     {
-        public Room(string name, string password = "")
+        public Room(in string name, in string password = "")
         {
             Name = name;
             Password = password;
@@ -14,7 +14,7 @@ namespace EnhancedMapServerNetCore.Internals
             Users = new List<User>();
         }
 
-        public Room(XmlElement node)
+        public Room(in XmlElement node)
         {
             Name = Utility.GetText(node["name"], null);
             Password = Utility.GetText(node["password"], string.Empty);
@@ -30,7 +30,7 @@ namespace EnhancedMapServerNetCore.Internals
 
         public List<User> Users { get; }
 
-        public void Save(XmlWriter xml)
+        public void Save(in XmlWriter xml)
         {
             xml.WriteStartElement("room");
 

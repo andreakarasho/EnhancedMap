@@ -31,7 +31,7 @@ namespace EnhancedMapServerNetCore.Network
             }
         }
 
-        public static void ReleaseBuffer(byte[] buffer)
+        public static void ReleaseBuffer(in byte[] buffer)
         {
             lock (_UnusedBuffers)
             {
@@ -62,12 +62,12 @@ namespace EnhancedMapServerNetCore.Network
             return gram;
         }
 
-        public Gram Enqueue(byte[] buffer, int length)
+        public Gram Enqueue(in byte[] buffer, in int length)
         {
             return Enqueue(buffer, 0, length);
         }
 
-        public Gram Enqueue(byte[] buffer, int offset, int length)
+        public Gram Enqueue(in byte[] buffer, int offset, int length)
         {
             if (buffer == null) throw new ArgumentNullException("buffer");
             if (!(offset >= 0 && offset < buffer.Length))
@@ -155,7 +155,7 @@ namespace EnhancedMapServerNetCore.Network
                 }
             }
 
-            public int Write(byte[] buffer, int offset, int length)
+            public int Write(in byte[] buffer, in int offset, in int length)
             {
                 int write = Math.Min(length, Available);
 

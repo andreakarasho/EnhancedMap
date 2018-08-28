@@ -6,13 +6,13 @@ namespace EnhancedMapServerNetCore.Internals
 {
     public class User : IEquatable<User>
     {
-        public User(string name, Session socket)
+        public User(in string name, in Session socket)
         {
             Name = name;
             Session = socket;
         }
 
-        public User(Account account, Session socket) : this(account.Name, socket)
+        public User(in Account account, in Session socket) : this(account.Name, socket)
         {
             Account = account;
             Room = Account.Room;
@@ -30,7 +30,7 @@ namespace EnhancedMapServerNetCore.Internals
             return other.Guid.Equals(Guid);
         }
 
-        public void SendToUsersInRoom(PacketWriter packet)
+        public void SendToUsersInRoom(in PacketWriter packet)
         {
             for (int i = 0; i < Room.Users.Count; i++)
             {

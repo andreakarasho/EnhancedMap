@@ -2,7 +2,7 @@
 {
     public class SharedLabel
     {
-        public SharedLabel(ushort x, ushort y, byte map, string descr)
+        public SharedLabel(in ushort x, in ushort y, in byte map, in string descr)
         {
             X = x;
             Y = y;
