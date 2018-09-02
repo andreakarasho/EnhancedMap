@@ -105,7 +105,7 @@ namespace EnhancedMap.Core.MapObjects
             relativeX = gameX + x;
             relativeY = gameY + y;
 
-            string name = Global.SettingsCollection["abbreviatenames"].ToBool() ? Name.Substring(0, 3) : Name;
+            string name = Name.Length > 3 && Global.SettingsCollection["abbreviatenames"].ToBool() ? Name.Substring(0, 3) : Name;
 
             SizeF sizeName = g.MeasureString(name, Font);
             int smartOffsetX = 0;
