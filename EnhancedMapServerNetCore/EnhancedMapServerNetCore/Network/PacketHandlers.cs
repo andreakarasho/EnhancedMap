@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using EnhancedMapServerNetCore.Internals;
+﻿using EnhancedMapServerNetCore.Internals;
 using EnhancedMapServerNetCore.Logging;
 using EnhancedMapServerNetCore.Managers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EnhancedMapServerNetCore.Network
 {
@@ -31,7 +31,7 @@ namespace EnhancedMapServerNetCore.Network
 
         public static PacketHandlers Handlers { get; } = new PacketHandlers();
 
-        public void Add(in byte id, in Action<Session, Packet> handler)
+        public void Add(byte id, Action<Session, Packet> handler)
         {
             lock (_handlers)
             {
@@ -39,7 +39,7 @@ namespace EnhancedMapServerNetCore.Network
             }
         }
 
-        public void OnPacket(in Session client, in Packet p)
+        public void OnPacket(Session client, Packet p)
         {
             lock (_handlers)
             {
@@ -54,7 +54,7 @@ namespace EnhancedMapServerNetCore.Network
 
         private static void LoginRequest(Session client, Packet p)
         {
-            if (client.IsAccepted)
+            if (client == null || client.IsAccepted)
                 return;
 
             byte userlen = p.ReadByte();
@@ -69,7 +69,7 @@ namespace EnhancedMapServerNetCore.Network
 
         private static void RemoteAdminCmds(Session client, Packet p)
         {
-            if (!client.IsAccepted)
+            if (client == null || !client.IsAccepted)
                 return;
 
             User user = UserManager.Get(client.Guid);
@@ -105,11 +105,11 @@ namespace EnhancedMapServerNetCore.Network
 
         private static void ChatMsg(Session client, Packet p)
         {
-            if (!client.IsAccepted)
+            if (client == null || !client.IsAccepted)
                 return;
 
             ushort msglen = p.ReadUShort();
-            int color = (int) p.ReadUInt();
+            int color = (int)p.ReadUInt();
             string message = p.ReadASCII(msglen);
 
             User user = UserManager.Get(client.Guid);
@@ -120,7 +120,7 @@ namespace EnhancedMapServerNetCore.Network
 
         private static void UserData(Session client, Packet p)
         {
-            if (!client.IsAccepted)
+            if (client == null || !client.IsAccepted)
                 return;
 
             ushort x = p.ReadUShort();
@@ -157,7 +157,7 @@ namespace EnhancedMapServerNetCore.Network
 
         private static void AlertAdvice(Session client, Packet p)
         {
-            if (!client.IsAccepted)
+            if (client == null || !client.IsAccepted)
                 return;
             User user = UserManager.Get(client.Guid);
             user.SendToUsersInRoom(new PAlertAdvice(p.ReadUShort(), p.ReadUShort(), user.Name));
@@ -165,7 +165,7 @@ namespace EnhancedMapServerNetCore.Network
 
         private static void ProtocolRequest(Session client, Packet p)
         {
-            if (client.IsAccepted)
+            if (client == null || client.IsAccepted)
                 return;
 
             if (p.ReadByte() == 0)
@@ -176,7 +176,7 @@ namespace EnhancedMapServerNetCore.Network
 
         private static void SharedLabel(Session client, Packet p)
         {
-            if (!client.IsAccepted)
+            if (client == null || !client.IsAccepted)
                 return;
 
             bool toremove = p.ReadBool();

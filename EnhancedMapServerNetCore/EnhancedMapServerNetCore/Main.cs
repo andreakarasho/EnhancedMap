@@ -164,7 +164,7 @@ namespace EnhancedMapServerNetCore
             Process.GetCurrentProcess().Kill();
         }
 
-        private static void Shutdown(in bool crashed = false)
+        private static void Shutdown(bool crashed = false)
         {
             IsRunning = false;
             //Server.Stop();

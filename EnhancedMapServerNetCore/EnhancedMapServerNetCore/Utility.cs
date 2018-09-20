@@ -7,12 +7,12 @@ namespace EnhancedMapServerNetCore
     {
         private static readonly char[] _ForbiddenChars = {'<', '>', ':', '"', '/', '\\', '|', '?', '*'};
 
-        public static string GetText(in XmlElement node, in string defaultValue)
+        public static string GetText(XmlElement node, string defaultValue)
         {
             return node?.InnerText ?? defaultValue;
         }
 
-        public static bool IsStringAllowed(in string s)
+        public static bool IsStringAllowed(string s)
         {
             return !string.IsNullOrEmpty(s) && !s.Any(x => char.IsWhiteSpace(x) || _ForbiddenChars.Contains(x));
         }

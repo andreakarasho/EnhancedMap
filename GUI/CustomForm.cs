@@ -228,13 +228,19 @@ namespace EnhancedMap.GUI
 
             if (maximize)
             {
-                var monitorHandle = Native.MonitorFromWindow(Handle, Native.MONITOR_DEFAULTTONEAREST);
-                var monitorInfo = new Native.MONITORINFOEX();
-                Native.GetMonitorInfo(new HandleRef(null, monitorHandle), monitorInfo);
                 _previousSize = Size;
                 _previousLocation = Location;
-                Size = new Size(monitorInfo.rcWork.Width, monitorInfo.rcWork.Height);
-                Location = new Point(monitorInfo.rcWork.Left, monitorInfo.rcWork.Top);
+
+                 var area = Screen.GetWorkingArea(this);
+                Size = area.Size;
+                Location = area.Location;
+                //var monitorHandle = Native.MonitorFromWindow(Handle, Native.MONITOR_DEFAULTTONEAREST);
+                //var monitorInfo = new Native.MONITORINFOEX();
+                //Native.GetMonitorInfo(new HandleRef(null, monitorHandle), ref monitorInfo);
+                //_previousSize = Size;
+                //_previousLocation = Location;
+                //Size = new Size(monitorInfo.WorkArea.Width, monitorInfo.WorkArea.Height);
+                //Location = new Point(monitorInfo.WorkArea.Left, monitorInfo.WorkArea.Top);
             }
             else
             {

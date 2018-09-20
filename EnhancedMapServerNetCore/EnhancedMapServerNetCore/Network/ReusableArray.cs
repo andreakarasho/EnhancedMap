@@ -7,7 +7,7 @@ namespace EnhancedMapServerNetCore.Network
         private readonly Queue<T[]> _segments;
         private readonly int _size, _capacity;
 
-        public ReusableArray(in int capacity, in int size)
+        public ReusableArray(int capacity, int size)
         {
             _capacity = capacity;
             _size = size;
@@ -30,7 +30,7 @@ namespace EnhancedMapServerNetCore.Network
             }
         }
 
-        public void Free(in T[] s)
+        public void Free(T[] s)
         {
             if (s == null)
                 return;

@@ -22,7 +22,7 @@ namespace EnhancedMapServerNetCore.Network
             Length = 0;
         }
 
-        private void SetCapacity(in int capacity)
+        private void SetCapacity(int capacity)
         {
             byte[] newBuffer = new byte[capacity];
 
@@ -54,7 +54,7 @@ namespace EnhancedMapServerNetCore.Network
             return Length >= 3 ? (short) ((_buffer[(_head + 2) % _buffer.Length] << 8) | _buffer[(_head + 1) % _buffer.Length]) : (short) 0xff;
         }
 
-        public int Dequeue(in byte[] buffer, in int offset, int size)
+        public int Dequeue(byte[] buffer, int offset, int size)
         {
             if (size > Length) size = Length;
 
@@ -87,7 +87,7 @@ namespace EnhancedMapServerNetCore.Network
             return size;
         }
 
-        public void Enqueue(in byte[] buffer, in int offset, in int size)
+        public void Enqueue(byte[] buffer, int offset, int size)
         {
             if (Length + size > _buffer.Length)
             {

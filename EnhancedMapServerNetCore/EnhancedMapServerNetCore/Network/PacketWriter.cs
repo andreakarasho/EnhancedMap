@@ -6,7 +6,7 @@ namespace EnhancedMapServerNetCore.Network
     {
         private byte[] _data;
 
-        public PacketWriter(in byte id)
+        public PacketWriter(byte id)
         {
             _data = new byte[3];
             _data[0] = id;
@@ -22,7 +22,7 @@ namespace EnhancedMapServerNetCore.Network
         public override byte ID => this[0];
         public override int Length => _data.Length;
 
-        protected override void EnsureSize(in int length)
+        protected override void EnsureSize(int length)
         {
             if (length < 0)
                 throw new ArgumentOutOfRangeException("length");

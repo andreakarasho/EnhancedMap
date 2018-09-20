@@ -26,13 +26,13 @@ namespace EnhancedMapServerNetCore.Managers
             };
         }
 
-        public static Room Get(in string name)
+        public static Room Get(string name)
         {
             _rooms.TryGetValue(name, out var room);
             return room;
         }
 
-        public static void Add(in string name, in string password = "")
+        public static void Add(string name, string password = "")
         {
             Room room = Get(name);
             if (room != null)
@@ -45,7 +45,7 @@ namespace EnhancedMapServerNetCore.Managers
             }
         }
 
-        public static void Add(in Room room)
+        public static void Add(Room room)
         {
             if (Get(room.Name) != null)
                 Log.Message(LogTypes.Warning, $"Room already exists '{room.Name}'");
@@ -56,13 +56,13 @@ namespace EnhancedMapServerNetCore.Managers
             }
         }
 
-        public static void Remove(in string name)
+        public static void Remove(string name)
         {
             if (!_rooms.TryRemove(name, out var room))
                 Log.Message(LogTypes.Panic, "Room '" + name + "' not exists.");
         }
 
-        public static void Load(in bool isbackup = false)
+        public static void Load(bool isbackup = false)
         {
             Log.Message(LogTypes.Trace, "Loading rooms...");
 
@@ -118,7 +118,7 @@ namespace EnhancedMapServerNetCore.Managers
             Log.Message(LogTypes.Trace, $"{loaded} rooms loaded.");
         }
 
-        public static void Save(in bool isbackup = false)
+        public static void Save(bool isbackup = false)
         {
             string path = Path.Combine(Core.RootPath, isbackup ? "Backup" : "Data");
 

@@ -4,7 +4,7 @@ namespace EnhancedMapServerNetCore.Network
 {
     public class PacketHandler
     {
-        public PacketHandler(in Action<Session, Packet> callback)
+        public PacketHandler(Action<Session, Packet> callback)
         {
             Callback = callback;
         }

@@ -9,7 +9,7 @@ namespace EnhancedMapServerNetCore.Logging
     {
         private readonly FileStream logStream;
 
-        public LogFile(in string directory, in string file)
+        public LogFile(string directory, string file)
         {
             logStream = new FileStream($"{directory}/{DateTime.Now:yyyy-MM-dd_hh-mm-ss}_{file}", FileMode.Append, FileAccess.Write, FileShare.ReadWrite, 4096, true);
         }

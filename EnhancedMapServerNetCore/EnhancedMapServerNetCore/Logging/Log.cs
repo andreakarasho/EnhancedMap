@@ -4,7 +4,7 @@
     {
         private static Logger logger;
 
-        public static void Start(in LogTypes logTypes, in LogFile logFile = null)
+        public static void Start(LogTypes logTypes, LogFile logFile = null)
         {
             logger = logger ?? new Logger {LogTypes = logTypes};
 
@@ -18,7 +18,7 @@
             logger = null;
         }
 
-        public static void Resume(in LogTypes logTypes)
+        public static void Resume(LogTypes logTypes)
         {
             logger.LogTypes = logTypes;
         }
@@ -28,7 +28,7 @@
             logger.LogTypes = LogTypes.None;
         }
 
-        public static void Message(in LogTypes logType, in string text)
+        public static void Message(LogTypes logType, string text)
         {
             logger.Message(logType, text);
         }

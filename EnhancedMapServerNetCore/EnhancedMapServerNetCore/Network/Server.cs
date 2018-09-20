@@ -1,11 +1,11 @@
-﻿using System;
+﻿using EnhancedMapServerNetCore.Configuration;
+using EnhancedMapServerNetCore.Logging;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using EnhancedMapServerNetCore.Configuration;
-using EnhancedMapServerNetCore.Logging;
 
 namespace EnhancedMapServerNetCore.Network
 {
@@ -21,18 +21,21 @@ namespace EnhancedMapServerNetCore.Network
         private readonly SocketAsyncEventArgs _acceptEventArgs;
         private int _activeConnectionsCount;
 
-        private readonly Stack<SocketAsyncEventArgs> _readwritePoolEventArgs;
+        //private readonly Stack<SocketAsyncEventArgs> _readwritePoolEventArgs;
         private Socket _serverSocket;
+        private Config _config;
 
         private readonly List<Session> _sessions;
 
-        public Server(in Config config)
+        public Server(Config config)
         {
+            _config = config;
+
             IPEndPoint ipep = new IPEndPoint(IPAddress.Any, config.Port);
 
             _sessions = new List<Session>();
             _acceptedSockets = new Queue<Socket>();
-            _acceptedSync = ((ICollection) _acceptedSockets).SyncRoot;
+            _acceptedSync = ((ICollection)_acceptedSockets).SyncRoot;
             _serverSocket = Bind(ipep);
             if (_serverSocket == null)
                 return;
@@ -44,17 +47,19 @@ namespace EnhancedMapServerNetCore.Network
                 StartAccept();
             };
 
-            _readwritePoolEventArgs = new Stack<SocketAsyncEventArgs>();
+            //_readwritePoolEventArgs = new Stack<SocketAsyncEventArgs>();
 
-            for (int i = 0; i < config.MaxActiveConnections * 2; i++)
-            {
-                SocketAsyncEventArgs arg = new SocketAsyncEventArgs();
-                _readwritePoolEventArgs.Push(arg);
-            }
+            //for (int i = 0; i < config.MaxActiveConnections * 2; i++)
+            //{
+            //    SocketAsyncEventArgs arg = new SocketAsyncEventArgs();
+            //    _readwritePoolEventArgs.Push(arg);
+            //}
 
             StartAccept();
         }
 
+        public int TotalSocketsAlive => _activeConnectionsCount;
+        public bool IsFull => _activeConnectionsCount >= _config.MaxActiveConnections;
 
         public IReadOnlyList<Session> Sessions => _sessions;
 
@@ -79,30 +84,30 @@ namespace EnhancedMapServerNetCore.Network
             return sockets;
         }
 
-        public SocketAsyncEventArgs[] GetAvailableArgs()
-        {
-            SocketAsyncEventArgs[] args;
+        //public SocketAsyncEventArgs[] GetAvailableArgs()
+        //{
+        //    SocketAsyncEventArgs[] args;
 
-            if (_readwritePoolEventArgs.Count > 1)
-            {
-                args = new SocketAsyncEventArgs[2];
+        //    if (_readwritePoolEventArgs.Count > 1)
+        //    {
+        //        args = new SocketAsyncEventArgs[2];
 
-                args[0] = _readwritePoolEventArgs.Pop();
-                args[1] = _readwritePoolEventArgs.Pop();
-            }
-            else
-                args = _emptyArgs;
+        //        args[0] = _readwritePoolEventArgs.Pop();
+        //        args[1] = _readwritePoolEventArgs.Pop();
+        //    }
+        //    else
+        //        args = _emptyArgs;
 
-            return args;
-        }
+        //    return args;
+        //}
 
-        public void Increase(in Session session)
+        public void Increase(Session session)
         {
             _sessions.Add(session);
             Interlocked.Increment(ref _activeConnectionsCount);
         }
 
-        public void Decrease(in Session session)
+        public void Decrease(Session session)
         {
             lock (_disposedSessionsQueue)
             {
@@ -114,8 +119,8 @@ namespace EnhancedMapServerNetCore.Network
 
         public void Disconnect(Session session)
         {
-            for (int i = 0; i < session.Args.Length; i++)
-                _readwritePoolEventArgs.Push(session.Args[i]);
+            //for (int i = 0; i < session.Args.Length; i++)
+            //    _readwritePoolEventArgs.Push(session.Args[i]);
 
             Decrease(session);
 
@@ -191,7 +196,7 @@ namespace EnhancedMapServerNetCore.Network
             } while (result);
         }
 
-        private void ProcessAccept(in SocketAsyncEventArgs e)
+        private void ProcessAccept(SocketAsyncEventArgs e)
         {
             if (e.SocketError == SocketError.Success && VerifySocket(e.AcceptSocket))
                 Enqueue(e.AcceptSocket);
@@ -200,7 +205,7 @@ namespace EnhancedMapServerNetCore.Network
             e.AcceptSocket = null;
         }
 
-        private void Enqueue(in Socket s)
+        private void Enqueue(Socket s)
         {
             lock (_acceptedSync)
             {
@@ -210,13 +215,21 @@ namespace EnhancedMapServerNetCore.Network
             Core.Set();
         }
 
-        private bool VerifySocket(in Socket s)
+        private bool VerifySocket(Socket s)
         {
-            s.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, 1);
-            return true;
+            try
+            {
+                s.SetSocketOption(SocketOptionLevel.Tcp, SocketOptionName.NoDelay, 1);
+                return true;
+            }
+            catch
+            {
+                Log.Message(LogTypes.Warning, "Something wrong with this socket");
+                return false;
+            }
         }
 
-        private void Release(in Socket s)
+        private void Release(Socket s)
         {
             try
             {
@@ -229,7 +242,7 @@ namespace EnhancedMapServerNetCore.Network
             s.Close();
         }
 
-        private Socket Bind(in IPEndPoint local)
+        private Socket Bind(IPEndPoint local)
         {
             Socket s = new Socket(local.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
@@ -251,7 +264,7 @@ namespace EnhancedMapServerNetCore.Network
             }
         }
 
-        private void Dispose(in bool disposing)
+        private void Dispose(bool disposing)
         {
             if (disposing)
             {

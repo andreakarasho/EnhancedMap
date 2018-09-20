@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using EnhancedMapServerNetCore.Logging;
+using EnhancedMapServerNetCore.Managers;
+using System.Collections.Generic;
 using System.Net.Sockets;
-using EnhancedMapServerNetCore.Logging;
 
 namespace EnhancedMapServerNetCore.Network
 {
@@ -11,7 +12,7 @@ namespace EnhancedMapServerNetCore.Network
         private readonly Server _server;
         private Queue<Session> _workingQueue, _queue;
 
-        public ServerHandler(in Server server)
+        public ServerHandler(Server server)
         {
             _server = server;
             _workingQueue = new Queue<Session>();
@@ -48,7 +49,7 @@ namespace EnhancedMapServerNetCore.Network
         }
 
 
-        private void HandlePackets(in Session s)
+        private void HandlePackets(Session s)
         {
             if (s == null)
                 return;
@@ -98,8 +99,7 @@ namespace EnhancedMapServerNetCore.Network
 
             for (int i = 0; i < accepted.Length; i++)
             {
-                var args = _server.GetAvailableArgs();
-                if (args.Length == 0)
+                if (_server.IsFull)
                 {
                     Log.Message(LogTypes.Warning, "Reached max connections number!");
 
@@ -121,14 +121,15 @@ namespace EnhancedMapServerNetCore.Network
                 }
                 else
                 {
-                    Session session = new Session(accepted[i], this) {Args = args, Disconnect = _server.Disconnect};
+                    Session session = new Session(accepted[i], this) { Disconnect = _server.Disconnect };
 
                     session.Accept();
 
                     _server.Increase(session);
 
-                    Log.Message(LogTypes.Info, "New session connected.");
+                    Log.Message(LogTypes.Info, $"New session connected.   [{_server.TotalSocketsAlive}/{SettingsManager.Configuration.MaxActiveConnections}]");
                 }
+
             }
         }
     }

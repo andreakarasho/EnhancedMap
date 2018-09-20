@@ -1,11 +1,11 @@
-﻿using System;
+﻿using EnhancedMapServerNetCore.Internals;
+using EnhancedMapServerNetCore.Logging;
+using EnhancedMapServerNetCore.Network;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
-using EnhancedMapServerNetCore.Internals;
-using EnhancedMapServerNetCore.Logging;
-using EnhancedMapServerNetCore.Network;
 
 namespace EnhancedMapServerNetCore.Managers
 {
@@ -13,7 +13,7 @@ namespace EnhancedMapServerNetCore.Managers
     {
         private static readonly ConcurrentDictionary<string, Account> _accounts = new ConcurrentDictionary<string, Account>();
 
-        public static ICollection<Account> Accounts => _accounts.Values;
+        public static IReadOnlyList<Account> Accounts => (IReadOnlyList<Account>)_accounts.Values;
 
         public static void Init()
         {
@@ -27,7 +27,7 @@ namespace EnhancedMapServerNetCore.Managers
             };
         }
 
-        public static Account Get(in string name)
+        public static Account Get(string name)
         {
             _accounts.TryGetValue(name, out var acc);
             return acc;
@@ -40,7 +40,7 @@ namespace EnhancedMapServerNetCore.Managers
         /// <param name="password"></param>
         /// <param name="roomname"></param>
         /// <param name="level"></param>
-        public static void Add(in string name, in string password, in string roomname, in ACCOUNT_LEVEL level)
+        public static void Add(string name, string password, string roomname, ACCOUNT_LEVEL level)
         {
             Account account = Get(name);
             if (account != null)
@@ -63,7 +63,7 @@ namespace EnhancedMapServerNetCore.Managers
         ///     Add user loaded from XML
         /// </summary>
         /// <param name="account"></param>
-        public static void Add(in Account account)
+        public static void Add(Account account)
         {
             if (Get(account.Name) != null)
                 Log.Message(LogTypes.Warning, $"Account already exists '{account.Name}'");
@@ -78,14 +78,14 @@ namespace EnhancedMapServerNetCore.Managers
         ///     Delete an account
         /// </summary>
         /// <param name="name"></param>
-        public static void Remove(in string name)
+        public static void Remove(string name)
         {
             if (!_accounts.TryRemove(name, out var account))
                 Log.Message(LogTypes.Panic, $"Account '{name}' not exists");
         }
 
 
-        public static bool CanConnect(in string username, in string password, in Session session)
+        public static bool CanConnect(string username, string password, Session session)
         {
             /*if (SettingsManager.Configuration.CredentialsSystem == Configuration.CREDENTIAL_SYSTEM.USERNAME_AND_ID)
             {
@@ -151,7 +151,7 @@ namespace EnhancedMapServerNetCore.Managers
             return true;
         }
 
-        public static void Load(in bool isbackup = false)
+        public static void Load(bool isbackup = false)
         {
             Log.Message(LogTypes.Trace, "Loading accounts...");
 
@@ -207,7 +207,7 @@ namespace EnhancedMapServerNetCore.Managers
             Log.Message(LogTypes.Trace, $"{loaded} accounts loaded.");
         }
 
-        public static void Save(in bool isbackup = false)
+        public static void Save(bool isbackup = false)
         {
             string path = Path.Combine(Core.RootPath, isbackup ? "Backup" : "Data");
 
@@ -216,7 +216,7 @@ namespace EnhancedMapServerNetCore.Managers
 
             path = Path.Combine(path, "Accounts.xml");
 
-            XmlWriterSettings settings = new XmlWriterSettings {Indent = true, IndentChars = "\t"};
+            XmlWriterSettings settings = new XmlWriterSettings { Indent = true, IndentChars = "\t" };
 
             Log.Message(LogTypes.Trace, (isbackup ? "Backup: " : "") + "Saving accounts...");
 

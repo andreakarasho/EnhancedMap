@@ -16,7 +16,7 @@ namespace EnhancedMapServerNetCore.Configuration
         {
         }
 
-        public Config(in XmlElement xml)
+        public Config(XmlElement xml)
         {
             XmlElement set = xml["setting"];
 
@@ -44,7 +44,7 @@ namespace EnhancedMapServerNetCore.Configuration
         public ushort MaxActiveConnections { get; set; } = 1000;
 
 
-        public void Save(in XmlWriter writer)
+        public void Save(XmlWriter writer)
         {
             writer.WriteStartElement("setting");
 

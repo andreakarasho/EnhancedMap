@@ -158,7 +158,7 @@ namespace EnhancedMapServerNetCore.Managers
                         break;
 
                     case "setkicktime":
-                        Console.Write("Time (in seconds): ");
+                        Console.Write("Time (seconds): ");
                         result = string.Empty;
                         while (string.IsNullOrEmpty(result))
                             result = Console.ReadLine().Trim();

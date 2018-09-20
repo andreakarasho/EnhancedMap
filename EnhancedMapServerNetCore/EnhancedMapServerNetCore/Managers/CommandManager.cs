@@ -42,7 +42,7 @@ namespace EnhancedMapServerNetCore.Managers
         };
 
 
-        private static void SendTo(in User user, in string msg, in bool istable = false)
+        private static void SendTo(User user, string msg, bool istable = false)
         {
             if (user != null)
                 user.Session.Send(new PServerResponseCmdToClient(msg, SERVER_MESSAGE_TYPE.NORMAL));
@@ -51,7 +51,7 @@ namespace EnhancedMapServerNetCore.Managers
         }
 
 
-        public static void Execute(string action, in User user, params string[] args)
+        public static void Execute(string action, User user, params string[] args)
         {
             action = action.ToLower();
 
