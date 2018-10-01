@@ -330,8 +330,13 @@ namespace EnhancedMapServerNetCore.Network
             catch
             {
             }
-
-            _socket.Close();
+            try
+            {
+                _socket.Close();
+            }
+            catch
+            {
+            }
 
             if (_recvBuffer != null)
             {
@@ -346,9 +351,6 @@ namespace EnhancedMapServerNetCore.Network
                 if (!_sendQueue.IsEmpty)
                     _sendQueue.Clear();
             }
-
-            _recvEventArgs.Completed -= RecvCompleted;
-            _sendEventArgs.Completed -= SendCompleted;
 
             _recvEventArgs = null;
             _sendEventArgs = null;
