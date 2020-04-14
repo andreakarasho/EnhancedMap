@@ -4,7 +4,7 @@ A free Ultima Online map tool
 
 [Site](http://razorenhanced.org/)
 
-Download [Latest EnhancedMap](http://razorenhanced.org/download/Enhanced-updater.zip)
+Download [Latest EnhancedMap](https://github.com/andreakarasho/EnhancedMap/releases/tag/1.0.0.0)
 
 
 # How can i compile EnhancedMapServer for my server machine?
